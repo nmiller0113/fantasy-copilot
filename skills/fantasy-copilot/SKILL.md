@@ -71,6 +71,12 @@ cover those by judgment**, plus 5a and 5b (track scheme news; live, track each o
 roster needs). DS's bye alert is same-position only, so **check cross-slot byes yourself**
 (for example a QB1 and a superflex QB sharing a bye).
 
+**How signals combine: every input is a data point, none is gospel.** DS's board, analyst
+answers, pre-built plans, your own read, and what the room is doing all sit at the same
+table; no single signal outweighs another by default, and the live situation at the moment
+of decision dictates which one carries the call. Treat analyst advice and pre-draft plans
+as priors to update, never as directives to execute.
+
 ## 4. Draft Sharks: mechanisms that matter
 
 - **3D Value (0-100)**: recomputed in under a second after every pick from 17 indicators
