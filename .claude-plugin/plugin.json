@@ -1,0 +1,17 @@
+{
+  "name": "fantasy-copilot",
+  "description": "Fantasy football copilot for Draft Sharks subscribers: live draft-day advising, pre-draft strategy, and season-long weekly guidance. Requires Draft Sharks.",
+  "version": "1.1.1",
+  "author": {
+    "name": "Nathan Miller"
+  },
+  "repository": "https://github.com/nmiller0113/fantasy-copilot",
+  "license": "MIT",
+  "keywords": [
+    "fantasy-football",
+    "draft",
+    "draft-sharks",
+    "nfl",
+    "copilot"
+  ]
+}
