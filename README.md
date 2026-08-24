@@ -9,6 +9,17 @@ Draft War Room, 3D Value, live-draft sync extension, injury model, and in-season
 Without a paid Draft Sharks subscription it has nothing to steer by. **Only Draft Sharks is
 supported today; other tools may be added in the future.**
 
+Two things the skill will establish up front:
+
+- **Your subscription tier.** Draft Sharks sells several tiers and they gate real features
+  (keeper/dynasty/auction tools, analyst Q&A). The skill asks which tier you pay for, scopes
+  its claims and workflows to it, and, because tier contents change over time, verifies the
+  current offering on draftsharks.com before asserting what your tier includes.
+- **Browser access for live drafts.** Real-time in-draft advising requires Claude to see
+  your draft room and the Draft Sharks panel as picks land, for example via the Claude in
+  Chrome extension. Without browser access you still get pre-draft strategy and weekly
+  guidance, and the skill will tell you plainly that live advising is unavailable.
+
 ## What it does
 
 - **Draft day:** a two-line recommendation decided *before* your pick clock starts, live
@@ -43,7 +54,7 @@ Then `/reload-plugins`, or restart. Update later with
   private league-profile document in your files; that is where everything specific to you
   lives, and where it appends dated lessons after every draft and season.
 - During a live draft, keep the draft room and the Draft Sharks sync panel visible to Claude
-  (for example via browser access) and let it talk. You click. It advises.
+  through its browser access (Claude in Chrome) and let it talk. You click. It advises.
 - Superflex players: this skill is opinionated about format-correct QB valuation and will
   tell you to ignore your host's format-blind draft grades. That is the point.
 

@@ -16,7 +16,24 @@ waiver wire, all the way to the fantasy playoffs.
   tier adds keeper, dynasty, auction, and best ball; the top tier adds unlimited analyst Q&A.
 - The **DraftSharks Sync** Chrome extension for live drafts on supported hosts (Yahoo, ESPN,
   CBS, Sleeper, NFL.com, MFL, Fantrax, FFPC, Fleaflicker, RTSports, Underdog).
+- **Browser access for Claude (Claude in Chrome or equivalent) for the live-draft copilot.**
+  Real-time recommendations exist only if Claude can SEE the draft room and the DS panel as
+  picks land. Without browser access this skill still does pre-draft strategy and weekly
+  guidance, but it must say plainly that live in-draft advising is off the table.
 - **Only Draft Sharks is supported today.** Other draft tools may be added in the future.
+
+## Subscription tier: ask, verify, scope
+
+Before advising, **ask which Draft Sharks tier the user pays for** and record it in their
+private document. Tier gates what this skill can do, and its claims must match:
+- Base tier: redraft War Room, live sync, rankings, injury model, in-season suite.
+- Middle tier: adds keeper, dynasty, auction, and best ball tools.
+- Top tier: adds unlimited Personalized Advice (analyst Q&A). Never offer the advice-form
+  workflow to a user whose tier lacks it.
+**Tier contents change.** The gates listed here are a snapshot, not ground truth: verify the
+CURRENT offering at draftsharks.com/subscribe (or the user's account page) before claiming a
+feature exists at their tier, before recommending an upgrade or downgrade, and at the start
+of each season. When the live offering disagrees with this skill, the live offering wins.
 
 ## 1. Prime directives
 
@@ -109,6 +126,8 @@ roster needs). DS's bye alert is same-position only, so **check cross-slot byes 
 
 ## 6. Pre-draft procedure (per league)
 
+0. Confirm the user's current tier and its live feature set (see "Subscription tier"
+   above); confirm browser access is working for draft day, and say so if it is not.
 1. Verify the league is synced in DS and imported scoring matches line by line (bonus rows
    are the classic import miss); confirm the board's QB ordering matches the format.
 2. Delete-and-resync if anything looks stale; update the extension.
