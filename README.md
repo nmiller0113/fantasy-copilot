@@ -29,8 +29,9 @@ Two things the skill will establish up front:
   with tier-cliff triggers and pivot trees, and (top tier) drafted questions for Draft
   Sharks' Personalized Advice analysts.
 - **In-season:** a weekly cadence over Draft Sharks' tools: waivers by rest-of-season value,
-  lineup calls (floor when favored, ceiling when underdog), trade-deadline and playoff-week
-  positioning.
+  lineup and matchup calls (floor when favored, ceiling when underdog), trade guidance
+  (finding the right partner, valuing both sides of an offer in your league's scoring, not
+  someone else's), and trade-deadline and playoff-week positioning.
 - **Discipline you'll be glad it has:** it never clicks a pick or submits a roster move
   (you drive, always), it never skews Draft Sharks' projections to match its own opinions
   (two independent signals, argued out loud), and it keeps your league details in your own
@@ -55,8 +56,10 @@ Then `/reload-plugins`, or restart. Update later with
   lives, and where it appends dated lessons after every draft and season.
 - During a live draft, keep the draft room and the Draft Sharks sync panel visible to Claude
   through its browser access (Claude in Chrome) and let it talk. You click. It advises.
-- Superflex players: this skill is opinionated about format-correct QB valuation and will
-  tell you to ignore your host's format-blind draft grades. That is the point.
+- The skill is keenly aware of your league's settings, and every opinion it gives is
+  formulated around them. Third-party grades, ranks, and analyzers that do not account for
+  your format and scoring get treated as noise, and that applies everywhere a settings-blind
+  number shows up: draft grades, matchup ratings, trade evaluators, generic expert ranks.
 
 ## License
 

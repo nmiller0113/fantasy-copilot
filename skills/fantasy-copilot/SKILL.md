@@ -116,9 +116,13 @@ roster needs). DS's bye alert is same-position only, so **check cross-slot byes 
   its Set-Up flow creates a junk clone league per mock. Real league rooms carry the linked
   ids and should attach clean. Delete clone leagues afterward: a wrong league selected in
   the War Room is a classic failure mode, and clones multiply it.
-- **Host letter grades can be format-blind** (for example Yahoo's draft grades score against
-  1-QB ADP and will C-grade a correct early superflex QB). Ignore host grades; trust 3D
-  Value.
+- **Settings-blind third-party numbers are noise, everywhere.** Host draft grades, matchup
+  ratings, built-in trade evaluators, and generic expert ranks routinely ignore the league's
+  format and scoring (for example Yahoo's draft grades score against 1-QB ADP and will
+  C-grade a correct early superflex QB). Every opinion this skill gives is formulated from
+  the league's actual settings; the league-aware signal (DS's synced valuations plus your
+  own settings-aware read) outranks any settings-blind number in EVERY decision: drafts,
+  start/sit, waivers, and trades alike.
 - Hosts may **re-arm autopick every time a clock expires**. If it engages, kill it
   immediately, or it insta-picks later rounds.
 - **Queue trick**: pre-queue DS's top 2-3 in the host's queue before each pick; an expiry
