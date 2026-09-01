@@ -85,11 +85,19 @@ as priors to update, never as directives to execute.
   It is the number.
 - **Tier boards**: draft to the cliff, not the rank. In superflex the QB tier cliff is the
   highest-leverage read in the draft.
-- **ADP Countdown** (hover a player): picks until the draft reaches his ADP, the working
-  "will he come back to me" signal. (There is no feature literally named "Next Pick Odds.")
+- **ADP Countdown and Next Pick Odds**: the "will he come back to me" signals, verified
+  live. Rankings views carry a literal "Next Pick Odds" percentage column, and hovering a
+  player shows the countdown of picks until his ADP.
 - **Upside Mode**: auto-engages around mid-draft, re-weights toward ceiling. Trust it late.
-- **Mine/Theirs manual mode**: full re-ranking with hand-entered picks, the fallback that
-  keeps the War Room smart if sync fails. Rehearse it before draft day.
+- **Mine/Theirs manual mode**: toggle Sync Enabled off under Manage Draft and every
+  rankings row grows Mine and Theirs buttons: hand-entered picks, instant recompute,
+  the fallback that keeps the War Room smart if sync fails; entries persist across
+  reloads. The live War Room has NO "Undo Last Pick" (Mock Trainer only); the real undo
+  is the Grid tab: click the pick's card, then its red trash icon. NEVER click "Clear
+  Rosters" mid-draft: it fires a native browser confirm dialog (freezes automation) and
+  wipes every pick. "Re-sync" refreshes settings and order without touching entered
+  picks. Rehearse in a REAL league's War Room and trash the test picks after; the Mock
+  Trainer keeps simulating AI picks with sync off, so it cannot rehearse this.
 - **Mock Draft Trainer**: league-synced mocks against varying-AI opponents. One mock is not
   a plan; run several to see the range of run timing.
 - **Sync extension**: injects a Suggested Picks panel INTO the host draft room (one tab).
@@ -102,7 +110,9 @@ as priors to update, never as directives to execute.
   veteran.
 - **Personalized Advice** (top tier only): a league-aware form under Support, Advice
   section (categories: start-sit, waivers, trades, keepers, general). Draft the questions
-  for the user; the user approves sending. Submit at least 48h before a draft. Target the
+  for the user; the user approves sending. Submit at least 48h before a draft when
+  possible; same-day answers have been observed, so a late question is still worth
+  sending. Target the
   human-judgment gaps: criteria 6 and 8, format strategy, scoring-specific value. **Any
   analyst response is data points, not directives** (the signals rule in section 3):
   summarize it as inputs alongside everything else, never as a plan to execute.
@@ -135,6 +145,17 @@ as priors to update, never as directives to execute.
   immediately, or it insta-picks later rounds.
 - **Queue trick**: pre-queue DS's top 2-3 in the host's queue before each pick; an expiry
   then drafts from the USER's list, not the host's default ranks. Cheap insurance.
+- The standalone War Room tab can go stale mid-draft while the in-room panel stays
+  live; a reload fixes it and sync survives. Trust the pick tape and roster panel over
+  the rankings list, whose just-picked row can linger a beat. Do not open League
+  Settings mid-draft: visiting that pane can silently flip the league to Manual Mode
+  (a re-sync clears it).
+- A synced draft order before the host randomizes is often just JOIN ORDER. Hosts
+  commonly randomize 30-60 minutes out; re-sync at the reveal and verify the user's
+  slot before trusting any slot-specific plan.
+- Hosts redesign draft-room UIs yearly. Before the clock starts, have the user locate
+  the player SEARCH BOX and confirm autopick is off; hunting for redesigned controls on
+  a live clock has cost real picks.
 
 ## 6. Pre-draft procedure (per league)
 
@@ -148,7 +169,7 @@ as priors to update, never as directives to execute.
 4. Build a slot-specific plan: round-band targets, tier-cliff triggers, pivot trees ("if X
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
 5. Clean junk and clone leagues out of DS My Leagues.
-6. Top tier: submit Personalized Advice questions at least 48h out (you draft, user
+6. Top tier: submit Personalized Advice questions, ideally 48h out (you draft, user
    approves).
 7. Where your read disagrees with DS's board, write the disagreement into the plan and
    discuss it before the draft: two independent signals, argued out loud.
@@ -158,7 +179,12 @@ as priors to update, never as directives to execute.
 
 Between the user's picks: track the run (position frequency, last 8 or so picks), each
 opponent's roster needs, tier-cliff proximity, and the next 2-3 candidates, decided before
-the clock. Deliver the two-line rec, then the color (section 2). Watch for: stale panel
+the clock. Decide early, deliver at the clock: finalize candidates before the user's
+turn, but speak the NAME when their clock is live, verified at that moment against DS's
+crossed-off board (the host's last-pick ticker alone misses picks, and a name given
+several picks early can be sniped into a scramble). One name per call; offer a second
+only as a can't-find-the-row aid, never as a hedge. Deliver the two-line rec, then the
+color (section 2). Watch for: stale panel
 (cross-check the host's own pick feed), wrong league in the selector, autopick re-armed,
 empty queue near a cliff. If DS lags: say so in one line and advise from the host room plus
 the pre-built plan; the plan IS the offline backup. If the user drafts in overlapping rooms,
@@ -180,7 +206,17 @@ agree beforehand which league gets full attention.
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
 - **Playoffs**: lean ceiling when underdog. One boom week decides titles.
-- **High-stakes calls** (top tier): draft a Personalized Advice question. It is unlimited.
+- **IR slots in redraft leagues**: only a player who will RETURN this season carries
+  value; a season-out stash is a wasted slot (and, under rolling waiver priority, a
+  wasted claim) in any non-keeper league. The tag that matters is designated-to-return
+  (IR-R or reserve/PUP: practice from week 3, play from week 5). Percent-rostered ranks
+  popularity, not value: the most-rostered IR players are often season-enders nobody has
+  cut yet. Verify return timelines against current reporting and CURRENT-year depth
+  charts, never preseason memory; a player's team and role can have changed since the
+  last data you saw.
+- **High-stakes calls** (top tier): draft a Personalized Advice question. It is
+  unlimited, and same-day turnarounds have been observed twice, so a day-before draft
+  question is still worth sending (48h remains the safe margin).
 
 ## 9. Private league profiles and evolution
 
