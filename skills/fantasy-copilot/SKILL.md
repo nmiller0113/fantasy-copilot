@@ -174,6 +174,21 @@ as priors to update, never as directives to execute.
 7. Where your read disagrees with DS's board, write the disagreement into the plan and
    discuss it before the draft: two independent signals, argued out loud.
 8. Read DS's current strategy content for the format (DS University and Advice articles).
+9. **Injury & value sweep (do it LAST, close to the draft): measure against DS, not
+   instead of it.** This builds the who's-in/out and riser/faller layer. Four rules, because
+   skipping them dresses correctly-priced players as "edges":
+   - **DS tools are the PRIMARY source; web news is the supplement.** Start from DS's own
+     Injury Predictor (games-missed already baked into projections), Shark Bites news, depth
+     charts, Free Agent Finder, and rest-of-season projections. Use web search only to catch
+     developments DS has not reflected YET, never as a replacement for the paid engine.
+   - **Recency window: last ~7-10 days only.** Preseason/game-week news turns over daily;
+     older news is already in DS's number and the room's ADP. Ignore old news as an edge.
+   - **Tag every finding fresh vs already-priced.** A development is actionable ONLY if DS's
+     value (or market ADP) has not caught up. Old news at a correct price is not an edge.
+   - **Cross-check every riser/faller against the DS 3D value BEFORE it earns the label.**
+     The edge is the GAP between fresh reality and a lagging DS/market price. If DS already
+     ranks the player where the news implies, say "already priced," not "riser."
+   Re-verify the whole list day-of, close to lineup lock; statuses flip on practice reports.
 
 ## 7. Live-draft loop (every pick)
 
