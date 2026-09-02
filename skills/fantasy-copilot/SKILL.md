@@ -189,6 +189,10 @@ as priors to update, never as directives to execute.
      The edge is the GAP between fresh reality and a lagging DS/market price. If DS already
      ranks the player where the news implies, say "already priced," not "riser."
    Re-verify the whole list day-of, close to lineup lock; statuses flip on practice reports.
+10. **Post-draft IR sweep.** When the draft ends, state the date and time the undrafted
+    pool clears to free agency under the host's rules, then run the IR stash procedure
+    (section 8) on that day so the IR slots fill with returns-this-season players for
+    free, not with claims.
 
 ## 7. Live-draft loop (every pick)
 

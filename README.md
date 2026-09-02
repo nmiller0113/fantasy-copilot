@@ -32,6 +32,9 @@ Two things the skill will establish up front:
   lineup and matchup calls (floor when favored, ceiling when underdog), trade guidance
   (finding the right partner, valuing both sides of an offer in your league's scoring, not
   someone else's), and trade-deadline and playoff-week positioning.
+- **IR stashes:** an on-demand sweep of injured free agents, Draft Sharks first, that tags
+  who actually returns this season, values them against your bench, and leads with the
+  next date a player clears to free agency so a stash never costs waiver priority.
 - **Discipline you'll be glad it has:** it never clicks a pick or submits a roster move
   (you drive, always), it never skews Draft Sharks' projections to match its own opinions
   (two independent signals, argued out loud), and it keeps your league details in your own
