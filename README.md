@@ -64,6 +64,13 @@ Then `/reload-plugins`, or restart. Update later with
   your format and scoring get treated as noise, and that applies everywhere a settings-blind
   number shows up: draft grades, matchup ratings, trade evaluators, generic expert ranks.
 
+## Maintaining
+
+The plugin itself needs no shell, interpreter, or particular operating system: it is a
+skill file and a manifest. The release validator, `scripts/check.sh`, is a maintainer
+tool run by hand before publishing and needs bash and git; on Windows, Git for Windows
+provides both. Users never run it, and Claude never runs it inside the skill.
+
 ## License
 
 MIT.

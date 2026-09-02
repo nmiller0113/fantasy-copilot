@@ -1,0 +1,8 @@
+# Checkout with LF line endings on every platform. Windows git defaults to
+# core.autocrlf=true, which would write CRLF: the skill's YAML frontmatter and the
+# validator's anchored matches both break on CRLF, so the repository pins the
+# line ending instead of trusting each machine's git config.
+* text=auto eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.json text eol=lf

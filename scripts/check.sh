@@ -9,7 +9,8 @@
 #   [spec]  the portable Agent Skills frontmatter spec (name charset, 1024 chars)
 #   [house] this project's own rules, stricter than anything a loader enforces
 #
-#   ./scripts/check.sh          exit 0 clean, exit 1 on any FAIL
+#   ./scripts/check.sh          exit 0 clean, exit 1 on any FAIL, exit 2 cannot run
+#                                 (wrong shell or bad usage)
 #   ./scripts/check.sh --release  same, plus: the declared version must carry an
 #                                 annotated tag on HEAD, the package directory must
 #                                 be a repository root, and the working tree must be
@@ -22,9 +23,23 @@
 # No pipefail: the leak scan pipes into `grep -q`, which exits at the first match
 # and SIGPIPEs its producer. With pipefail that returns 141, the `if` goes false,
 # and a genuinely leaking file prints "ok". Nothing here needs pipefail.
+# Refuse any shell but bash in bash mode, loudly, exit 2 (cannot run). Under dash
+# or ash the $'\r' CRLF probe below degrades to a literal string that never
+# matches, so the gate would pass silently instead of failing. Bash invoked as
+# sh (macOS /bin/sh is bash) sets BASH_VERSION but runs in POSIX mode, where the
+# process substitutions below are syntax errors, so the mode is tested too.
+if [ -z "${BASH_VERSION:-}" ] || shopt -qo posix 2>/dev/null; then
+    printf 'FAIL  this validator needs bash; run: bash scripts/check.sh\n' >&2
+    exit 2
+fi
 set -u
 
-cd "$(dirname "$0")/.." || { printf 'FAIL  cannot cd to package root\n' >&2; exit 1; }
+# Normalise the script's own path first: on Windows a caller can hand this file a
+# backslash path (from cmd or PowerShell, or quoted at a Git Bash prompt), and
+# dirname does not treat the backslash as a separator, which would cd to the
+# repository's parent and blame a missing skill file instead of the path form.
+self=${0//\\//}
+cd "$(dirname "$self")/.." || { printf 'FAIL  cannot cd to package root\n' >&2; exit 1; }
 SKILL="skills/fantasy-copilot/SKILL.md"
 MANIFEST=".claude-plugin/plugin.json"
 CHANGELOG="CHANGELOG.md"
@@ -46,7 +61,7 @@ done_() { printf '\n%d fail, %d warn\n' "$fails" "$warns"; [ "$fails" -eq 0 ]; }
 
 # CRLF breaks every anchored match below, so rule it out before matching anything.
 if grep -q $'\r' "$SKILL"; then
-    fail "$SKILL has CRLF line endings; convert to LF"
+    fail "$SKILL has CRLF line endings; convert to LF (.gitattributes pins LF on checkout, but a clone made before it keeps its CRLF files until a fresh checkout)"
     done_; exit 1
 fi
 
@@ -152,7 +167,9 @@ for f in "$SKILL" README.md "$CHANGELOG"; do
     fi
     # ~/.claude/ is the documented install location, so it is masked before the
     # scan rather than exempted after it: every OTHER tilde path still trips.
-    if sed 's|~/\.claude/\([A-Za-z]\)|INSTALLDIR/\1|g' "$f" | grep -E '(/home/|/Users/|~/|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|\b([a-z0-9-]+\.)+(local|lan|internal)\b|\b[0-9]{1,3}(\.[0-9]{1,3}){3}\b)' >/dev/null; then
+    # Path shapes cover Unix (/home/, /Users/, ~/), Windows drive (C:\) and UNC
+    # (\\server\share): a maintainer on any OS can leak a local path.
+    if sed 's|~/\.claude/\([A-Za-z]\)|INSTALLDIR/\1|g' "$f" | grep -E '(/home/|/Users/|~/|\b[A-Za-z]:\\|\\\\[A-Za-z0-9._-]+\\|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|\b([a-z0-9-]+\.)+(local|lan|internal)\b|\b[0-9]{1,3}(\.[0-9]{1,3}){3}\b)' >/dev/null; then
         fail "$f contains a local path, address, internal hostname, or IP"
     else
         ok "$f: no local paths, addresses or hosts"

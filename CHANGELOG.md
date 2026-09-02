@@ -5,6 +5,30 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.11.1] - 2026-09-02
+
+**Line endings pinned to LF, and the leak scan learns Windows path shapes.**
+
+OS-agnosticism pass. The repository had no line-ending policy, so a Windows checkout
+with git's default autocrlf setting would write CRLF files: the validator's own CRLF
+check would then fail every run, the validator script itself would not start under
+env, and every line of the skill file, frontmatter included, would carry a carriage
+return. A .gitattributes now pins LF on checkout for every platform; a clone made
+before it keeps its CRLF files until a fresh checkout. The validator's local-path
+leak scan matched only Unix path shapes, so a Windows maintainer's drive-letter or
+UNC path in a shipped file would have passed; both shapes are now in the scan. Two
+more validator fixes from the same pass: run under a shell other than bash, or under
+bash in POSIX mode as sh, it now refuses loudly with exit 2 (under dash or ash its
+CRLF probe would degrade to a string that never matches and pass silently), and it
+normalises its own path so a caller handing it a backslash path on Windows lands in
+the package root instead of the parent directory. The ignore file gains the Windows
+junk files, so a Windows checkout is not reported dirty by the release gate. The
+validator remains a bash script that a maintainer runs by hand, and that is a platform
+requirement that cannot be removed, so the README now states it in a Maintaining
+section (bash and git; Git for Windows provides both; users never run it), and the
+validator itself enforces it with the shell guard above. The skill runs no commands
+and needs none. Nothing the plugin does has changed.
+
 ## [1.11.0] - 2026-09-01
 
 **Snipe first: the copilot forecasts the picks between turns and takes our player before
