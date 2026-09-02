@@ -255,8 +255,12 @@ agree beforehand which league gets full attention.
     an open IR or bench slot and a reason to want him). Name the cost in the same line
     (back of the rolling list, or the FAAB amount) so the user decides with the price
     in view.
-  - Run it on waiver eve alongside the Free Agent Finder step, and again right after
-    the draft when the post-draft pool clears.
+  - **On demand, any week of the season.** The user can ask for this at any point ("what
+    should I stash", "anyone worth grabbing off IR"): run it then, not only on waiver
+    eve. Lead every answer with the calendar: the next free clear date and time for
+    each league in play (post-draft pool clearing, or the weekly clear), so the user
+    has a heads-up before the window opens. Also run it on waiver eve alongside the
+    Free Agent Finder step, and again right after each draft.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
