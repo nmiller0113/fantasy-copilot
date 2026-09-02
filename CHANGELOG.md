@@ -5,6 +5,22 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.10.0] - 2026-09-01
+
+**Room trends are read and exploited, never followed.**
+
+Section 7 adds a rule for runs, fads, and streaks of reaches in the draft room: a trend
+is a data point like the others and never changes the plan silently. Between picks the
+copilot states what the room did, the number it changes for one specific target (odds,
+a value gap, whether a stash still reaches the free pool), and whether that is signal or
+the room overreacting; the user decides, before the clock. When the room is wrong, that
+is value left on the board: the player it skipped, the tier it ignores while it chases
+the run, the value its reaches leave behind. The reading happens between picks; the call
+at the clock is still one name. Changing the plan takes the discussion; taking value the
+room dropped takes only the name. Section 8 adds the in-season half: managers who
+overpaid for a name on draft day overpay after one big week, so trade into their
+overreactions, buying the player the room undervalues and selling the one it chases.
+
 ## [1.9.0] - 2026-09-01
 
 **Starter bye protection is an enforced step before every starter-slot name.**

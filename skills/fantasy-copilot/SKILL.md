@@ -242,6 +242,17 @@ hedge, and the user decides. If every viable candidate stacks, say that and give
 row. A stack with a bench player is not a finding. The plan's bye map is the input, not
 a substitute. Deliver the two-line rec, then the color (section 2).
 
+**Room trends: read them, never follow them; exploit them, never chase them.** A run, a
+fad, or a streak of reaches in the room is a data point like the others in section 3, and
+like the others it never changes the plan silently. Between picks, state what the room
+did, the number it changes for one specific target of ours (his odds, a value gap,
+whether a stash still reaches the free pool), and whether that is signal or the room
+overreacting; the user decides, before the clock. When the room is wrong, the wrong is
+value left on the board: the player it skipped, the tier it is ignoring while it chases
+the run, the value its reaches leave behind. That reading happens between picks; at the
+clock the call is still one name. Changing our plan takes that discussion; taking value
+the room dropped takes only the name.
+
 **Research targets go a pick early.** When a name from the pre-draft sweep (a riser, a
 value gap, a planned stash) is on the board and DS's top live row is within about 10 3D
 points of him, take the target at THIS pick instead of betting he survives to the next.
@@ -275,7 +286,10 @@ agree beforehand which league gets full attention.
 - **Lineup lock morning**: inactives check; Who Should I Start for the last flex call,
   scored to the synced league. Floor when favored, ceiling when underdog.
 - **Bye-week stretch**: League Analyzer (opposition map) plus Trade Partner Finder every 2-3
-  weeks; value trades in rest-of-season projections, never season-to-date points.
+  weeks; value trades in rest-of-season projections, never season-to-date points. The
+  managers who overpaid for a name on draft day overpay for a name after one big week:
+  trade into their overreactions, buying the player the room undervalues and selling the
+  one it is chasing.
 - **Before the trade deadline**: SOS filtered to the fantasy playoff weeks; buy soft playoff
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
