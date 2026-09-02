@@ -5,6 +5,26 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.8.0] - 2026-09-01
+
+**Live-draft rules from a sharp money room: odds are ADP, targets go a pick early, the
+grade is never promised.**
+
+A ten-team public money draft took six of the copilot's pre-draft targets within three
+picks of the user's turn, each time with the Next Pick Odds column saying the player
+would survive. Odds and countdown are built from host ADP, and ADP lags the news feed
+by days; a room that drafts off the feed takes a riser a full round early. New rules:
+Next Pick Odds is a floor on risk, not a forecast, for any player tagged a riser
+(section 4); a research target within about 10 3D points of the top live row is taken
+at this pick, not the next (section 7); round bands place risers one round earlier in
+public and money rooms (section 6); the grade cost of any engine override is stated in
+the rec, and the grade is never predicted (section 7). Field behaviors added (section
+5): the standalone War Room rankings list goes stale within a few picks and is reloaded
+before every user turn; non-elite QBs show 3D 0 in 1-QB formats until the tier cliff is
+a round out, read as the wait signal (the mechanism is inferred, not documented by DS);
+money rooms have been seen drafting IR stashes in the last two rounds, so a planned
+stash goes before the final pick.
+
 ## [1.7.4] - 2026-09-01
 
 **The README no longer carries the release procedure.**

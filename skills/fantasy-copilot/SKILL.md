@@ -87,7 +87,12 @@ as priors to update, never as directives to execute.
   highest-leverage read in the draft.
 - **ADP Countdown and Next Pick Odds**: the "will he come back to me" signals, verified
   live. Rankings views carry a literal "Next Pick Odds" percentage column, and hovering a
-  player shows the countdown of picks until his ADP.
+  player shows the countdown of picks until his ADP. **Both are built from host ADP, so
+  they are only as current as the host's ADP window.** For a player whose news is fresher
+  than that window (an exempt-list beneficiary, a lead back named this week, a starter
+  cleared to play) the odds overstate survival: a room that drafts off the news feed takes
+  him a full round before ADP says. For anyone tagged a riser in the pre-draft sweep, read
+  the number as a floor on risk, never as a forecast.
 - **Upside Mode**: auto-engages around mid-draft, re-weights toward ceiling. Trust it late.
 - **Mine/Theirs manual mode**: toggle Sync Enabled off under Manage Draft and every
   rankings row grows Mine and Theirs buttons: hand-entered picks, instant recompute,
@@ -145,11 +150,24 @@ as priors to update, never as directives to execute.
   immediately, or it insta-picks later rounds.
 - **Queue trick**: pre-queue DS's top 2-3 in the host's queue before each pick; an expiry
   then drafts from the USER's list, not the host's default ranks. Cheap insurance.
-- The standalone War Room tab can go stale mid-draft while the in-room panel stays
-  live; a reload fixes it and sync survives. Trust the pick tape and roster panel over
-  the rankings list, whose just-picked row can linger a beat. Do not open League
+- The standalone War Room tab's rankings list goes stale within a few picks: just-picked
+  rows stay at the top with their old values and newly surfaced rows do not appear until
+  a page reload, while the header pick ticker and the roster panel stay live. Reload the
+  tab about three picks before each of the user's turns, every turn; sync survives the
+  reload. The at-the-clock verification in section 7 runs against the live pick ticker
+  plus the reloaded list, never against a list that has not been reloaded this turn.
+  Trust the pick tape and roster panel over the rankings list. Do not open League
   Settings mid-draft: visiting that pane can silently flip the league to Manual Mode
   (a re-sync clears it).
+- Observed in 1-QB formats: the War Room shows every non-elite QB at 3D 0, rank 0, 0%
+  odds for most of the draft, and those rows flip to real numbers about one round before
+  the QB tier cliff. The raw rows carry full projections, so the zeros are the value
+  column, not a render failure. The reading that fits: the engine sees no gap between
+  the QB you take now and the one at your next pick. Treat the zeros as the wait signal
+  and the flip as the cliff warning; the mechanism is inferred, not documented by DS.
+- Public money rooms have been seen drafting IR-designated players as stashes in the
+  last two rounds. If the plan wants an IR stash, take him before the user's final pick,
+  not with it.
 - A synced draft order before the host randomizes is often just JOIN ORDER. Hosts
   commonly randomize 30-60 minutes out; re-sync at the reveal and verify the user's
   slot before trusting any slot-specific plan.
@@ -168,6 +186,8 @@ as priors to update, never as directives to execute.
    start.
 4. Build a slot-specific plan: round-band targets, tier-cliff triggers, pivot trees ("if X
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
+   In a public or money room, place every riser from the sweep one round EARLIER than host
+   ADP implies: those rooms draft off the news feed, and ADP lags the feed by days.
 5. Clean junk and clone leagues out of DS My Leagues.
 6. Top tier: submit Personalized Advice questions, ideally 48h out (you draft, user
    approves).
@@ -203,7 +223,25 @@ turn, but speak the NAME when their clock is live, verified at that moment again
 crossed-off board (the host's last-pick ticker alone misses picks, and a name given
 several picks early can be sniped into a scramble). One name per call; offer a second
 only as a can't-find-the-row aid, never as a hedge. Deliver the two-line rec, then the
-color (section 2). Watch for: stale panel
+color (section 2).
+
+**Research targets go a pick early.** When a name from the pre-draft sweep (a riser, a
+value gap, a planned stash) is on the board and DS's top live row is within about 10 3D
+points of him, take the target at THIS pick instead of betting he survives to the next.
+This is a tie-break inside a band this skill treats as close, not a rank of plan over
+engine (section 3 still holds); outside the band the situation at the pick decides, as
+section 3 says. The odds column will say he survives; in a sharp room he will not.
+Between two bench rows 10 points of 3D is noise, the specific player is the edge, and
+once he is gone no later pick replaces him. The one-round-earlier band in section 6 is
+the same ADP lag applied to the plan's expectations; it forecasts where the riser goes,
+and this rule is the action at the board. They are one adjustment, not two. The
+at-the-clock verification above uses the list reloaded this turn (section 5).
+**State the grade cost before an override.** DS's post-draft grade
+scores the engine's own choices, so any pick that overrides the top live row (a starter
+over a higher bench value, a research target over the top row) lowers the grade by
+construction; say so in the rec, and the user chooses with the price in view. **Never
+predict the grade.** The room's spread decides it, and a forecast is a promise the copilot
+cannot keep. Watch for: stale panel
 (cross-check the host's own pick feed), wrong league in the selector, autopick re-armed,
 empty queue near a cliff. If DS lags: say so in one line and advise from the host room plus
 the pre-built plan; the plan IS the offline backup. If the user drafts in overlapping rooms,
