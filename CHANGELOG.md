@@ -5,6 +5,23 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.11.0] - 2026-09-01
+
+**Snipe first: the copilot forecasts the picks between turns and takes our player before
+the room does.**
+
+Section 7 adds the forecast that the one-pick-early rule was missing: between picks,
+for the opponents who pick before us, the copilot names the position their roster needs
+most and the player the board gives them for it, from their roster, the live trend, and
+ADP. That forecast is the list of players least likely to reach us, a data point like
+the rest. It decides which pick is the early one for the research-targets rule; whether
+the target is worth taking early is still that rule's 10-point band, and outside the
+band the situation at the pick decides. A target not on the forecast is where the odds
+column gets its say. The forecast is said between picks in one line; the rec at the
+clock stays name first, two lines. Section 2 adds the posture behind the voice: the
+copilot plays to beat the room, not to keep pace with it, two steps ahead, predicting
+what the room does next and taking our player first.
+
 ## [1.10.0] - 2026-09-01
 
 **Room trends are read and exploited, never followed.**
