@@ -10,6 +10,14 @@
 #   [house] this project's own rules, stricter than anything a loader enforces
 #
 #   ./scripts/check.sh          exit 0 clean, exit 1 on any FAIL
+#   ./scripts/check.sh --release  same, plus: the declared version must carry an
+#                                 annotated tag on HEAD, the package directory must
+#                                 be a repository root, and the working tree must be
+#                                 clean (an untagged or half-committed version
+#                                 cannot ship). Invoke it from anywhere; it cds.
+#
+# Needs bash, git and the usual POSIX tools (sed, grep, awk, head, sort, tr, basename,
+# dirname).
 #
 # No pipefail: the leak scan pipes into `grep -q`, which exits at the first match
 # and SIGPIPEs its producer. With pipefail that returns 141, the `if` goes false,
@@ -18,6 +26,14 @@ set -u
 
 cd "$(dirname "$0")/.." || { printf 'FAIL  cannot cd to package root\n' >&2; exit 1; }
 SKILL="skills/fantasy-copilot/SKILL.md"
+MANIFEST=".claude-plugin/plugin.json"
+CHANGELOG="CHANGELOG.md"
+release=0
+case "${1:-}" in
+    --release) release=1 ;;
+    "") ;;
+    *) printf 'usage: %s [--release]\n' "$0" >&2; exit 2 ;;
+esac
 fails=0
 warns=0
 
@@ -126,7 +142,7 @@ done < <(grep -oE '(\./)?(scripts|references|assets)/[A-Za-z0-9._/-]+' "$SKILL" 
 # --- publishable: user-agnostic and leak-free ---------------------------------
 # Modest by design. This catches the leaks that actually happen (a pasted path,
 # a host, an address); it is not a general secret scanner and is not claimed to be.
-for f in "$SKILL" README.md; do
+for f in "$SKILL" README.md "$CHANGELOG"; do
     [ -f "$f" ] || continue
     # TRAVERSAL FIRST, BEFORE ANY MASKING. A published skill has no legitimate
     # use for a relative parent segment in a path, so any occurrence is a finding
@@ -160,6 +176,71 @@ for f in "$SKILL" README.md; do
         ok "$f: no id-shaped digit runs"
     fi
 done
+
+# --- version is real: manifest, changelog entry, tag [house] -------------------
+# A version number is a claim; the tag is the evidence. At build time the tag may
+# not exist yet (you tag the commit that declares the version), so its absence is a
+# WARN. With --release it is a FAIL: an untagged version cannot ship.
+version=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$MANIFEST" 2>/dev/null | head -n 1)
+if [ -z "$version" ]; then
+    fail "$MANIFEST has no readable \"version\" field"
+else
+    if printf '%s' "$version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+        ok "version: $version"
+    else
+        fail "version '$version' is not MAJOR.MINOR.PATCH"
+    fi
+    if [ -f "$CHANGELOG" ]; then
+        if grep -qE "^## \[$version\]" "$CHANGELOG"; then
+            ok "$CHANGELOG has an entry for $version"
+        else
+            fail "$CHANGELOG has no '## [$version]' entry; write it before releasing"
+        fi
+    else
+        fail "no $CHANGELOG"
+    fi
+    # The tag must belong to THIS repository, not one that happens to enclose the
+    # directory, and it must be annotated: a lightweight tag carries no date or
+    # message of its own, and is the shape a forgotten -a produces.
+    # --show-prefix is empty exactly at the root, through symlinked paths too, where
+    # comparing --show-toplevel against $PWD wrongly fails (/tmp vs /private/tmp).
+    atroot=0
+    if git rev-parse --show-toplevel >/dev/null 2>&1 \
+        && [ -z "$(git rev-parse --show-prefix 2>/dev/null)" ]; then
+        atroot=1
+    fi
+    if [ "$atroot" -ne 1 ]; then
+        if [ "$release" -eq 1 ]; then
+            fail "not at the root of a git repository; tags cannot be verified"
+        else
+            warn "not at the root of a git repository; tag check skipped"
+        fi
+    elif git rev-parse -q --verify "refs/tags/v$version" >/dev/null 2>&1; then
+        tagged=$(git rev-parse "refs/tags/v$version^{commit}")
+        kind=$(git cat-file -t "refs/tags/v$version" 2>/dev/null)
+        if [ "$kind" != "tag" ]; then
+            fail "tag v$version is lightweight; delete it and re-tag with git tag -a"
+        elif [ "$tagged" = "$(git rev-parse HEAD)" ]; then
+            ok "annotated tag v$version points at HEAD"
+        elif [ "$release" -eq 1 ]; then
+            fail "tag v$version exists but does not point at HEAD; bump the version or move nothing"
+        else
+            warn "tag v$version exists on another commit; this checkout is not the released $version"
+        fi
+    elif [ "$release" -eq 1 ]; then
+        fail "no tag v$version; tag the commit that declares $version before releasing"
+    else
+        warn "no tag v$version yet (fine at build time; required at release)"
+    fi
+    # What the gate validated must be what the tag points at.
+    if [ "$release" -eq 1 ] && [ "$atroot" -eq 1 ]; then
+        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+            fail "working tree is not clean; the files checked are not the files tagged"
+        else
+            ok "working tree clean"
+        fi
+    fi
+fi
 
 # --- files a published package must carry -------------------------------------
 if [ -f LICENSE ]; then
