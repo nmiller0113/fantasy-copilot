@@ -221,14 +221,42 @@ agree beforehand which league gets full attention.
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
 - **Playoffs**: lean ceiling when underdog. One boom week decides titles.
-- **IR slots in redraft leagues**: only a player who will RETURN this season carries
+- **IR stash research (redraft)**: only a player who will RETURN this season carries
   value; a season-out stash is a wasted slot (and, under rolling waiver priority, a
-  wasted claim) in any non-keeper league. The tag that matters is designated-to-return
-  (IR-R or reserve/PUP: practice from week 3, play from week 5). Percent-rostered ranks
-  popularity, not value: the most-rostered IR players are often season-enders nobody has
-  cut yet. Verify return timelines against current reporting and CURRENT-year depth
-  charts, never preseason memory; a player's team and role can have changed since the
-  last data you saw.
+  wasted claim) in any non-keeper league. Run it the way the pre-draft sweep runs
+  (section 6, step 9): DS first, recency-windowed, priced-in aware.
+  - **Sources, DS first:** Free Agent Finder sorted by rest-of-season projection with
+    injured players included, Injury Predictor (Projected Games Missed plus the injury
+    history), the player's own Shark Bites page (the public feed shows about a day; the
+    player page carries the timeline), Team Dashboard injury flags, and DS depth charts
+    (check the review date; they can lag the news by a week). Web search only for a
+    designation DS has not reflected yet.
+  - **Tag every candidate:** RETURNS (designated to return from IR, reserve/PUP, or a
+    stated window; at least four games missed, so a week-1 designation plays no earlier
+    than week 5), SEASON-OUT, or NO TIMETABLE (treat as season-out). Only RETURNS earns
+    a slot. Percent rostered ranks popularity, not value: the most-rostered IR players
+    are often season-enders nobody has cut yet. Verify timelines against current
+    reporting and CURRENT-year depth charts, never preseason memory; team and role can
+    have changed since the last data you saw.
+  - **Value test:** the returning player's DS rest-of-season projection must beat both
+    the best healthy free agent for that slot and the bench player he would displace.
+    Where the host does not allow adding an injured player straight to IR, the stash
+    occupies a bench spot until he is eligible, so the bar is higher.
+  - **WHEN, the free window:** read the host's waiver settings once and record them in
+    the private document (section 9): waiver period length, the weekly clear day,
+    whether undrafted players sit on waivers after the draft and for how long, whether
+    injured adds can go straight to IR, and the priority mechanism (rolling list or
+    FAAB). A player who has cleared to free agency is instant and free. Default: wait
+    for the clear date and take him free; never spend rolling priority or FAAB on a
+    stash by default. State the clear date next to every candidate.
+  - **Burn-the-claim flag:** say "worth the claim" only when all three hold: RETURNS
+    with a stated window, DS rest-of-season projection at starter level for the
+    league's format, and real contention (rising percent rostered, or another team with
+    an open IR or bench slot and a reason to want him). Name the cost in the same line
+    (back of the rolling list, or the FAAB amount) so the user decides with the price
+    in view.
+  - Run it on waiver eve alongside the Free Agent Finder step, and again right after
+    the draft when the post-draft pool clears.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
