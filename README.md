@@ -67,16 +67,3 @@ Then `/reload-plugins`, or restart. Update later with
 ## License
 
 MIT.
-
-## Publishing
-
-Every version is tagged `vX.Y.Z` on the commit that declares it and has a GitHub release
-carrying the matching `CHANGELOG.md` entry. The order: bump the version in plugin.json,
-write the changelog entry, commit, put an annotated tag on that commit, then run
-`scripts/check.sh --release` before pushing the tag and cutting the release. The release
-mode refuses a version with no changelog entry, no annotated tag on the current commit,
-or uncommitted changes. Plain `scripts/check.sh` runs everything except the clean-tree
-check and only warns when the tag is missing, so it is the pre-push check for ordinary
-commits; a lightweight tag fails in both modes. The validator needs bash and git plus the
-usual POSIX tools; the skill itself needs only what the opening of this README states
-(a Draft Sharks subscription, its sync extension, and browser access for live drafts).

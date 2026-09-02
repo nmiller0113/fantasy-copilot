@@ -5,6 +5,17 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.7.4] - 2026-09-01
+
+**The README no longer carries the release procedure.**
+
+The Publishing section added in 1.7.3 described how to cut a release. The README is for
+people installing the plugin, and the procedure it described is already enforced by
+scripts/check.sh (release mode refuses an unlogged, untagged, unannotated or dirty
+version) and stated in this file's preamble. Duplicating an enforced rule in user prose is
+a copy that drifts. The validator's own requirements stay in its header comment. Doc
+only; nothing the plugin does has changed.
+
 ## [1.7.3] - 2026-09-01
 
 **A changelog, a tag and a release for every version, and a release gate in the validator.**
