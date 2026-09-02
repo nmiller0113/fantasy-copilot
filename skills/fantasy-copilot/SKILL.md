@@ -69,7 +69,13 @@ Reason about value with this 12-criterion framework, in tier priority:
 DS covers Tier 1 and much of 2 and 3 algorithmically. **No tool does 6 or 8 algorithmically;
 cover those by judgment**, plus 5a and 5b (track scheme news; live, track each opponent's
 roster needs). DS's bye alert is same-position only, so **check cross-slot byes yourself**
-(for example a QB1 and a superflex QB sharing a bye).
+(for example a QB1 and a superflex QB sharing a bye). The same-position alert exists in
+the War Room and must be READ at the pick; 3D folds byes into its number silently, and a
+value that already includes the bye is not a warning the user has heard. **Starter bye
+protection is a disclosure default, not a veto:** no two starters at the same position,
+no starter plus the flex, and no two QBs across QB and superflex slots share a bye without
+the stack being named at the clock; the user then decides, and the signals rule below
+still holds.
 
 **How signals combine: every input is a data point, none is gospel.** DS's board, analyst
 answers, pre-built plans, your own read, and what the room is doing all sit at the same
@@ -188,6 +194,8 @@ as priors to update, never as directives to execute.
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
    In a public or money room, place every riser from the sweep one round EARLIER than host
    ADP implies: those rooms draft off the news feed, and ADP lags the feed by days.
+   The plan carries a bye map: the bye week next to every target in the round bands, so a
+   stack with an earlier pick is visible before the clock, not discovered after.
 5. Clean junk and clone leagues out of DS My Leagues.
 6. Top tier: submit Personalized Advice questions, ideally 48h out (you draft, user
    approves).
@@ -222,8 +230,17 @@ the clock. Decide early, deliver at the clock: finalize candidates before the us
 turn, but speak the NAME when their clock is live, verified at that moment against DS's
 crossed-off board (the host's last-pick ticker alone misses picks, and a name given
 several picks early can be sniped into a scramble). One name per call; offer a second
-only as a can't-find-the-row aid, never as a hedge. Deliver the two-line rec, then the
-color (section 2).
+only as a can't-find-the-row aid, never as a hedge, with the one exception below. **Bye
+check before every starter-slot name.** For each candidate finalized before the user's
+turn that fills or could fill a starting slot, compare his bye to every rostered starter
+at the same position, to the flex, and to any other slot he is eligible for (superflex
+QBs included). Do this while the room is picking, from the roster panel; at the clock
+only the named player's bye is re-read, one lookup. If the named player stacks, the
+second line of the rec says so ("same bye as X") and names the best non-stacking
+candidate: this is the one case where a second name is a choice offered rather than a
+hedge, and the user decides. If every viable candidate stacks, say that and give the top
+row. A stack with a bench player is not a finding. The plan's bye map is the input, not
+a substitute. Deliver the two-line rec, then the color (section 2).
 
 **Research targets go a pick early.** When a name from the pre-draft sweep (a riser, a
 value gap, a planned stash) is on the board and DS's top live row is within about 10 3D

@@ -5,6 +5,23 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.9.0] - 2026-09-01
+
+**Starter bye protection is an enforced step before every starter-slot name.**
+
+The skill already said to check byes (section 3) and to plan for them (section 6), and a
+draft still ended with two starting receivers on the same bye, because nothing in the
+live loop made the check run. Section 7 now requires, for every candidate finalized
+before the user's turn, a bye comparison against every rostered starter at the same
+position, the flex, and any other slot he is eligible for (superflex QBs included), done
+while the room is picking, with one re-read of the named player's bye at the clock. A
+stack is stated in the rec's second line with the best non-stacking candidate named,
+the one carve-out from the one-name rule, and the user decides; if every candidate
+stacks, the rec says so. Section 3 states that DS's same-position bye alert must be
+read in the War Room, that 3D folding byes into its number does not discharge the
+check, and that starter bye protection is a disclosure default, not a veto. Section 6
+requires a bye map in the plan's round bands.
+
 ## [1.8.0] - 2026-09-01
 
 **Live-draft rules from a sharp money room: odds are ADP, targets go a pick early, the
