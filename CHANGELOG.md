@@ -5,6 +5,22 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.12.0] - 2026-09-02
+
+**The import audit walks the host's full category list and knows DS's field inventory.**
+
+Section 6 step 1 now states what the Draft Sharks scoring editor can hold, all seven
+tabs, and which common host categories have no field there and therefore score nothing
+in DS's projections: player 2-point conversions, blocked kicks, returned extra points,
+player return touchdowns, offensive fumble-return TDs. The audit rule changes from
+"check that DS's rows match the host" to "walk the host's list and record what cannot
+import", so a new league carries no surprise. The inventory is marked as a snapshot
+with the same re-verify rule the subscription section uses: re-read the live editor on
+every new league, and the live editor wins. The Advanced Scoring switch is documented:
+on after a sync, it is what shows the bonus and per-position PPR rows, and it must not
+be toggled during an audit. Verified 2026-09-02 on two synced Yahoo leagues with
+identical editors.
+
 ## [1.11.1] - 2026-09-02
 
 **Line endings pinned to LF, and the leak scan learns Windows path shapes.**

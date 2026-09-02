@@ -191,6 +191,27 @@ as priors to update, never as directives to execute.
    above); confirm browser access is working for draft day, and say so if it is not.
 1. Verify the league is synced in DS and imported scoring matches line by line (bonus rows
    are the classic import miss); confirm the board's QB ordering matches the format.
+   Audit against the HOST's full category list, not DS's: DS's scoring editor holds a
+   fixed set of fields, and a host category with no DS field imports as nothing, silently.
+   The editor's inventory, a snapshot from synced Yahoo leagues in 2026: Passing (yards
+   per point, TD, completions, interceptions, sacks taken, first downs, long-play and
+   yardage-threshold bonuses, long-TD bonuses); Rushing (yards, TD, attempts, fumbles
+   lost, first downs, the same bonus rows); Receiving (yards, TD, targets, PPR set per
+   position for WR, RB and TE, punt and kick return yards, first downs, the same bonus
+   rows); Kicking (XP made and missed, FG missed, FG by distance bucket); Team Defense
+   (TD, special-teams TD, sacks, interceptions, fumble recoveries, safety, points-allowed
+   and yards-allowed ladders); IDP (tackles, assists, sacks, interceptions, fumbles
+   recovered and forced, passes defended, tackles for loss, QB hits, tackle-count
+   bonuses, TDs); Misc (head-coach win and points only). Host categories with no field
+   anywhere in that inventory, so they score nothing in DS's projections: player 2-point
+   conversions, blocked kicks, returned extra points, player return touchdowns (only
+   return yards exist), offensive fumble-return TDs. Record them in the private document
+   as a known gap and never fake them with Adjust Projections. Like the tier gates in the
+   subscription section, this inventory is a snapshot: re-read the live editor on every
+   new league, and when it disagrees with this list, the live editor wins. The editor's
+   Advanced Scoring switch is ON after a sync and is what shows the bonus rows and the
+   per-position PPR fields; switched off, those rows disappear from the editor, so read
+   its state and never toggle it during an audit.
 2. Delete-and-resync if anything looks stale; update the extension.
 3. Run league-synced mocks from the user's slot once known; chart where positional runs
    start.
