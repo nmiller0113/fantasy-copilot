@@ -360,9 +360,19 @@ three seasons and the share trajectory; a media read with preseason usage and re
 signals and the sleeper, breakout, bust and risk tags; hype labeled as hype) plus
 NFL-wide cross-cuts (the availability list with each replacement plan; a successor map
 with PRIMARY, COMMITTEE or UNSETTLED for every NFL RB, WR and TE starter; rookies;
-recent reporting and hype; suspensions and open reviews; play callers and scheme). The
-template, the build, the refresh and the search commands are in
-`references/knowledgebase.md`; read it when building or refreshing, not at the clock.
+recent reporting and hype; suspensions and open reviews; play callers and scheme) and
+three per-team profile sets with their own NFL-wide rollups: the whole staff's
+tendencies from prior stops, with numbers, the play caller's matched player by player
+to his roster as bounceback, step-forward, downgrade or unchanged and checked in season
+against actual usage, the defensive coordinator's as the DEF/ST unit's direction and
+what his scheme gives up by position; the offensive line, measured, with its impact on
+the back, the quarterback and the pass-catchers; and the schedule with every defense
+rated by position per week, playoff windows marked, refreshed from actual points
+allowed and adjusted each week for injured key defenders, because a defense missing
+its top corner or its edge rusher is a different matchup that week. All of it is read
+alongside the engine's projection, never ahead of it. The template, the build, the
+refresh and the search commands are in `references/knowledgebase.md`; read it when
+building or refreshing, not at the clock.
 The build writes dozens of files and runs many searches: confirm the location with the
 user and get an explicit go-ahead before the first build, and offer the NFL-wide
 cross-cuts alone as the starter set when the full build is more than the user wants.

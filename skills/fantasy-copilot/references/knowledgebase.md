@@ -17,6 +17,17 @@ Beside the user's private document, under the user's control, never inside this 
       nfl/hype-and-reports.md         last 14 days of reporting and hype, by team, labeled
       nfl/suspensions.md              suspensions, exempt list, open reviews and appeals
       nfl/coaching-and-scheme.md      play callers, scheme, stated touch philosophy
+      nfl/coach-tendencies.md         player scheme fit: bounceback, step-forward, downgrade
+      nfl/defense-tendencies.md       DEF/ST units, what each defense gives up by position
+      coach/<CODE>.md                 head coach and play caller tendency profile, numbers
+      coach/<CODE>-defense.md         defensive coordinator profile, special teams if any
+      oline/<CODE>.md                 offensive line profile: starters, numbers, impact
+      nfl/offensive-lines.md          line ranking, who benefits, who is exposed
+      nfl/schedule.md                 the season schedule, every team, every week
+      nfl/defense-ratings.md          each defense rated soft/average/tough per position
+      nfl/defense-injuries.md         key defenders out or limited, what each one softens
+      schedule/<CODE>.md              the team's weekly matchup table by position
+      nfl/schedule-strength.md        softest and toughest by position, season and windows
 
 "League" in these files means the NFL; the user's fantasy league is never mixed in.
 
@@ -57,6 +68,87 @@ quote, paraphrase, date, outlet); preseason usage and rest (snaps, touches, firs
 reps, who was held out of the finale and what the beat writer inferred); sleeper,
 breakout, bust and risk tags with the outlet count; full-role replacements versus
 committees for every starter.
+
+## Coaching tendency profiles (the whole staff, one set per team)
+
+The staff is profiled whole: the head coach, the offensive coordinator or whoever calls
+plays, the defensive coordinator, and the special teams coordinator when a change this
+year touches a kicker or returner. A play caller's record is evidence of what he will
+do with the players he has now, and the record is public: PFF, Sharp Football
+Analysis, Fantasy Points, Sumer Sports, FTN, Next Gen Stats write-ups, and beat
+writers quoting the coach. The profile separates
+three things and labels each: what he DID at prior stops and last season here
+(numbers, with the season, the team and the outlet), what he SAYS he will do here
+(dated quotes), and what reporters PREDICT (labeled prediction). The numbers: pass rate
+and pass rate over expectation; tempo and personnel groupings; running back
+concentration (whether his lead back got 65 percent or more of the touches), RB target
+share and goal-line usage; WR1 target share and air yards, slot versus outside, whether
+two receivers were fantasy-relevant under him; TE target share and red-zone targets,
+whether a TE finished top 12 under him; designed QB runs, play-action and deep-ball
+rates, passing volume against league average; red-zone pass versus run inside the 10.
+
+The profile is player-first: it ends with one line per fantasy-relevant player (QB, top
+four RBs, top five WRs, top two TEs) stating the fit and a direction, bounceback (usage
+the old scheme depressed and this caller's history feeds), step-forward (a young or
+secondary player the tendencies elevate), downgrade (a role his history does not
+support) or unchanged, with the number or quote that drives it. The NFL-wide file
+collects every non-unchanged line by direction and position, strongest evidence first,
+and keeps a section for candidates driven by a prediction rather than a number.
+
+The defensive profile carries the coordinator's scheme with numbers (front, man versus
+zone, blitz and pressure rates, coverage shell, takeaways and sacks at prior stops),
+what the scheme has historically given up by position (rushing and RB receiving, slot
+receivers, tight ends, deep passing), the personnel changes on defense, the key
+defenders with status (edge rushers, interior linemen, the top corners, safeties,
+linebackers, each with the position group his absence softens: a CB1 out softens the
+defense against receivers, an edge out eases pressure for the opposing quarterback and
+line, an interior run-stuffer out softens it against backs), and two
+player-facing outputs: the DEF/ST unit's direction for the season with its first four
+opponents, and the effect on the team's own offense (a defense that gets off the field
+adds possessions; a slow, bad one adds garbage-time passing volume). The NFL-wide
+defense file is the matchup table a start/sit or streaming call reads alongside the
+engine's projection, not ahead of it: one row per defense, what it gives up by
+position, with the source season. Where a prior-stop number and a current dated quote
+disagree, the source hierarchy below decides: the coach's words first.
+
+## Offensive line profile (one per team)
+
+The line is the layer between a coach's plan and a back's or quarterback's numbers,
+and it is measured: PFF pass-block and run-block grades, ESPN pass and run block win
+rates, FTN adjusted line yards and adjusted sack rate, pressure rate and sacks
+allowed, yards before contact for the backs, time to throw for the quarterback. The
+profile carries the five projected starters with age and status, continuity (how many
+of the five started together last season), the swing tackle and top interior backup,
+last season's numbers with ranks, the 2026 changes (arrivals, departures, draft picks,
+the line coach and run-game coordinator and whether they are new), preseason
+reporting, and the direct impact one line per player: the lead back and his backup
+(run blocking, yards before contact, goal-line push), the quarterback (pressure, sacks,
+time to throw), and the pass-catchers through the quarterback (a pressured passer
+throws short and quick, so slot and back targets rise and deep shots fall). The
+NFL-wide file ranks the lines with the numbers behind the ranking, and lists who
+benefits from a line that improved and who is exposed by one that declined. In a
+weekly matchup the line's pass-block quality meets the opposing coordinator's pressure
+profile; the two files are read together.
+
+## Schedule strength by position
+
+The schedule file holds every team's opponent for every week, built by two
+independent fetches and reconciled. The defense-ratings file rates every defense
+soft, average or tough per position (QB, RB, WR, TE), preseason from last season's
+fantasy points allowed by position adjusted by the defensive profile's 2026 changes,
+and in season from actual points allowed once four weeks are in (blended before
+that), then adjusted for the week by the defensive-injuries file: every key defender
+out, doubtful or newly on IR, with the position group his absence softens, so that a
+defense's rating for THIS week can differ from its season rating and the difference is
+the weakness to exploit. Each team's schedule file applies the ratings week by week and
+counts the soft/average/tough matchups per position for weeks 1-4, mid-season, and
+the playoff windows (weeks 15-17 for most leagues, 16-17 for four-team brackets); the
+NFL-wide file lists the softest and toughest schedules by position for the season and
+for each window, and carries the week-by-week grid. This is the weekly matchup input
+and the season-long difficulty read for any player, read alongside the engine's
+projection, not ahead of it; the Draft Sharks Strength of Schedule and Fantasy Points
+Allowed tools are the overlay, read live for the week's numbers, and when they disagree
+with the file the tool wins and the file gets a refresh line.
 
 ## Vocabulary
 
@@ -100,15 +192,29 @@ supply the numbers the dossier records next to the role.
    independently, each returned as confirmed, contradicted with a correction, or
    unverified; the default when uncertain is unverified, never confirmed.
 3. A patch pass applies the corrections in place and marks unverified lines.
-4. The NFL-wide cross-cuts are built independently of the dossiers, so they can
-   disagree with them; a disagreement is a finding, not an error to smooth over.
-5. A critic reads the whole set and lists what is missing or thin, most severe first;
+4. The NFL-wide survey files (availability, successor map, rookies, hype, suspensions,
+   coaching and scheme) are built independently of the dossiers, so they can disagree
+   with them; a disagreement there is a finding, not an error to smooth over.
+5. The staff and line profiles, one pass per team each: the head coach and play
+   caller to `coach/<CODE>.md`, the defensive coordinator to
+   `coach/<CODE>-defense.md`, the offensive line to `oline/<CODE>.md`. Each profile
+   set then rolls up into its NFL-wide file or files (coach-tendencies,
+   defense-tendencies, offensive-lines) with a skeptic on the rollup's strongest
+   claims. A rollup compiles its own per-team files, so a disagreement between the two
+   is an error to fix, not a finding.
+6. The schedule and the defenses: two independent fetches of the season schedule,
+   reconciled slot by slot into `nfl/schedule.md`; the defensive-injuries file from
+   the profiles' key-defender lists and the current designations; then the defense
+   ratings file from last season's points allowed by position, adjusted by the
+   defensive profiles and by the injuries already known; then each team's weekly
+   matchup table (`schedule/<CODE>.md`) and the NFL-wide schedule-strength rollup.
+7. A critic reads the whole set and lists what is missing or thin, most severe first;
    a gap round fills the high and medium items.
-6. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
+8. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
    up-and-comers, preseason usage and rest, coach statements on roles, injury risk and
    timelines, handcuffs to own), each reading many whole articles, merged into every
    dossier's Media read section, then skeptic-checked.
-7. README and the first refresh-log line.
+9. README and the first refresh-log line.
 
 ## Refresh (a delta)
 
@@ -120,11 +226,25 @@ every draft, lineup lock, trade decision, waiver or free-agent move, and roster 
    get the same treatment.
 2. Verify: a skeptic re-checks every changed high-impact claim; a patch applies
    corrections.
-3. Overlay: for every player whose role changed, read the engine's current value and
+3. Usage check (in season): for every fantasy-relevant player, compare the week's
+   actual snap share, carries, routes and targets (PFF, Fantasy Points, Next Gen Stats,
+   the box score) against his caller's tendency profile and the direction the profile
+   gave him, and mark the line confirmed, diverging or new (a role the profile did not
+   predict). Two diverging weeks change the direction; one is noise. In-season calls
+   read the comparison rather than the preseason profile, alongside the engine's
+   projection and not ahead of it.
+4. Schedule and defense update (in season): refresh the defensive-injuries file from
+   the week's practice reports and designations (every key defender out, doubtful or
+   on IR, and the position group his absence softens); refresh the defense ratings
+   from the season's points allowed by position (blended with last season until four
+   weeks are in) and apply the injury adjustments for the coming week; re-count each
+   team's windows; and note any offensive line change (an injury to a starter, a
+   position switch) in the line profile with its player impact.
+5. Overlay: for every player whose role changed, read the engine's current value and
    rest-of-season projection (war room or Team Dashboard) and write the gap between the
    new role and the number into the team's Watch list. That gap is the edge; it closes
    within days. Nothing is written back into the engine.
-4. Log one line in refresh-log.md: date, trigger, what changed.
+6. Log one line in refresh-log.md: date, trigger, what changed.
 
 The pre-draft sweep in section 6 step 9 becomes: refresh, then search only for what is
 newer than the refresh, within the step's own recency window, and read every target

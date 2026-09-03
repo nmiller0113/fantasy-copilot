@@ -5,6 +5,58 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.16.0] - 2026-09-03
+
+**Rules changed: the knowledgebase carries the whole coaching staff's tendencies,
+the offensive lines, and the schedule rated by position, all matched to players and
+refreshed weekly.**
+
+Two more layers ride with the staff profiles. The offensive line profile, one per team:
+the five starters with continuity, last season's pass-block and run-block grades and win
+rates, pressure and sacks allowed, adjusted line yards, yards before contact and time to
+throw, the 2026 changes and the line coach, and the direct impact one line per player on
+the back, the quarterback and, through the quarterback, the pass-catchers; the NFL-wide
+file ranks the lines and names who benefits and who is exposed, and it is read together
+with the opposing coordinator's pressure profile in a weekly matchup. The schedule
+layer: the season schedule built by two independent fetches and reconciled; every
+defense rated soft, average or tough per position, preseason from last season's points
+allowed adjusted by the defensive profile and in season from 2026 actuals; each team's
+weekly matchup table with soft/average/tough counts for weeks 1-4, mid-season, and the
+playoff windows 15-17 and 16-17; and an NFL-wide file of the softest and toughest
+schedules by position and window with the week-by-week grid. Draft Sharks' Strength of
+Schedule and Fantasy Points Allowed tools are the live overlay. Defensive injuries are
+tracked as their own file and applied weekly: every key defender out, doubtful or on IR
+with the position group his absence softens, so a defense's rating for the coming week
+can differ from its season rating, and the difference is the weakness to exploit; the
+defensive profile lists the key defenders for that purpose. Every one of these layers
+is read alongside the engine's projection, never ahead of it. The build gains steps for
+the per-team profiles, their rollups and the schedule; the weekly refresh is renumbered
+one to six with the usage check as step 3 and the schedule update as step 4.
+
+A coach's record at prior stops is public and it predicts what he does with the players
+he has now. Section 10 now lists that layer among what the knowledgebase holds, and
+`references/knowledgebase.md` gains the profiles for the whole staff. For the head coach
+and the play caller: sources by name, the numbers to collect (pass rate, whether the
+lead back gets 65 percent of the touches, RB target share, WR1 target share, whether a
+tight end has finished top 12 under him, red-zone habits), the separation of what he
+did (numbers) from what he says (dated quotes) from what reporters predict (labeled),
+and the player-first ending, one line per
+fantasy-relevant player with a direction, bounceback, step-forward, downgrade or
+unchanged, and the number or quote that drives it. For the defensive coordinator: scheme
+numbers (front, man versus zone, blitz and pressure rates, coverage shell, takeaways),
+what the scheme gives up by position, the DEF/ST unit's direction with its first four
+opponents, and the effect on the team's own offense; the NFL-wide defense file is the
+matchup table for start/sit and streaming, read alongside the engine's projection.
+Special teams only where a change touches a kicker or returner. The weekly refresh
+gains a usage check: each player's actual snap
+share, carries, routes and targets against the profile's direction, marked confirmed,
+diverging or new, two diverging weeks changing the direction and one counting as
+noise; in-season calls read the comparison rather than the preseason profile, alongside
+the engine's projection. Layout gains `coach/<CODE>.md`, `coach/<CODE>-defense.md`,
+`oline/<CODE>.md`, `schedule/<CODE>.md`, and the NFL-wide `coach-tendencies`,
+`defense-tendencies`, `offensive-lines`, `schedule`, `defense-ratings`,
+`defense-injuries` and `schedule-strength` files.
+
 ## [1.15.0] - 2026-09-03
 
 **Sections 4, 5, 7 and 8 shrink to what matters at the clock, the detail moves to
