@@ -158,7 +158,7 @@ done < <(grep -oE '(\./)?(scripts|references|assets)/[A-Za-z0-9._/-]+' "$SKILL" 
 # --- publishable: user-agnostic and leak-free ---------------------------------
 # Modest by design. This catches the leaks that actually happen (a pasted path,
 # a host, an address); it is not a general secret scanner and is not claimed to be.
-for f in "$SKILL" README.md "$CHANGELOG" "${SKILL%/SKILL.md}"/references/*.md; do
+for f in "$SKILL" README.md "$CHANGELOG" "${SKILL%/SKILL.md}"/references/*.md scripts/*.py; do
     [ -f "$f" ] || continue
     if grep -q $'\r' "$f"; then
         fail "$f has CRLF line endings; convert to LF"
@@ -196,6 +196,28 @@ for f in "$SKILL" README.md "$CHANGELOG" "${SKILL%/SKILL.md}"/references/*.md; d
         fail "$f contains a 5+ digit number; league/team ids are findings, shorten or remove [house]"
     else
         ok "$f: no id-shaped digit runs"
+    fi
+done
+
+# --- shipped scripts parse [house] --------------------------------------------
+# A Python script that does not parse is shipped broken. Python is optional for the
+# plugin's users, so a validator host without it gets a WARN, not a FAIL.
+for py in scripts/*.py; do
+    [ -f "$py" ] || continue
+    if command -v python3 >/dev/null 2>&1; then
+        # ast.parse, not py_compile: it writes no __pycache__. The FAIL carries the
+        # error's own line number, which SyntaxError puts in its message.
+        if err=$(python3 -c 'import ast, sys
+try:
+    ast.parse(open(sys.argv[1], encoding="utf-8").read(), sys.argv[1])
+except SyntaxError as e:
+    sys.exit(f"{type(e).__name__} at line {e.lineno}: {e.msg}")' "$py" 2>&1); then
+            ok "$py parses"
+        else
+            fail "$py does not parse: $(printf '%s' "$err" | tail -n 1)"
+        fi
+    else
+        warn "python3 not found; $py not parse-checked"
     fi
 done
 

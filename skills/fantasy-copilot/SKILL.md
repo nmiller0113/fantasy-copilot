@@ -372,7 +372,10 @@ allowed and adjusted each week for injured key defenders, because a defense miss
 its top corner or its edge rusher is a different matchup that week. All of it is read
 alongside the engine's projection, never ahead of it. The template, the build, the
 refresh and the search commands are in `references/knowledgebase.md`; read it when
-building or refreshing, not at the clock.
+building or refreshing, not at the clock. Judgment work in a build or refresh runs
+on the strongest model available; extraction from league-wide pages runs on a lower
+tier; anything derivable from two existing files is a script (the schedule tables are
+`scripts/schedule-tables.py`), never an agent. The reference says which is which.
 The build writes dozens of files and runs many searches: confirm the location with the
 user and get an explicit go-ahead before the first build, and offer the NFL-wide
 cross-cuts alone as the starter set when the full build is more than the user wants.

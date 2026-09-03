@@ -144,7 +144,23 @@ the weakness to exploit. Each team's schedule file applies the ratings week by w
 counts the soft/average/tough matchups per position for weeks 1-4, mid-season, and
 the playoff windows (weeks 15-17 for most leagues, 16-17 for four-team brackets); the
 NFL-wide file lists the softest and toughest schedules by position for the season and
-for each window, and carries the week-by-week grid. This is the weekly matchup input
+for each window, and carries the week-by-week grid. The team files and the NFL-wide
+file are generated, not written: `scripts/schedule-tables.py` joins the schedule file
+to the ratings file (Python 3.8 or later, no other dependency), so they are never
+hand-edited and never produced by an agent. The script ships in the plugin's
+`scripts/` folder, beside the validator; copy it into `kb/<season>/` at the first
+build, again after every plugin update (the plugin's copy is the source when the two
+differ), and run it from there, `python3 schedule-tables.py --dir . --date <today>`,
+adding `--week <coming week>` in season. If no Python is available, say so, report
+the tables as not built, and leave them absent; an agent never writes them instead.
+Both inputs keep the shapes the script reads. The schedule file: one table row per
+team, the team code in the first cell, then exactly 18 cells, one per week, each
+`@CODE`, `vs CODE` or `BYE` (one BYE per row), with any notes under a `## Notes`
+heading. The ratings file: the team code alone in the Defense cell, one of the words
+soft, average, tough in each rating cell, and the week's injury adjustments as a table
+"Defense | Position | Season | Week N | Player out" under "## Week N injury
+adjustments". The script stops with a message on any row it cannot read; it never
+guesses. This is the weekly matchup input
 and the season-long difficulty read for any player, read alongside the engine's
 projection, not ahead of it; the Draft Sharks Strength of Schedule and Fantasy Points
 Allowed tools are the overlay, read live for the week's numbers, and when they disagree
@@ -206,8 +222,9 @@ supply the numbers the dossier records next to the role.
    reconciled slot by slot into `nfl/schedule.md`; the defensive-injuries file from
    the profiles' key-defender lists and the current designations; then the defense
    ratings file from last season's points allowed by position, adjusted by the
-   defensive profiles and by the injuries already known; then each team's weekly
-   matchup table (`schedule/<CODE>.md`) and the NFL-wide schedule-strength rollup.
+   defensive profiles and by the injuries already known; then `scripts/schedule-tables.py`
+   writes each team's weekly matchup table (`schedule/<CODE>.md`) and the NFL-wide
+   schedule-strength rollup from those two files.
 7. A critic reads the whole set and lists what is missing or thin, most severe first;
    a gap round fills the high and medium items.
 8. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
@@ -221,25 +238,34 @@ supply the numbers the dossier records next to the role.
 Weekly, the morning after the week's last game and before waivers clear; and before
 every draft, lineup lock, trade decision, waiver or free-agent move, and roster move.
 
-1. Sweep: per team, "what changed since <last refresh date>", same ground rules, same
-   headings, editing in place and marking changed lines with the date. The NFL files
-   get the same treatment.
-2. Verify: a skeptic re-checks every changed high-impact claim; a patch applies
-   corrections.
+1. Collect, once: a few collectors read the pages that cover all 32 teams (the
+   transactions wire, the official injury report, the news feeds, the league's
+   suspension announcements; in season also the week's line changes and the usage
+   tables), each asking "what changed since <last refresh date>" under the build's
+   ground rules, and return items tagged by team. Routing the items to teams is plain
+   code.
+2. Merge: per team, and per NFL file, an agent gets its routed items plus one targeted
+   search of its own, "what changed since <last refresh date>" for the local reporting
+   the wide net misses, same ground rules, same headings, editing in place and marking
+   changed lines with the date. Verify: a skeptic re-checks every changed high-impact
+   claim and applies corrections.
 3. Usage check (in season): for every fantasy-relevant player, compare the week's
-   actual snap share, carries, routes and targets (PFF, Fantasy Points, Next Gen Stats,
-   the box score) against his caller's tendency profile and the direction the profile
-   gave him, and mark the line confirmed, diverging or new (a role the profile did not
-   predict). Two diverging weeks change the direction; one is noise. In-season calls
-   read the comparison rather than the preseason profile, alongside the engine's
-   projection and not ahead of it.
+   actual snap share, carries, routes and targets (collected once from the league-wide
+   tables at PFF, Fantasy Points, Next Gen Stats or the box scores) against his
+   caller's tendency profile and the direction the profile gave him, and mark the line
+   confirmed, diverging or new (a role the profile did not predict). Two diverging
+   weeks change the direction; one is noise. In-season calls read the comparison
+   rather than the preseason profile, alongside the engine's projection and not ahead
+   of it.
 4. Schedule and defense update (in season): refresh the defensive-injuries file from
    the week's practice reports and designations (every key defender out, doubtful or
    on IR, and the position group his absence softens); refresh the defense ratings
    from the season's points allowed by position (blended with last season until four
-   weeks are in) and apply the injury adjustments for the coming week; re-count each
-   team's windows; and note any offensive line change (an injury to a starter, a
-   position switch) in the line profile with its player impact.
+   weeks are in) and write the injury adjustments for the coming week as the table the
+   script reads; then run `scripts/schedule-tables.py` with the coming week, which
+   re-rates every team's table and re-counts its windows; and edit the line profile,
+   with its player impact, only for the teams whose collected items carry a line
+   change (an injury to a starter, a position switch).
 5. Overlay: for every player whose role changed, read the engine's current value and
    rest-of-season projection (war room or Team Dashboard) and write the gap between the
    new role and the number into the team's Watch list. That gap is the edge; it closes
@@ -249,6 +275,36 @@ every draft, lineup lock, trade decision, waiver or free-agent move, and roster 
 The pre-draft sweep in section 6 step 9 becomes: refresh, then search only for what is
 newer than the refresh, within the step's own recency window, and read every target
 against the successor map, the rookies file and the media read before it earns a band.
+
+## Agents, models and scripts
+
+A build or a refresh is many agent runs, and they are not all the same kind of work.
+Three kinds, and what each runs on:
+
+- **Judgment**: deciding what a source supports and marking a gap instead of guessing,
+  turning a coach's words into PRIMARY or COMMITTEE, matching a scheme to a named
+  player, rating a defense, and every skeptic pass. These run on the strongest model
+  the harness offers, at its normal effort. A weaker model here produces plausible
+  lines that are wrong, and a skeptic on a weaker model is a weaker check on the very
+  thing the user is relying on.
+- **Extraction**: transcribing a structured page that already covers all 32 teams (a
+  transactions wire, an official injury report, a snap-count table) into items with
+  team codes, and comparing collected numbers to a stated direction. A lower tier does
+  this as well as the strongest one; the two-week rule absorbs a single mislabel in
+  the usage check. Give the tier the numbers; never make it fetch what a collector can
+  hand it.
+- **Joins**: anything derivable from two files that already exist (the schedule tables,
+  the window counts, the matchup grid, any ranking by count). A script, never a model:
+  it is exact, free, seconds instead of dozens of agents, and re-runnable every week.
+
+Two shapes follow. Collect once, then route: a fact that covers the whole NFL is
+fetched by one collector and handed to the per-team agents in their prompt, so 32
+agents do not each search the whole week from scratch; each keeps one targeted search
+for the local reporting the wide net misses. Edit only where something changed: a
+profile set (lines, staff) is opened only for the teams whose collected items touch
+it. Run one workflow at a time; several at once trip the API's rate limits and the
+failures look like missing data. A failed agent call is retried once under a distinct
+label and then counted as a gap in the report, never filled in.
 
 ## Search, do not browse
 

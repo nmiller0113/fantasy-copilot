@@ -5,6 +5,44 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.17.0] - 2026-09-03
+
+**Rules changed: a knowledgebase build or refresh puts judgment on the strongest
+model, extraction on a lower tier, and joins in a script; league-wide facts are
+collected once and routed to teams.**
+
+New: `scripts/schedule-tables.py` (Python 3.8 or later, no other dependency) writes
+the 32 per-team schedule-strength tables and the NFL-wide rollup from the schedule
+file and the defense-ratings file. A deterministic join, exact and re-runnable every
+week, replacing 33 agent runs. The ratings file now keeps the shapes the script reads:
+the team code alone in the Defense cell, one of the words soft, average, tough in each
+rating cell, and the coming week's injury adjustments as a table "Defense | Position |
+Season | Week N | Player out". The build step and the refresh step that produced those
+files by agent now run the script.
+
+New in `references/knowledgebase.md`, "Agents, models and scripts": three kinds of
+agent work and what each runs on. Judgment (what a source supports, PRIMARY versus
+COMMITTEE, scheme matched to a player, defense ratings, every skeptic) stays on the
+strongest model at normal effort. Extraction (a transactions wire, an injury report, a
+snap-count table into team-tagged items; collected numbers against a stated direction)
+runs on a lower tier, which is handed the numbers rather than made to fetch them. Joins
+(anything derivable from two existing files) are scripts, never models. Two shapes
+follow: collect once and route, so 32 per-team agents do not each search the whole
+week from scratch and each keeps one targeted search for local reporting; and edit only
+where something changed, so a profile set is opened only for teams whose collected
+items touch it. One workflow at a time; a failed call is retried once and then counted
+as a gap, never filled in.
+
+Changed: the refresh's sweep step is now collect-then-merge (step 1 and 2), still
+"what changed since the last refresh date" under the same ground rules; the usage
+check reads collected numbers; and the line-profile edit is limited to teams with a
+collected line change. The reference states both input shapes the script reads, where
+the script lives (copied from the plugin's `scripts/` folder into the season folder),
+and that without Python the tables are reported as not built, never written by an
+agent. Section 10 of the skill carries the one-sentence rule and points at the
+reference. The validator scans shipped Python for the same leaks as the prose and
+parse-checks it when Python is present.
+
 ## [1.16.0] - 2026-09-03
 
 **Rules changed: the knowledgebase carries the whole coaching staff's tendencies,

@@ -71,10 +71,14 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. The release validator,
-`scripts/check.sh`, is a maintainer tool run by hand before publishing and needs bash
-and git; on Windows, Git for Windows provides both. Users never run it, and Claude never
-runs it inside the skill.
+skill file, its reference files, and a manifest. One optional script ships with it:
+`scripts/schedule-tables.py` builds the knowledgebase's schedule-strength tables from
+the schedule and the defense-ratings files (Python 3.8 or later, nothing else); the
+skill copies it into the knowledgebase folder and runs it there during a build or
+refresh, and without Python it reports the tables as not built rather than having an
+agent write them. The release validator, `scripts/check.sh`, is a maintainer tool
+run by hand before publishing and needs bash and git; on Windows, Git for Windows
+provides both. Users never run it, and Claude never runs it inside the skill.
 
 ## License
 
