@@ -151,14 +151,19 @@ fi
 # --- referenced companion files exist -----------------------------------------
 while IFS= read -r ref; do
     while [ "${ref%[.,;:)]}" != "$ref" ]; do ref=${ref%[.,;:)]}; done
-    [ -e "$ref" ] || fail "SKILL.md references '$ref', which does not exist"
+    # scripts/ lives at the package root; references/ and assets/ live beside SKILL.md
+    [ -e "$ref" ] || [ -e "${SKILL%/SKILL.md}/$ref" ] || fail "SKILL.md references '$ref', which does not exist"
 done < <(grep -oE '(\./)?(scripts|references|assets)/[A-Za-z0-9._/-]+' "$SKILL" | sort -u)
 
 # --- publishable: user-agnostic and leak-free ---------------------------------
 # Modest by design. This catches the leaks that actually happen (a pasted path,
 # a host, an address); it is not a general secret scanner and is not claimed to be.
-for f in "$SKILL" README.md "$CHANGELOG"; do
+for f in "$SKILL" README.md "$CHANGELOG" "${SKILL%/SKILL.md}"/references/*.md; do
     [ -f "$f" ] || continue
+    if grep -q $'\r' "$f"; then
+        fail "$f has CRLF line endings; convert to LF"
+        continue
+    fi
     # TRAVERSAL FIRST, BEFORE ANY MASKING. A published skill has no legitimate
     # use for a relative parent segment in a path, so any occurrence is a finding
     # rather than something to mask around.

@@ -228,11 +228,16 @@ as priors to update, never as directives to execute.
    discuss it before the draft: two independent signals, argued out loud.
 8. Read DS's current strategy content for the format (DS University and Advice articles).
 9. **Injury & value sweep (do it LAST, close to the draft): measure against DS, not
-   instead of it.** This builds the who's-in/out and riser/faller layer. Four rules, because
+   instead of it.** This builds the who's-in/out and riser/faller layer. Five rules, because
    skipping them dresses correctly-priced players as "edges":
-   - **DS tools are the PRIMARY source; web news is the supplement.** Start from DS's own
+   - **Refresh the knowledgebase first (section 10), then sweep only what is newer than
+     that refresh**, inside the recency window below; read every target against the
+     successor map, the rookies file and the media read before it earns a band.
+   - **DS tools are the PRIMARY source for value and timelines; web news is the
+     supplement.** Start from DS's own
      Injury Predictor (games-missed already baked into projections), Shark Bites news, depth
-     charts, Free Agent Finder, and rest-of-season projections. Use web search only to catch
+     charts (for the roster, not the share), Free Agent Finder, and rest-of-season
+     projections. Use web search only to catch
      developments DS has not reflected YET, never as a replacement for the paid engine.
    - **Recency window: last ~7-10 days only.** Preseason/game-week news turns over daily;
      older news is already in DS's number and the room's ADP. Ignore old news as an edge.
@@ -348,9 +353,10 @@ between-pick read adds two lines: which positions the room has hoarded (for exam
 every team already holds a QB and a TE, so a second one blocks nobody) and which it is
 short on (the bench WRs the RB-heavy teams never took). Then the pick either drains the
 room's short position, so its bye-week fixes and trade targets sit on our bench, or
-takes the upside dart the room left. A bench built only from floor rows buys no ceiling
-while the room takes the darts; the bench is where ceiling is bought, and the read says
-which dart is contested.
+takes the upside dart the room left. The up-and-comers, the full-role replacements and
+the rest signals come from the knowledgebase's media read (section 10), not from
+memory. A bench built only from floor rows buys no ceiling while the room takes the
+darts; the bench is where ceiling is bought, and the read says which dart is contested.
 
 **State the grade cost before an override.** DS's post-draft grade scores the engine's
 own choices, so any pick that overrides the top live row (a starter over a higher bench
@@ -365,13 +371,17 @@ beforehand which league gets full attention.
 
 ## 8. In-season weekly cadence (per league)
 
-- **Waiver eve**: Free Agent Finder, sorted by rest-of-season projection for breakouts and
-  stashes, by next week for streamers (DEF, TE, K off the softest SOS). Mind the DROP side.
-  Re-run after waivers clear.
+- **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent
+  Finder, sorted by rest-of-season projection for breakouts and stashes, by next week for
+  streamers (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against
+  the successor map alongside his projection, not ahead of it: a full-role replacement
+  earns a claim, a committee member a maybe. Mind the DROP side. Re-run after waivers
+  clear.
 - **Post-waivers**: Team Dashboard check for the recommended lineup and injury flags.
 - **Practice-report days**: Shark Bites news; a starter going down means an immediate
   handcuff run before league-mates react.
-- **Lineup lock morning**: inactives check; Who Should I Start for the last flex call,
+- **Lineup lock morning**: refresh the knowledgebase (section 10), then open its
+  availability list first; inactives check; Who Should I Start for the last flex call,
   scored to the synced league. Floor when favored, ceiling when underdog.
 - **Bye-week stretch**: League Analyzer (opposition map) plus Trade Partner Finder every 2-3
   weeks; value trades in rest-of-season projections, never season-to-date points. The
@@ -431,5 +441,41 @@ beforehand which league gets full attention.
 Keep everything user-specific OUT of this skill and IN a private local document the user
 controls (league names and ids, scoring quirks, team names, draft slots, voice preferences,
 dated lessons, submitted advice questions). Read it at the start of any fantasy task; append
-dated lessons there after every draft and season. This skill stays user-agnostic; improve it
-only with knowledge that is true for every Draft Sharks subscriber.
+dated lessons there after every draft and season. The knowledgebase of section 10 lives
+beside that document, private to the user, refreshed on the cadence in section 10. This
+skill stays user-agnostic; improve it only with knowledge that is true for every Draft
+Sharks subscriber.
+
+## 10. The knowledgebase: the state of the NFL, kept current
+
+Draft Sharks carries the numbers. It does not carry who the coach named, whether an
+injured starter's replacement is one man or a committee, how old the veteran ahead of
+a rookie is, or who was rested in the preseason finale because the staff had decided on
+him. Those facts decide bench rounds, stashes and waiver claims, and nobody can look
+them up on a live clock unless they are already written down. So the copilot keeps a
+knowledgebase beside the private document: a dossier per team (rooms by position with
+age, role, status and designation; the coach's plan for absences; an availability
+table; rookies and young players behind veterans with the veteran's games missed over
+three seasons and the share trajectory; a media read with preseason usage and rest
+signals and the sleeper, breakout, bust and risk tags; hype labeled as hype) plus
+NFL-wide cross-cuts (the availability list with each replacement plan; a successor map
+with PRIMARY, COMMITTEE or UNSETTLED for every NFL RB, WR and TE starter; rookies;
+recent reporting and hype; suspensions and open reviews; play callers and scheme). The
+template, the build, the refresh and the search commands are in
+`references/knowledgebase.md`; read it when building or refreshing, not at the clock.
+The build writes dozens of files and runs many searches: confirm the location with the
+user and get an explicit go-ahead before the first build, and offer the NFL-wide
+cross-cuts alone as the starter set when the full build is more than the user wants.
+
+Two rules hold at all times. **For roles and usage the hierarchy is: coach and general
+manager statements, then preseason snap and touch counts and who was rested, then beat
+reporting, then themed article sweeps, then depth charts last, because a depth chart is
+a list, not a plan.** This ranks role and usage facts only; for value, projections and
+injury timelines DS stays primary (section 6, step 9), and the knowledgebase records
+the gap between a changed role and the engine's number rather than adjusting either.
+**Refresh before every decision** (weekly, and before a draft, a lineup lock, a trade,
+a waiver or roster move), as a delta since the last refresh, then search the files
+rather than browsing them: the successor map answers who eats if a starter is out, the
+rookies file whether a young player is taking the job, the availability list whether a
+designation allows an IR slot. When a file and the live host page disagree, the host
+page wins and the file gets a refresh line.

@@ -5,6 +5,45 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.14.0] - 2026-09-03
+
+**Rules changed: the copilot keeps a knowledgebase of the state of the NFL.**
+
+New section 10, kept short, with the full procedure in a new reference file the model
+reads only when building or refreshing: `references/knowledgebase.md`. Draft Sharks
+carries the numbers; it does not carry who the coach named, whether an injured starter's
+replacement is one man or a committee, how old the veteran ahead of a rookie is, or who
+was rested in the preseason finale. Those facts decide bench rounds, stashes and waiver
+claims and cannot be looked up on a live clock, so the copilot writes them down first: a
+dossier per team with the same headings (rooms by position with age, role, status and
+designation; the coach's plan for absences; an availability table; rookies and young
+players behind veterans with the veteran's games missed over three seasons and the share
+trajectory; a media read with preseason usage and rest signals and the sleeper, breakout,
+bust and risk tags; hype labeled as hype), plus NFL-wide cross-cuts (the availability
+list with each replacement plan; a successor map with PRIMARY, COMMITTEE or UNSETTLED for
+every NFL RB, WR and TE starter; rookies; recent reporting and hype; suspensions and open
+reviews; play callers and scheme). The first build needs the user's go-ahead and a
+confirmed location, with the cross-cuts alone offered as a starter set. Two rules stay
+in the skill: a source hierarchy for roles and usage only (coach
+and general manager statements, then preseason usage and rest, then beat reporting, then
+themed article sweeps, then depth charts last), scoped so that Draft Sharks remains
+primary for value, projections and timelines as section 6 step 9 already says; and
+refresh before every decision, as a delta, then search the files rather than browse
+them. The reference file carries the layout, the dossier template, the vocabulary, the
+build (one pass per team, parallel where the harness offers subagents, a skeptic on the
+highest-impact claims, independent cross-cuts, a critic round, a media pass), the refresh
+with its Draft Sharks overlay that records the gap between a changed role and the
+engine's number, and search commands for a Unix shell and for PowerShell. Hooks: section
+6 step 9 gains a fifth rule, refresh first and sweep only what is newer, inside its own
+recency window; section 8's waiver eve refreshes first and reads RB, WR and TE
+candidates against the successor map alongside the projection; its lineup-lock morning
+opens the availability list first; section 7's bench-round read takes its up-and-comers,
+full-role replacements and rest signals from the media read; section 9 places the
+knowledgebase beside the private document. The validator's companion-file check now
+resolves `references/` and `assets/` paths beside SKILL.md, where the skill layout puts
+them, as well as at the package root, and its privacy and line-ending scans now cover
+the reference files. The README gains the knowledgebase under What it does.
+
 ## [1.13.0] - 2026-09-02
 
 **Rules changed: the bench rounds get the judgment layer the early rounds already had.**

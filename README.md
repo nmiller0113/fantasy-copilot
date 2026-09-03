@@ -35,6 +35,10 @@ Two things the skill will establish up front:
 - **IR stashes:** an on-demand sweep of injured free agents, Draft Sharks first, that tags
   who actually returns this season, values them against your bench, and leads with the
   next date a player clears to free agency so a stash never costs waiver priority.
+- **A knowledgebase of the NFL's current state:** a dossier per team (who the coach
+  named, whether an injured starter's replacement is one man or a committee, the rookie
+  behind the aging veteran, preseason usage and rest) plus NFL-wide cross-cuts, built
+  before the season with your go-ahead and refreshed as a delta before every decision.
 - **Discipline you'll be glad it has:** it never clicks a pick or submits a roster move
   (you drive, always), it never skews Draft Sharks' projections to match its own opinions
   (two independent signals, argued out loud), and it keeps your league details in your own
@@ -67,9 +71,10 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file and a manifest. The release validator, `scripts/check.sh`, is a maintainer
-tool run by hand before publishing and needs bash and git; on Windows, Git for Windows
-provides both. Users never run it, and Claude never runs it inside the skill.
+skill file, its reference files, and a manifest. The release validator,
+`scripts/check.sh`, is a maintainer tool run by hand before publishing and needs bash
+and git; on Windows, Git for Windows provides both. Users never run it, and Claude never
+runs it inside the skill.
 
 ## License
 
