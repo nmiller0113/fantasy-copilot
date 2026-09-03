@@ -5,6 +5,44 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.15.0] - 2026-09-03
+
+**Sections 4, 5, 7 and 8 shrink to what matters at the clock, the detail moves to
+reference files, and five field rules from live drafts are added.**
+
+The restructure. The skill body sat a few lines under the validator's ceiling, and most
+of that length was explanation the model does not need while a pick clock runs. Section
+4 keeps the Draft Sharks facts that decide a call and says when to read
+`references/draft-sharks.md` (setting up or rehearsing a league, drafting advice
+questions, a misbehaving tool): the engine's indicators, the War Room's manual-mode
+procedure and rehearsal, the Mock Draft Trainer, the sync extension, the Injury
+Predictor and Rookie Model, the advice form, the tool inventory. Section 5 keeps its
+field rules and says when to read `references/field-behaviors.md` (preparing a draft
+day, a sync or War Room problem): the measured latencies, mock-room clone leagues, the
+observations and the reasoning behind each rule. Section 7 keeps every rule of the
+live-draft loop, including the IR-stash exception's two conditions, the "one adjustment,
+not two" precedence between the section 6 band and the research-targets rule, and the
+clause that a stated preference does not reopen the call, and loses only the
+justifications it repeated two or three times. Section 8's IR stash procedure (sources,
+tags, value test, the free window, the burn-the-claim flag, on-demand use) moves whole
+to `references/ir-stash.md` behind a short rule. The body drops from 476 lines to
+about 370.
+
+The additions, each from a live draft, and each a rule the model did not have before:
+compare 3D values within one reload and never across, because they re-scale as the pool
+thins (section 5); a DS re-sync before the room opens may not pick up the host's
+randomized order, so the slot is verified in the host's own room (section 5); on a
+freshly synced league the War Room's position filters may not apply and two rankings
+tables can exist at once, so read the visible rows of the ALL list
+(`references/field-behaviors.md`); the host's draft room carries a last-7-days ADP column
+and an injury tag per row, the market price and the flag other drafters skip on sight
+(`references/field-behaviors.md`); a grade card can render a wrong letter for a minute
+after a draft, so read the analysis page (`references/field-behaviors.md`); and the IR
+stash run starts from the knowledgebase's availability list (`references/ir-stash.md`).
+Two reference sentences are cross-links only: the Rookie Model bullet points at the
+knowledgebase for coach statements, and the Draft Analysis entry lists what the tab
+shows. Minor bump, because rules were added.
+
 ## [1.14.0] - 2026-09-03
 
 **Rules changed: the copilot keeps a knowledgebase of the state of the NFL.**

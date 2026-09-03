@@ -87,103 +87,51 @@ table; no single signal outweighs another by default, and the live situation at 
 of decision dictates which one carries the call. Treat analyst advice and pre-draft plans
 as priors to update, never as directives to execute.
 
-## 4. Draft Sharks: mechanisms that matter
+## 4. Draft Sharks: what matters at the clock
 
-- **3D Value (0-100)**: recomputed in under a second after every pick from 17 indicators
-  (league scoring, positional scarcity and dropoff by the user's NEXT pick, roster needs,
-  opponent needs, ADP, injury-model discount, ceiling odds, bench depth, SOS, byes, tiers).
-  It is the number.
-- **Tier boards**: draft to the cliff, not the rank. In superflex the QB tier cliff is the
-  highest-leverage read in the draft.
-- **ADP Countdown and Next Pick Odds**: the "will he come back to me" signals, verified
-  live. Rankings views carry a literal "Next Pick Odds" percentage column, and hovering a
-  player shows the countdown of picks until his ADP. **Both are built from host ADP, so
-  they are only as current as the host's ADP window.** For a player whose news is fresher
-  than that window (an exempt-list beneficiary, a lead back named this week, a starter
-  cleared to play) the odds overstate survival: a room that drafts off the news feed takes
-  him a full round before ADP says. For anyone tagged a riser in the pre-draft sweep, read
-  the number as a floor on risk, never as a forecast.
-- **Upside Mode**: auto-engages around mid-draft, re-weights toward ceiling. Trust it late.
-- **Mine/Theirs manual mode**: toggle Sync Enabled off under Manage Draft and every
-  rankings row grows Mine and Theirs buttons: hand-entered picks, instant recompute,
-  the fallback that keeps the War Room smart if sync fails; entries persist across
-  reloads. The live War Room has NO "Undo Last Pick" (Mock Trainer only); the real undo
-  is the Grid tab: click the pick's card, then its red trash icon. NEVER click "Clear
-  Rosters" mid-draft: it fires a native browser confirm dialog (freezes automation) and
-  wipes every pick. "Re-sync" refreshes settings and order without touching entered
-  picks. Rehearse in a REAL league's War Room and trash the test picks after; the Mock
-  Trainer keeps simulating AI picks with sync off, so it cannot rehearse this.
-- **Mock Draft Trainer**: league-synced mocks against varying-AI opponents. One mock is not
-  a plan; run several to see the range of run timing.
-- **Sync extension**: injects a Suggested Picks panel INTO the host draft room (one tab).
-  DS's own docs say deleting the synced team and re-syncing fresh fixes "99% of sync
-  issues"; do it the day before, never on the clock.
-- **Injury Predictor**: ML model; Projected Games Missed is baked into projections. "Low"
-  values on fragile stars are the model working, not a bug.
-- **SHARK Rookie Model plus Depth Charts**: the criterion-8 workflow. A high-SHARK rookie
-  sitting behind an aging or fragile veteran is a time-share threat; price it into the
-  veteran.
-- **Personalized Advice** (top tier only): a league-aware form under Support, Advice
-  section (categories: start-sit, waivers, trades, keepers, general). Draft the questions
-  for the user; the user approves sending. Submit at least 48h before a draft when
-  possible; same-day answers have been observed, so a late question is still worth
-  sending. Target the
-  human-judgment gaps: criteria 6 and 8, format strategy, scoring-specific value. **Any
-  analyst response is data points, not directives** (the signals rule in section 3):
-  summarize it as inputs alongside everything else, never as a plan to execute.
-- **Adjust Projections** exists in the account area. **Never use it. Signal purity:** DS
-  must stay an unskewed, independent opinion. Your takes live in the plan and the
-  conversation; disagreements with DS get DISCUSSED with the user, never written into DS's
-  engine. If that page shows non-default adjustments, flag it.
-- There is **no "Perfect Draft" tool** at DS; post-draft grading is League Analyzer's Draft
-  Analysis tab. In-season suite: Team Dashboard, Free Agent Finder, Trade Navigator, League
-  Analyzer, Who Should I Start, SOS, Fantasy Points Allowed, Trade Value Charts, Shark
-  Bites news, mobile app. Rest-of-season projections are the currency of every in-season
-  decision.
+- **3D Value (0-100) is the number**: recomputed after every pick from the league's
+  scoring, positional scarcity and dropoff by the user's NEXT pick, roster and opponent
+  needs, ADP, the injury model, ceiling odds, bench depth, schedule, byes and tiers.
+  Draft to the tier cliff, not the rank; in superflex the QB cliff is the biggest read.
+- **Next Pick Odds and the ADP countdown are built from host ADP**, so for a riser
+  whose news is fresher than the ADP window they overstate survival: read them as a
+  floor on risk, never as a forecast. Upside Mode engages mid-draft; trust it late.
+- **Manual mode** (Sync Enabled off under Manage Draft) keeps the War Room smart if
+  sync fails; undo is the Grid tab's trash icon; Re-sync is safe. **Never click "Clear
+  Rosters" mid-draft**: a native confirm dialog freezes automation and it wipes every
+  pick.
+- **Never use Adjust Projections.** DS stays an unskewed, independent opinion;
+  disagreements are discussed with the user, never written into the engine. If that
+  page shows non-default adjustments, flag it.
+- **Personalized Advice** (top tier) is a league-aware form; the copilot drafts, the
+  user sends, and any answer is data points, not directives (section 3).
+- Post-draft grading is League Analyzer's Draft Analysis; rest-of-season projections
+  are the currency of every in-season decision. Read `references/draft-sharks.md` when
+  setting up or rehearsing a league, drafting advice questions, or when a DS tool
+  misbehaves; not at the clock.
 
-## 5. Verified field behaviors (live-tested against Yahoo)
+## 5. Field rules (live-tested against a host)
 
-- Measured cross-off latency of the sync panel: 4 seconds or less per pick; panel attach
-  under a minute.
-- **Host mock rooms get fresh league ids**, so DS errors "Error Syncing!" on every mock and
-  its Set-Up flow creates a junk clone league per mock. Real league rooms carry the linked
-  ids and should attach clean. Delete clone leagues afterward: a wrong league selected in
-  the War Room is a classic failure mode, and clones multiply it.
-- **Settings-blind third-party numbers are noise, everywhere.** Host draft grades, matchup
-  ratings, built-in trade evaluators, and generic expert ranks routinely ignore the league's
-  format and scoring (for example Yahoo's draft grades score against 1-QB ADP and will
-  C-grade a correct early superflex QB). Every opinion this skill gives is formulated from
-  the league's actual settings; the league-aware signal (DS's synced valuations plus your
-  own settings-aware read) outranks any settings-blind number in EVERY decision: drafts,
-  start/sit, waivers, and trades alike.
-- Hosts may **re-arm autopick every time a clock expires**. If it engages, kill it
-  immediately, or it insta-picks later rounds.
-- **Queue trick**: pre-queue DS's top 2-3 in the host's queue before each pick; an expiry
-  then drafts from the USER's list, not the host's default ranks. Cheap insurance.
-- The standalone War Room tab's rankings list goes stale within a few picks: just-picked
-  rows stay at the top with their old values and newly surfaced rows do not appear until
-  a page reload, while the header pick ticker and the roster panel stay live. Reload the
-  tab about three picks before each of the user's turns, every turn; sync survives the
-  reload. The at-the-clock verification in section 7 runs against the live pick ticker
-  plus the reloaded list, never against a list that has not been reloaded this turn.
-  Trust the pick tape and roster panel over the rankings list. Do not open League
-  Settings mid-draft: visiting that pane can silently flip the league to Manual Mode
-  (a re-sync clears it).
-- Observed in 1-QB formats: the War Room shows every non-elite QB at 3D 0, rank 0, 0%
-  odds for most of the draft, and those rows flip to real numbers about one round before
-  the QB tier cliff. The raw rows carry full projections, so the zeros are the value
-  column, not a render failure. The reading that fits: the engine sees no gap between
-  the QB you take now and the one at your next pick. Treat the zeros as the wait signal
-  and the flip as the cliff warning; the mechanism is inferred, not documented by DS.
-- Public money rooms have been seen drafting IR-designated players as stashes in the
-  last two rounds. If the plan wants an IR stash, take him before the user's final pick,
-  not with it.
-- A synced draft order before the host randomizes is often just JOIN ORDER. Hosts
-  commonly randomize 30-60 minutes out; re-sync at the reveal and verify the user's
-  slot before trusting any slot-specific plan.
-- Hosts redesign draft-room UIs yearly. Before the clock starts, have the user locate
-  the player SEARCH BOX and confirm autopick is off; hunting for redesigned controls on
-  a live clock has cost real picks.
+- **Settings-blind numbers are noise**: host grades, matchup ratings, trade evaluators
+  and generic ranks ignore the format; the league-aware signal wins every decision.
+- **Reload the standalone War Room tab about three picks before every turn**; its
+  rankings list goes stale within a few picks while the pick ticker and roster panel
+  stay live. Verify the name at the clock against the reloaded list and the ticker, and
+  trust the pick tape and roster panel over the rankings list. Compare 3D values within
+  one reload, never across: they re-scale as the pool thins. Do not open League
+  Settings mid-draft; it can flip the league to manual mode.
+- **In 1-QB formats non-elite QBs sit at 3D 0 until about a round before the cliff**;
+  the zeros are the wait signal, the flip is the cliff warning.
+- **The synced order before the host randomizes is join order**; re-sync at the reveal
+  and verify the slot in the host's own room, which shows it even when a re-sync does
+  not, before trusting a slot-specific plan.
+- **Hosts re-arm autopick on every expiry**; kill it at once. Pre-queue DS's top 2-3
+  before each pick so an expiry drafts from the user's list. Before the clock, have the
+  user find the search box and confirm autopick is off.
+- **In money rooms an IR stash goes before the user's final pick**, not with it.
+- Read `references/field-behaviors.md` while preparing a draft day and whenever sync
+  or the War Room misbehaves; it holds the observations, latencies, mock-room clone
+  leagues, the host room's market columns, and the reasoning behind each rule here.
 
 ## 6. Pre-draft procedure (per league)
 
@@ -212,9 +160,10 @@ as priors to update, never as directives to execute.
    Advanced Scoring switch is ON after a sync and is what shows the bonus rows and the
    per-position PPR fields; switched off, those rows disappear from the editor, so read
    its state and never toggle it during an audit.
-2. Delete-and-resync if anything looks stale; update the extension.
-3. Run league-synced mocks from the user's slot once known; chart where positional runs
-   start.
+2. Delete-and-resync if anything looks stale, the day before and never on the clock;
+   update the extension.
+3. Run several league-synced mocks from the user's slot once known; chart the range of
+   where positional runs start.
 4. Build a slot-specific plan: round-band targets, tier-cliff triggers, pivot trees ("if X
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
    In a public or money room, place every riser from the sweep one round EARLIER than host
@@ -254,120 +203,102 @@ as priors to update, never as directives to execute.
 
 ## 7. Live-draft loop (every pick)
 
-Between the user's picks: track the run (position frequency, last 8 or so picks), each
-opponent's roster needs, tier-cliff proximity, and the next 2-3 candidates, decided before
-the clock. Decide early, deliver at the clock: finalize candidates before the user's
-turn, but speak the NAME when their clock is live, verified at that moment against DS's
-crossed-off board (the host's last-pick ticker alone misses picks, and a name given
-several picks early can be sniped into a scramble). One name per call; offer a second
-only as a can't-find-the-row aid, never as a hedge, with two exceptions (the bye check
-next, and the tie-break further down). **Bye check before every starter-slot name.**
-For each candidate finalized before the user's turn that fills or could fill a starting
-slot, compare his bye to every rostered starter at the same position, to the flex, and
-to any other slot he is eligible for (superflex QBs included). The flex is a starter
-slot: a candidate who would start in the flex is compared to every starter too. Do this
-while the room is picking, from the roster panel; at the clock only the named player's
-bye is re-read, one lookup. If the named player stacks, the second line of the rec says
-so ("same bye as X") and names the best non-stacking candidate: this is one of the two
-cases where a second name is a choice offered rather than a hedge (the tie-break below
-is the other), and the user decides. If every viable candidate stacks, say that and
-give the top row. A stack with a bench player is not a finding. The plan's bye map is
-the input, not a substitute. Deliver the two-line rec, then the color (section 2).
+**Between picks**: track the run (position frequency over the last 8 or so picks), each
+opponent's roster needs, tier-cliff proximity, and the next 2-3 candidates, decided
+before the clock. **At the clock**: speak the NAME when the user's clock is live,
+verified at that moment against DS's crossed-off board on the list reloaded this turn
+(section 5); the host's pick ticker alone misses picks, and a name given early gets
+sniped into a scramble. One name per call; a second only as a can't-find-the-row aid,
+never a hedge, with two exceptions: the bye check and the tie-break. Two-line rec, then
+the color (section 2).
 
-**Room trends: read them, never follow them; exploit them, never chase them.** A run, a
-fad, or a streak of reaches in the room is a data point like the others in section 3, and
-like the others it never changes the plan silently. Between picks, state what the room
-did, the number it changes for one specific target of ours (his odds, a value gap,
-whether a stash still reaches the free pool), and whether that is signal or the room
-overreacting; the user decides, before the clock. When the room is wrong, the wrong is
-value left on the board: the player it skipped, the tier it is ignoring while it chases
-the run, the value its reaches leave behind. That reading happens between picks; at the
-clock the call is still one name. Changing our plan takes that discussion; taking value
-the room dropped takes only the name.
+**Bye check before every starter-slot name.** For each candidate who fills or could
+fill a starting slot, compare his bye to every rostered starter at the same position,
+to the flex, and to any other slot he is eligible for (superflex QBs included); a
+candidate who would start in the flex is compared to every starter. Do it from the
+roster panel while the room picks; at the clock re-read only the named player's bye.
+If he stacks, the second line says so ("same bye as X") and names the best non-stacking
+candidate, and the user decides; if every viable candidate stacks, say so and give the
+top row. A stack with a bench player is not a finding. The plan's bye map is the input,
+not a substitute.
+
+**Room trends: read them, never follow them; exploit them, never chase them.** A run,
+a fad or a streak of reaches is a data point (section 3) and never changes the plan
+silently. Between picks, state what the room did, the number it changes for one target
+of ours (his odds, a value gap, whether a stash still reaches the free pool), and
+whether that is signal or overreaction; the user decides before the clock. The room's
+wrong is value left on the board: the player it skipped, the tier it ignores while
+chasing the run, the value its reaches leave behind. At the clock the call is still one
+name: changing the plan takes the discussion, taking value the room dropped takes only
+the name.
 
 **Snipe first: forecast the picks between now and our turn.** Between picks, for the
-opponents who pick before us (in a long gap, the ones whose need matches a target of
-ours), name the position their roster needs most and the player the board gives them for
-it, from their roster, the live trend, and ADP. That forecast is the list of players
-least likely to reach us: a forecast, not a promise, and one data point at the table with
-the rest. It decides which pick is the early one for the research-targets rule below;
-whether the target is worth taking early is still that rule's band, and outside the band
-the situation at the pick decides, as section 3 says. If a target is not on the forecast,
-the odds column gets its say. The forecast is said between picks, in one line ("three of
-the next five need RB; X and Y do not get back to us"); the rec at the clock stays name
-first, two lines.
+opponents who pick before us (in a long gap, those whose need matches a target of
+ours), name the position each roster needs most and the player the board gives them
+for it, from their roster, the live trend and ADP. That forecast is the list of players
+least likely to reach us: a forecast, not a promise, one data point among the rest. It
+decides which pick is the early one for the research-targets rule; whether the target
+is worth taking early is that rule's band. A target not on the forecast leaves the odds
+column its say. Said in one line between picks ("three of the next five need RB; X and
+Y do not get back to us"); the rec at the clock stays name first.
 
 **Research targets go a pick early.** When a name from the pre-draft sweep (a riser, a
 value gap, a planned stash) is on the board and DS's top live row is within about 10 3D
 points of him, take the target at THIS pick instead of betting he survives to the next.
-This is a tie-break inside a band this skill treats as close, not a rank of plan over
-engine (section 3 still holds); outside the band the situation at the pick decides, as
-section 3 says. The odds column will say he survives; in a sharp room he will not.
-Between two bench rows 10 points of 3D is noise, the specific player is the edge, and
-once he is gone no later pick replaces him. The one-round-earlier band in section 6 is
-the same ADP lag applied to the plan's expectations; it forecasts where the riser goes,
-and this rule is the action at the board. They are one adjustment, not two. The
-at-the-clock verification above uses the list reloaded this turn (section 5).
+This is a tie-break inside a close band, not plan over engine; outside the band the
+situation at the pick decides (section 3). The odds column will say he survives; in a
+sharp room he will not, and once he is gone no later pick replaces him. The
+one-round-earlier band of section 6 forecasts where the riser goes; this rule is the
+action at the board. They are one adjustment, not two.
 
 **Two names inside a few points: say the tie-break.** When the top row and the next
-candidate sit within about 5 3D points and neither is a sweep target (a sweep target in
-the band is settled by the research-targets rule above, which comes first), the engine
-has no opinion between them and the judgment layer decides: section 3's criteria 5a, 6
-and 8, plus the two reads no criterion carries, the player's age and his current
-depth-chart role. The rec still leads with one name; the second line states the
-tie-break only when the layer favors a name other than the top row, before the clock,
-not after the user asks. When the bye check has already claimed the second line, the
-stack finding wins it and the tie-break is said between picks. A fraction of a point
-between an aging back in a committee and a young lead back is not a coin flip, and
-naming the row without the layer hands the user a coin.
+candidate sit within about 5 3D points and neither is a sweep target (the
+research-targets rule settles those first), the judgment layer decides: section 3's
+criteria 5a, 6 and 8, plus the player's age and his current depth-chart role. The rec
+still leads with one name; the second line states the tie-break only when the layer
+favors a name other than the top row, before the clock, not after the user asks. When
+the bye check has claimed the second line, the stack finding keeps it and the tie-break
+is said between picks.
 
 **Sweep names ride to the clock, and the name at the clock is final.** At every pick,
-bench rounds included, the candidate list is DS's top rows plus every pre-draft sweep
-name still on the board inside the research-target band. Where the copilot's read
-disagrees with DS about one of them (a sweep sleeper DS values near zero, a market riser
-DS has not moved), the disagreement is said between picks as a data point; it is never
-settled silently by dropping the sweep name from the list. Once the name is spoken at
-the clock it stands, unless the at-the-clock verification shows him already drafted or
-news breaks on him in that minute. A question from the user about another player is
-answered with the number, and a preference does not reopen the call; it changes only
-when the user names a different player. A reversal at the clock spends the user's clock
-and produces a pick nobody chose.
+bench rounds included, the candidate list is DS's top rows plus every sweep name still
+on the board inside the research-target band; where the copilot's read disagrees with
+DS about one of them, the disagreement is said between picks, never settled by dropping
+the name. Once spoken at the clock the name stands unless verification shows him
+drafted or news breaks on him in that minute; a question about another player is
+answered with the number, a preference does not reopen the call, and the call changes
+only when the user names a different player. A reversal at the clock produces a pick
+nobody chose.
 
-**Injured-reserve designations are free roster spots.** In a league that allows injured
-players straight to the IR slot, a player carrying an IR-eligible designation (reserve or
-PUP, IR, or the host's equivalent) costs no bench slot: the IR doctrine of section 8
-applies at the draft, not only after it, with its tags and its value test read against
-the board. Only a RETURNS player qualifies (a stated window, at least four games
-missed); no timetable is season-out, and his rest-of-season projection must still beat
-both the best healthy player left for that slot and the bench player he would
-displace. Such a player is a stash to take before the room does, valued as a free
-roster spot, and he outranks a healthy bench dart of similar value when the dart is
-not contested; when the forecast says the dart does not reach us and the room is not
-drafting designated players, the dart goes first and the stash waits a pick. The
-designation is the test, not the injury: a player tagged questionable with no
-designation occupies a bench slot until the host updates him. Read the tag on the
-host's row before naming him either way.
+**Injured-reserve designations are free roster spots.** Where the host allows injured
+players straight to the IR slot, a player carrying an IR-eligible designation
+(reserve/PUP, IR, or the host's equivalent) costs no bench slot; the IR doctrine
+(section 8, `references/ir-stash.md`) applies at the draft with its tags and value test
+read against the board: RETURNS only, and his rest-of-season projection beats both the
+best healthy player left for the slot and the bench player he displaces. He is taken
+before the room takes him and outranks a healthy bench dart of similar value when the
+dart is not contested; when the forecast says the dart does not reach us and the room
+is not drafting designated players, the dart goes first and the stash waits a pick.
+The designation is the test, not the injury: questionable with no designation is a
+bench body. Read the tag on the host's row before naming him either way.
 
-**Bench rounds read the room, not only the board.** Once the starters are filled, the
-between-pick read adds two lines: which positions the room has hoarded (for example,
-every team already holds a QB and a TE, so a second one blocks nobody) and which it is
-short on (the bench WRs the RB-heavy teams never took). Then the pick either drains the
-room's short position, so its bye-week fixes and trade targets sit on our bench, or
-takes the upside dart the room left. The up-and-comers, the full-role replacements and
-the rest signals come from the knowledgebase's media read (section 10), not from
-memory. A bench built only from floor rows buys no ceiling while the room takes the
-darts; the bench is where ceiling is bought, and the read says which dart is contested.
+**Bench rounds read the room, not only the board.** Once starters are filled, the
+between-pick read adds two lines: which positions the room has hoarded (a second QB or
+TE blocks nobody when every team holds one) and which it is short on (the bench WRs the
+RB-heavy teams never took). Then the pick drains the room's short position, so its
+bye-week fixes and trade targets sit on our bench, or takes the upside dart the room
+left; the up-and-comers, full-role replacements and rest signals come from the
+knowledgebase's media read (section 10), not memory. A floor-only bench buys no
+ceiling; the read says which dart is contested.
 
 **State the grade cost before an override.** DS's post-draft grade scores the engine's
-own choices, so any pick that overrides the top live row (a starter over a higher bench
-value, a research target, an IR stash, or a contested bench dart over the top row)
-lowers the grade by construction; say so in the rec, and the user chooses with the
-price in view. **Never predict the grade.** The room's spread decides it, and a forecast
-is a promise the copilot cannot keep. Watch for: stale panel (cross-check the host's own
-pick feed), wrong league in the selector, autopick re-armed, empty queue near a cliff.
-If DS lags: say so in one line and advise from the host room plus the pre-built plan;
-the plan IS the offline backup. If the user drafts in overlapping rooms, agree
-beforehand which league gets full attention.
+own choices, so any pick over the top live row (a starter over a higher bench value, a
+research target, an IR stash, a contested dart) lowers the grade by construction; say
+so, and the user chooses with the price in view. **Never predict the grade.** Watch
+for: stale panel (cross-check the host's pick feed), wrong league in the selector,
+autopick re-armed, empty queue near a cliff. If DS lags, say so in one line and advise
+from the host room plus the plan; the plan IS the offline backup. In overlapping rooms,
+agree beforehand which league gets full attention.
 
 ## 8. In-season weekly cadence (per league)
 
@@ -392,46 +323,15 @@ beforehand which league gets full attention.
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
 - **Playoffs**: lean ceiling when underdog. One boom week decides titles.
-- **IR stash research (redraft)**: only a player who will RETURN this season carries
-  value; a season-out stash is a wasted slot (and, under rolling waiver priority, a
-  wasted claim) in any non-keeper league. Run it the way the pre-draft sweep runs
-  (section 6, step 9): DS first, recency-windowed, priced-in aware.
-  - **Sources, DS first:** Free Agent Finder sorted by rest-of-season projection with
-    injured players included, Injury Predictor (Projected Games Missed plus the injury
-    history), the player's own Shark Bites page (the public feed shows about a day; the
-    player page carries the timeline), Team Dashboard injury flags, and DS depth charts
-    (check the review date; they can lag the news by a week). Web search only for a
-    designation DS has not reflected yet.
-  - **Tag every candidate:** RETURNS (designated to return from IR, reserve/PUP, or a
-    stated window; at least four games missed, so a week-1 designation plays no earlier
-    than week 5), SEASON-OUT, or NO TIMETABLE (treat as season-out). Only RETURNS earns
-    a slot. Percent rostered ranks popularity, not value: the most-rostered IR players
-    are often season-enders nobody has cut yet. Verify timelines against current
-    reporting and CURRENT-year depth charts, never preseason memory; team and role can
-    have changed since the last data you saw.
-  - **Value test:** the returning player's DS rest-of-season projection must beat both
-    the best healthy free agent for that slot and the bench player he would displace.
-    Where the host does not allow adding an injured player straight to IR, the stash
-    occupies a bench spot until he is eligible, so the bar is higher.
-  - **WHEN, the free window:** read the host's waiver settings once and record them in
-    the private document (section 9): waiver period length, the weekly clear day,
-    whether undrafted players sit on waivers after the draft and for how long, whether
-    injured adds can go straight to IR, and the priority mechanism (rolling list or
-    FAAB). A player who has cleared to free agency is instant and free. Default: wait
-    for the clear date and take him free; never spend rolling priority or FAAB on a
-    stash by default. State the clear date next to every candidate.
-  - **Burn-the-claim flag:** say "worth the claim" only when all three hold: RETURNS
-    with a stated window, DS rest-of-season projection at starter level for the
-    league's format, and real contention (rising percent rostered, or another team with
-    an open IR or bench slot and a reason to want him). Name the cost in the same line
-    (back of the rolling list, or the FAAB amount) so the user decides with the price
-    in view.
-  - **On demand, any week of the season.** The user can ask for this at any point ("what
-    should I stash", "anyone worth grabbing off IR"): run it then, not only on waiver
-    eve. Lead every answer with the calendar: the next free clear date and time for
-    each league in play (post-draft pool clearing, or the weekly clear), so the user
-    has a heads-up before the window opens. Also run it on waiver eve alongside the
-    Free Agent Finder step, and again right after each draft.
+- **IR stash research (redraft)**: only a player tagged RETURNS this season (a stated
+  window, at least four games missed) earns a slot; no timetable is season-out. His
+  rest-of-season projection must beat both the best healthy free agent for the slot and
+  the bench player he displaces. Default to the free window (the host's clear date,
+  recorded once in the private document) and never spend priority or FAAB on a stash
+  unless RETURNS, starter-level projection and real contention all hold, with the cost
+  named in the same line. Run it on demand any week, on waiver eve, and right after
+  each draft, and lead every answer with the next clear date. Sources, tags and the
+  full procedure: `references/ir-stash.md`.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
