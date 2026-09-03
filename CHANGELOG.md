@@ -5,6 +5,32 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.13.0] - 2026-09-02
+
+**Rules changed: the bench rounds get the judgment layer the early rounds already had.**
+
+Section 7 gains four rules and two amendments, from misses observed in live money
+drafts where the starters graded well and the bench ranked near the bottom on ceiling.
+The amendments: the flex is a starter slot in the bye check, so a flex candidate is
+compared to every starter; and the grade-cost rule's list of overrides now includes an
+IR stash and a contested bench dart. The rules: when the top row and the next candidate, neither a sweep
+target, sit within about 5 3D points, the rec still leads with one name, and the second
+line states the judgment tie-break (section 3's criteria 5a, 6 and 8, plus age and
+current depth-chart role) only when that layer favors a name other than the top row,
+before the clock rather than after the user asks; this is the second sanctioned case of
+a second name, alongside the bye check, and when the bye check has claimed the second
+line the stack finding keeps it. Pre-draft sweep names inside the research-target
+band stay on the candidate list at every pick, a disagreement with DS about one of them
+is said between picks instead of settled by dropping the name, and the name spoken at
+the clock stands unless verification shows him drafted, news breaks, or the user names
+a different player. A player carrying an IR-eligible designation in a league that
+allows injured players straight to IR is a free roster spot to take before the room
+does, under section 8's RETURNS tag and value test, with the designation on the host's
+row as the test and a contested dart taking precedence. And once starters are filled,
+the between-pick read names the positions the room has hoarded and the ones it is short
+on, then drains the short position or takes the upside dart the room left, saying which
+dart is contested, because a floor-only bench buys no ceiling.
+
 ## [1.12.0] - 2026-09-02
 
 **The import audit walks the host's full category list and knows DS's field inventory.**

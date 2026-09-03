@@ -255,17 +255,19 @@ the clock. Decide early, deliver at the clock: finalize candidates before the us
 turn, but speak the NAME when their clock is live, verified at that moment against DS's
 crossed-off board (the host's last-pick ticker alone misses picks, and a name given
 several picks early can be sniped into a scramble). One name per call; offer a second
-only as a can't-find-the-row aid, never as a hedge, with the one exception below. **Bye
-check before every starter-slot name.** For each candidate finalized before the user's
-turn that fills or could fill a starting slot, compare his bye to every rostered starter
-at the same position, to the flex, and to any other slot he is eligible for (superflex
-QBs included). Do this while the room is picking, from the roster panel; at the clock
-only the named player's bye is re-read, one lookup. If the named player stacks, the
-second line of the rec says so ("same bye as X") and names the best non-stacking
-candidate: this is the one case where a second name is a choice offered rather than a
-hedge, and the user decides. If every viable candidate stacks, say that and give the top
-row. A stack with a bench player is not a finding. The plan's bye map is the input, not
-a substitute. Deliver the two-line rec, then the color (section 2).
+only as a can't-find-the-row aid, never as a hedge, with two exceptions (the bye check
+next, and the tie-break further down). **Bye check before every starter-slot name.**
+For each candidate finalized before the user's turn that fills or could fill a starting
+slot, compare his bye to every rostered starter at the same position, to the flex, and
+to any other slot he is eligible for (superflex QBs included). The flex is a starter
+slot: a candidate who would start in the flex is compared to every starter too. Do this
+while the room is picking, from the roster panel; at the clock only the named player's
+bye is re-read, one lookup. If the named player stacks, the second line of the rec says
+so ("same bye as X") and names the best non-stacking candidate: this is one of the two
+cases where a second name is a choice offered rather than a hedge (the tie-break below
+is the other), and the user decides. If every viable candidate stacks, say that and
+give the top row. A stack with a bench player is not a finding. The plan's bye map is
+the input, not a substitute. Deliver the two-line rec, then the color (section 2).
 
 **Room trends: read them, never follow them; exploit them, never chase them.** A run, a
 fad, or a streak of reaches in the room is a data point like the others in section 3, and
@@ -301,16 +303,65 @@ once he is gone no later pick replaces him. The one-round-earlier band in sectio
 the same ADP lag applied to the plan's expectations; it forecasts where the riser goes,
 and this rule is the action at the board. They are one adjustment, not two. The
 at-the-clock verification above uses the list reloaded this turn (section 5).
-**State the grade cost before an override.** DS's post-draft grade
-scores the engine's own choices, so any pick that overrides the top live row (a starter
-over a higher bench value, a research target over the top row) lowers the grade by
-construction; say so in the rec, and the user chooses with the price in view. **Never
-predict the grade.** The room's spread decides it, and a forecast is a promise the copilot
-cannot keep. Watch for: stale panel
-(cross-check the host's own pick feed), wrong league in the selector, autopick re-armed,
-empty queue near a cliff. If DS lags: say so in one line and advise from the host room plus
-the pre-built plan; the plan IS the offline backup. If the user drafts in overlapping rooms,
-agree beforehand which league gets full attention.
+
+**Two names inside a few points: say the tie-break.** When the top row and the next
+candidate sit within about 5 3D points and neither is a sweep target (a sweep target in
+the band is settled by the research-targets rule above, which comes first), the engine
+has no opinion between them and the judgment layer decides: section 3's criteria 5a, 6
+and 8, plus the two reads no criterion carries, the player's age and his current
+depth-chart role. The rec still leads with one name; the second line states the
+tie-break only when the layer favors a name other than the top row, before the clock,
+not after the user asks. When the bye check has already claimed the second line, the
+stack finding wins it and the tie-break is said between picks. A fraction of a point
+between an aging back in a committee and a young lead back is not a coin flip, and
+naming the row without the layer hands the user a coin.
+
+**Sweep names ride to the clock, and the name at the clock is final.** At every pick,
+bench rounds included, the candidate list is DS's top rows plus every pre-draft sweep
+name still on the board inside the research-target band. Where the copilot's read
+disagrees with DS about one of them (a sweep sleeper DS values near zero, a market riser
+DS has not moved), the disagreement is said between picks as a data point; it is never
+settled silently by dropping the sweep name from the list. Once the name is spoken at
+the clock it stands, unless the at-the-clock verification shows him already drafted or
+news breaks on him in that minute. A question from the user about another player is
+answered with the number, and a preference does not reopen the call; it changes only
+when the user names a different player. A reversal at the clock spends the user's clock
+and produces a pick nobody chose.
+
+**Injured-reserve designations are free roster spots.** In a league that allows injured
+players straight to the IR slot, a player carrying an IR-eligible designation (reserve or
+PUP, IR, or the host's equivalent) costs no bench slot: the IR doctrine of section 8
+applies at the draft, not only after it, with its tags and its value test read against
+the board. Only a RETURNS player qualifies (a stated window, at least four games
+missed); no timetable is season-out, and his rest-of-season projection must still beat
+both the best healthy player left for that slot and the bench player he would
+displace. Such a player is a stash to take before the room does, valued as a free
+roster spot, and he outranks a healthy bench dart of similar value when the dart is
+not contested; when the forecast says the dart does not reach us and the room is not
+drafting designated players, the dart goes first and the stash waits a pick. The
+designation is the test, not the injury: a player tagged questionable with no
+designation occupies a bench slot until the host updates him. Read the tag on the
+host's row before naming him either way.
+
+**Bench rounds read the room, not only the board.** Once the starters are filled, the
+between-pick read adds two lines: which positions the room has hoarded (for example,
+every team already holds a QB and a TE, so a second one blocks nobody) and which it is
+short on (the bench WRs the RB-heavy teams never took). Then the pick either drains the
+room's short position, so its bye-week fixes and trade targets sit on our bench, or
+takes the upside dart the room left. A bench built only from floor rows buys no ceiling
+while the room takes the darts; the bench is where ceiling is bought, and the read says
+which dart is contested.
+
+**State the grade cost before an override.** DS's post-draft grade scores the engine's
+own choices, so any pick that overrides the top live row (a starter over a higher bench
+value, a research target, an IR stash, or a contested bench dart over the top row)
+lowers the grade by construction; say so in the rec, and the user chooses with the
+price in view. **Never predict the grade.** The room's spread decides it, and a forecast
+is a promise the copilot cannot keep. Watch for: stale panel (cross-check the host's own
+pick feed), wrong league in the selector, autopick re-armed, empty queue near a cliff.
+If DS lags: say so in one line and advise from the host room plus the pre-built plan;
+the plan IS the offline backup. If the user drafts in overlapping rooms, agree
+beforehand which league gets full attention.
 
 ## 8. In-season weekly cadence (per league)
 
