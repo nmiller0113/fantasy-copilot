@@ -80,13 +80,15 @@ Analysis, Fantasy Points, Sumer Sports, FTN, Next Gen Stats write-ups, and beat
 writers quoting the coach. The profile separates
 three things and labels each: what he DID at prior stops and last season here
 (numbers, with the season, the team and the outlet), what he SAYS he will do here
-(dated quotes), and what reporters PREDICT (labeled prediction). The numbers: pass rate
-and pass rate over expectation; tempo and personnel groupings; running back
-concentration (whether his lead back got 65 percent or more of the touches), RB target
-share and goal-line usage; WR1 target share and air yards, slot versus outside, whether
+(dated quotes), and what reporters PREDICT (labeled prediction). The numbers: pass rate;
+running back concentration (whether his lead back got 65 percent or more of the
+touches), RB target share and goal-line usage; WR1 target share and air yards, whether
 two receivers were fantasy-relevant under him; TE target share and red-zone targets,
-whether a TE finished top 12 under him; designed QB runs, play-action and deep-ball
-rates, passing volume against league average; red-zone pass versus run inside the 10.
+whether a TE finished top 12 under him; play-action rate, passing volume against league
+average; red-zone pass versus run inside the 10. Optional, written only when a pulled
+table holds them and omitted otherwise (never searched for, never marked): pass rate
+over expectation, tempo, personnel groupings, slot versus outside, designed QB runs,
+deep-ball rate.
 
 The profile is player-first: it ends with one line per fantasy-relevant player (QB, top
 four RBs, top five WRs, top two TEs) stating the fit and a direction, bounceback (usage
@@ -115,9 +117,10 @@ disagree, the source hierarchy below decides: the coach's words first.
 ## Offensive line profile (one per team)
 
 The line is the layer between a coach's plan and a back's or quarterback's numbers,
-and it is measured: PFF pass-block and run-block grades, ESPN pass and run block win
-rates, FTN adjusted line yards and adjusted sack rate, pressure rate and sacks
-allowed, yards before contact for the backs, time to throw for the quarterback. The
+and it is measured: ESPN pass and run block win rates, pressure rate and sacks
+allowed, yards before contact for the backs, time to throw for the quarterback, and,
+only where an article quotes them or the user holds the subscription, PFF pass-block
+and run-block grades and FTN adjusted line yards and adjusted sack rate. The
 profile carries the five projected starters with age and status, continuity (how many
 of the five started together last season), the swing tackle and top interior backup,
 last season's numbers with ranks, the 2026 changes (arrivals, departures, draft picks,
@@ -180,8 +183,8 @@ reporting. Markers on a line: `[verified <date>]` a skeptic corrected it, `[unve
 <date>]` no dated source was found either way, `[gap fill <date>]` a critic round added
 a fact that is not a number from a table, `[<date>]` a refresh changed it, `(Gap)` a
 number or fact the pass could not reach (written in place of the number, never
-omitted) and `(Gap: <reason>)` the same after a gap round has established why no
-public source answers it, `[filled <date>: <data file>]` a cell filled from a saved source table,
+omitted; a cell no public source will ever answer is deleted instead, see the
+never-chased list under Source tables), `[filled <date>: <data file>]` a cell filled from a saved source table,
 naming the file under `data/` with its extension, and `[filled <date>: <outlet>
 <date>]` a cell filled from a dated search result. Any number copied from a table
 carries the filled form, never `[gap fill]`. The check script tells the two apart by
@@ -300,8 +303,7 @@ list, because sites gate and ungate):
   per game, pass play share, opponent plays per game, red-zone touchdown rate for and
   against, each with the prior season beside it.
 - rbsdm.com team tiers (free JS app, browser only): offensive and defensive EPA per
-  play and success rate; its pass-rate-over-expectation tab is a second read on the
-  same page.
+  play and success rate.
 - The same Pro Football Reference advanced pages for each earlier season a coach
   profile names (the play caller's prior stops): one pull per season, saved with the
   season in the file name, so a prior-stop cell is a copy and not a search.
@@ -324,7 +326,7 @@ list, because sites gate and ungate):
   dropback and rush EPA. The tab's season filter may not take; the header states the
   seasons the table actually covers and the profile cites that span. The
   pass-rate-over-expectation tab draws one team at a time as a chart and is not
-  tabulated, so that cell stays open with that reason.
+  tabulated, which is why that figure is optional in the staff profile.
 
 A page that answers a cell but returns 403, 404 or an empty body to the fetch tool is
 read in the browser (Claude in Chrome or the user's own) and saved like any other
@@ -339,10 +341,19 @@ from the page (it hangs), and a request from the page to a local receiver (block
 without an error). A site's own export controls are not used either; the page text is
 the export.
 
-Not available to a visitor on the last pull and left out until the user holds a
-subscription: PFF grades beyond what an article quotes, FTN adjusted line yards and
-DVOA, Fantasy Points Data, Sharp Football's book-only splits (personnel groupings,
-alignment and route rates), Sumer Sports' paid tier.
+Never chased, and never carried in a profile as a missing cell: a figure only a
+subscription publishes (PFF grades beyond what an article quotes, FTN adjusted line
+yards and DVOA, Fantasy Points Data, Sharp Football's book-only splits, Sumer Sports'
+and Next Gen Stats' paid tiers: personnel groupings, alignment and route rates, tempo
+and no-huddle rates, pass rate over expectation, designed-run splits, most deep-ball
+rates), unless the user holds that subscription and says so, and a figure no outlet
+prints (camp rep counts, preseason snap counts and shares). Where a free table happens
+to hold one of these, it is copied like any other cell; where none does, the profile
+simply omits it. A round that meets such a cell deletes it,
+clause by clause when the line also holds a fact, and records the deletion in its
+return value; a profile carries facts and cells a later round can fill, nothing else.
+The owner's rule: good beats perfect, and a line that says a number is behind a paywall
+is noise at the clock.
 
 Two rules follow. A cell that says a number was not reached is a table not yet pulled,
 not a search to run: pull the table, then fill. And a pulled table is data, saved
@@ -413,9 +424,11 @@ save nothing else under one.
      missing, before and after; the marker count rises during a round because the
      round stamps unmarked prose, so it measures nothing on its own.
    - One agent per file per round, handed the previous round's open list with what it
-     tried and why it failed, a fixed search budget, and the rule that a cell no public
-     source can answer is relabeled `(Gap: no public source, <reason>)` in place, never
-     left bare; a file gets another round only while its last round filled something.
+     tried and why it failed, a fixed search budget, and two rules for a cell it cannot
+     close: one on the never-chased list (Source tables) is deleted; one that waits on a
+     statement not yet made, a game not yet played or a report not yet issued keeps its
+     bare marker for the next round. A file gets another round only while its last round
+     filled something.
    - The search tool's quota is per session; find the limit before the round and plan
      rounds inside it, across sessions when the pool is larger than one session's quota, and the browser-read tables above are
      pulled first so the searches go to facts no table holds.
@@ -435,10 +448,10 @@ save nothing else under one.
      it to go to those lines. This is not optional: an agent handed a description of the
      forms matches the literal phrases and skips the rest (a five-file pilot returned
      zero fills; the same files with their lists returned dozens).
-   - The prompt names every form a missing fact takes: the bare marker, the reasoned
-     marker (re-checked against every table pulled after its reason was written, because
-     the reason is older than the table), the unverified marker, and the prose forms the
-     script matches.
+   - The prompt names every form a missing fact takes: the bare marker, any marker an
+     older round wrote with a reason (re-checked against every table pulled since,
+     because the reason is older than the table, then deleted or stripped to the bare
+     form), the unverified marker, and the prose forms the script matches.
    - Pilot five files after any prompt change before the pool runs, and read the
      returns, not the counts: a return that says the file had nothing to fill is the
      prompt's failure until proven otherwise.

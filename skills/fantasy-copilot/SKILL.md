@@ -391,8 +391,8 @@ team, so one subject to a line is the rule the script now enforces and a line na
 teams is still checked against both. A page the fetch tool cannot reach is read in the
 browser and saved as a table, never left as a gap; gap rounds select files by the prose
 that says a fact is missing, measure progress on that count, loop a file only while a
-round fills something, and write the reason in place for a cell no public source holds
-(the reference, build step 7).
+round fills something, and delete a cell no public source will ever hold instead of
+marking it (the reference, Source tables and build step 7).
 The build writes dozens of files and runs many searches: confirm the location with the
 user and get an explicit go-ahead before the first build, and offer the NFL-wide
 cross-cuts alone as the starter set when the full build is more than the user wants.

@@ -5,6 +5,25 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.22.0] - 2026-09-04
+
+**Rules changed: a cell no public source will ever answer is deleted from the profile,
+not marked with a reason. The never-chased list (subscription-only charting, camp rep
+and snap counts nobody prints) is stated once under Source tables, and a gap round
+spends nothing on it.**
+
+Changed: the `(Gap: <reason>)` marker form is withdrawn; the vocabulary and build step
+7 say a never-fillable cell is deleted (the Source tables paragraph says clause by
+clause when the line also holds a fact) and that a cell waiting on a statement, a game
+or a report keeps its bare marker for the next round. The "not available to a visitor"
+paragraph became the never-chased list, with its two carve-outs kept (grade ranks an
+article quotes, tools the user subscribes to). The staff profile template lists pass
+rate over expectation, tempo, personnel groupings, slot versus outside, designed QB
+runs and deep-ball rate as optional, written only when a pulled table holds them; the
+line profile lists PFF grades and FTN line yards the same way. Skill section 10 says the
+deletion rule in one clause. Owner's rule behind it: good beats
+perfect, and a line that says a number is behind a paywall is noise at the clock.
+
 ## [1.21.0] - 2026-09-04
 
 **Rules changed: a gap round ends with `scripts/gap-list.py`, which writes every line
