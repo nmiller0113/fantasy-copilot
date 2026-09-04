@@ -148,8 +148,10 @@ NFL-wide file lists the softest and toughest schedules by position for the seaso
 for each window, and carries the week-by-week grid. The team files and the NFL-wide
 file are generated, not written: `scripts/schedule-tables.py` joins the schedule file
 to the ratings file (Python 3.8 or later, no other dependency), so they are never
-hand-edited and never produced by an agent. The script ships in the plugin's
-`scripts/` folder, beside the validator; copy it into `kb/<season>/` at the first
+hand-edited and never produced by an agent. The script reads its team codes from
+`data/teams.md`, the same file the validator reads, and stops with a message when the
+file is missing; it carries no team of its own, and the rollup lists the codes in sorted
+order. The script ships in the plugin's `scripts/` folder, beside the validator; copy it into `kb/<season>/` at the first
 build, again after every plugin update (the plugin's copy is the source when the two
 differ), and run it from there, `python3 schedule-tables.py --dir . --date <today>`,
 adding `--week <coming week>` in season. If no Python is available, say so, report
@@ -303,10 +305,39 @@ list, because sites gate and ungate):
 - The same Pro Football Reference advanced pages for each earlier season a coach
   profile names (the play caller's prior stops): one pull per season, saved with the
   season in the file name, so a prior-stop cell is a copy and not a search.
+- Pro Football Reference red zone pages (rushing, receiving, passing; free, browser
+  only): every player's attempts or targets, yards, touchdowns and share of the team's
+  plays inside the 20, inside the 10 and, for rushing, inside the 5. The goal-line and
+  inside-the-10 split cells the first build marked subscription-only are here.
+- Pro Football Reference fantasy rankings page, one per season for the last three
+  (browser only): every fantasy-relevant player's age, games played and games started
+  that season, with his team, so a veteran's games missed over three seasons and a
+  player's age are a copy; the current season's page also carries carries, targets and
+  receptions. Cut the tail at a stated points floor and say so in the header.
+- Pro Football Reference season index and opposition pages, one per season for the
+  last three (browser only): team offense (plays, yards per play, pass and rush
+  attempts, sacks taken and sack rate, score rate) and team defense (plays faced,
+  blitz, hurry, knockdown and pressure rates, sacks, pressures, missed tackles, depth
+  of target faced, passer rating allowed). A play caller's or coordinator's prior stop
+  is a row in the earlier season's file, so a coordinator cell is a copy too.
+- rbsdm.com neutral pass frequency table (free JS app, browser only): early-down neutral-situation pass rate with
+  dropback and rush EPA. The tab's season filter may not take; the header states the
+  seasons the table actually covers and the profile cites that span. The
+  pass-rate-over-expectation tab draws one team at a time as a chart and is not
+  tabulated, so that cell stays open with that reason.
 
 A page that answers a cell but returns 403, 404 or an empty body to the fetch tool is
 read in the browser (Claude in Chrome or the user's own) and saved like any other
-table; "unreachable by the fetch tool" is never a reason to leave a cell open.
+table; "unreachable by the fetch tool" is never a reason to leave a cell open. The
+method that works: navigate to the page, run a page script that rewrites the document
+body as one pipe-separated line per row built from the table's cells (the chosen
+columns only, by their column keys), then read the page text and save it under a header
+naming the URL, the pull date, the season, the row floor if the tail was cut, and the
+column order. Three shortcuts fail and are not retried: a script that returns the table
+as its own result (the return value is capped at about a kilobyte), a clipboard write
+from the page (it hangs), and a request from the page to a local receiver (blocked
+without an error). A site's own export controls are not used either; the page text is
+the export.
 
 Not available to a visitor on the last pull and left out until the user holds a
 subscription: PFF grades beyond what an article quotes, FTN adjusted line yards and
@@ -337,8 +368,8 @@ save nothing else under one.
    offer the NFL-wide cross-cuts alone as the starter set when the full build is more
    than the user wants. Write `data/teams.md` first: one team per line, the code the
    profiles use, then every spelling the tables to be pulled print for it (another
-   site's code, the city, the nickname, the full name); the check script reads its
-   teams from that file and carries none of its own. Then pull the source tables
+   site's code, the city, the nickname, the full name); the check script and the schedule script
+   read their teams from that file and carry none of their own. Then pull the source tables
    above into `data/` before any profile pass starts, so no pass fetches one of those
    tables on its own (the season schedule in step 6 is fetched there, twice, by
    design).
@@ -392,7 +423,32 @@ save nothing else under one.
      agents write undated citations, sourceless markers and bracketed notes that only
      the script catches; the marker grammar goes into every prompt verbatim.
    - An agent records what it tried in its return value, never in the profile: a
-     profile line narrating a failed fetch is noise at the clock and is deleted.
+     profile line narrating a failed fetch is noise at the clock and is deleted, and so
+     is a line narrating the tool budget ("search was unavailable", "budget exhausted"):
+     it describes the pass, not the league; sources it lists move to the Sources section
+     if they are not already there.
+   - The yardstick is a script, `scripts/missing-lines.py` (copied into the season
+     folder like the others; it creates `build/` when the folder is absent):
+     `python3 missing-lines.py --dir . --write <label> --date <today>` prints the count, writes the file list for the round under `build/`, and
+     writes one open-line list per file (line number and text) under
+     `build/gap-fill-<label>-open/`. Every fill prompt names the agent's list and tells
+     it to go to those lines. This is not optional: an agent handed a description of the
+     forms matches the literal phrases and skips the rest (a five-file pilot returned
+     zero fills; the same files with their lists returned dozens).
+   - The prompt names every form a missing fact takes: the bare marker, the reasoned
+     marker (re-checked against every table pulled after its reason was written, because
+     the reason is older than the table), the unverified marker, and the prose forms the
+     script matches.
+   - Pilot five files after any prompt change before the pool runs, and read the
+     returns, not the counts: a return that says the file had nothing to fill is the
+     prompt's failure until proven otherwise.
+   - The table-copy pass and the search pass are separate runs of the fill agents, never
+     one run that does both per file, so table copying spends no search quota and the
+     search rounds get all of it; and the pass that adds basis sources to the ratings
+     file runs once per build and never again (a second run appends a second copy).
+   - After a new table is pulled mid-fill, the data stage runs again, before any search
+     round, on the files whose open lines name what the table answers, selected by
+     keyword from the open-line lists.
 8. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
    up-and-comers, preseason usage and rest, coach statements on roles, injury risk and
    timelines, handcuffs to own), each reading many whole articles, merged into every
@@ -404,6 +460,23 @@ save nothing else under one.
 Weekly, the morning after the week's last game and before waivers clear; and before
 every draft, lineup lock, trade decision, waiver or free-agent move, and roster move.
 
+0. Re-pull the tables first, on their own cadence, before any collector or merge runs;
+   each file in `data/` carries its pull date, so the stale ones are the ones to redo:
+   weekly in season, every table that changes with the games (the advanced passing,
+   rushing, receiving and defense pages, the team advanced page, the Next Gen Stats
+   leaders, the pace and red-zone pages, the EPA and success-rate tables, the
+   points-allowed-by-position table, the per-player usage shares, the depth charts);
+   once a season, the annual articles (line rankings, win-rate leaderboards, coverage
+   scheme rates) when they publish, and the prior seasons' fantasy rankings, season
+   index and opposition pages (three seasons back, for ages, games missed and prior
+   stops); never again, the prior-season pages once pulled. The current season's red
+   zone, fantasy rankings, index and opposition pages join the weekly in-season list. A new season
+   starts the same way the build does: `data/teams.md` first, then the annual and
+   prior-season tables, then the in-season tables as soon as a week is played, and the
+   previous season's in-season tables are kept under their season name because the
+   coach and line profiles cite them as prior stops. The gap-round procedure under
+   build step 7 is the same in a refresh: a merge that leaves cells open runs it, with
+   the check script after every round.
 1. Collect, once: a few collectors read the pages that cover all 32 teams (the
    transactions wire, the official injury report, the news feeds, the league's
    suspension announcements; in season also the week's line changes and the usage

@@ -74,12 +74,16 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. Two optional scripts ship with it:
+skill file, its reference files, and a manifest. Three optional scripts ship with it:
 `scripts/schedule-tables.py` builds the knowledgebase's schedule-strength tables from
-the schedule and the defense-ratings files (Python 3.8 or later, nothing else); the
-skill copies it into the knowledgebase folder and runs it there during a build or
-refresh, and without Python it reports the tables as not built rather than having an
-agent write them. A second script, `scripts/check-fills.py` (same
+the schedule and the defense-ratings files (Python 3.8 or later, nothing else), reading
+the team codes from the knowledgebase's own `data/teams.md` and stopping when that file
+is missing; the skill copies it into the knowledgebase folder and runs it there during a
+build or refresh, and without Python it reports the tables as not built rather than
+having an agent write them. `scripts/missing-lines.py` (same requirement) is the gap
+rounds' yardstick: it counts the profile lines that say a fact is missing, writes the
+next round's file list, and writes each file's open lines with their line numbers for
+the fill prompts. The third, `scripts/check-fills.py` (same
 requirement; without Python the build reports the fills as unchecked rather than
 checked, and the set is not called complete), checks that each profile sentence a build filled from a saved source
 table cites a table that exists and carries at least one of the sentence's numbers in

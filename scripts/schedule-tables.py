@@ -32,9 +32,33 @@ import glob
 import os
 import re
 
-TEAMS = ['ARI', 'ATL', 'BAL', 'BUF', 'CAR', 'CHI', 'CIN', 'CLE', 'DAL', 'DEN', 'DET',
-         'GB', 'HOU', 'IND', 'JAX', 'KC', 'LV', 'LAC', 'LAR', 'MIA', 'MIN', 'NE', 'NO',
-         'NYG', 'NYJ', 'PHI', 'PIT', 'SF', 'SEA', 'TB', 'TEN', 'WAS']
+# The team codes come from the knowledgebase's own data/teams.md, the same file
+# check-fills.py reads (one team per line, cells split on "|", the first cell the code
+# the profiles use). The script carries no team of its own; the list is the
+# knowledgebase's, and a knowledgebase without the file stops here.
+TEAMS = []
+
+
+def load_teams(kb):
+    path = os.path.join(kb, 'data', 'teams.md')
+    if not os.path.isfile(path):
+        raise SystemExit(f'no {path}: write it first (one team per line: CODE | spelling | spelling ...)')
+    codes = []
+    for raw in open(path, encoding='utf-8'):
+        if raw.lstrip().startswith('#') or '|' not in raw:
+            continue
+        c = [x.strip() for x in raw.strip().strip('|').split('|')]
+        c = [x for x in c if x and not set(x) <= set('-: ')]
+        if len(c) < 2 or not re.fullmatch(r'[A-Z]{2,3}', c[0]):
+            continue  # prose or a header line, skipped the way check-fills.py skips it
+        if c[0] in codes:
+            raise SystemExit(f'{path}: team {c[0]} listed twice')
+        codes.append(c[0])
+    if not codes:
+        raise SystemExit(f'{path} holds no team lines (CODE | spelling | spelling ...)')
+    return sorted(codes)
+
+
 POS = ['QB', 'RB', 'WR', 'TE']
 LETTER = {'soft': 'S', 'average': 'A', 'tough': 'T'}
 WINDOWS = [('Season (1-18)', 1, 18), ('Weeks 1-4', 1, 4), ('Weeks 5-14', 5, 14),
@@ -186,7 +210,7 @@ def write_team(kb, code, rated, notes, date, refreshed, week, sched_name, rating
 
 def write_league(out_path, all_rated, date, refreshed, week, sched_name, ratings_name):
     L = [f'# Schedule strength by position - refreshed {date}', '',
-         f'Built by schedule-tables.py from the 32 schedule/<CODE>.md tables (ratings refreshed {refreshed}). '
+         f'Built by schedule-tables.py from the {len(TEAMS)} schedule/<CODE>.md tables (ratings refreshed {refreshed}). '
          'Score per window = soft games minus tough games; ties broken by soft count, then team code. '
          'S soft, A average, T tough. Facts only; read alongside the engine\'s projection, never ahead of it.', '']
     for name, lo, hi in windows_for(week):
@@ -234,6 +258,7 @@ def main():
         raise SystemExit('--date must be YYYY-MM-DD')
     if a.week < 0 or a.week > 18:
         raise SystemExit('--week must be 1 to 18 (omit it before the season)')
+    TEAMS[:] = load_teams(a.dir)
     sched_path = find(a.dir, 'schedule')
     ratings_path = find(a.dir, 'defense-ratings')
     sched_name = os.path.relpath(sched_path, a.dir)

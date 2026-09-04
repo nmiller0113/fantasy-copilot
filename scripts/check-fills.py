@@ -142,6 +142,8 @@ for raw in open(TEAMS_FILE, encoding='utf-8'):
     cells = [c for c in cells if c and not set(c) <= set('-: ')]
     if len(cells) < 2 or not re.fullmatch(r'[A-Z]{2,3}', cells[0]):
         continue
+    if cells[0] in SPELLINGS:
+        raise SystemExit(f'{TEAMS_FILE}: team {cells[0]} listed twice')
     SPELLINGS[cells[0]] = sorted(set(cells), key=len, reverse=True)
 if not SPELLINGS:
     raise SystemExit(f'{TEAMS_FILE} holds no team lines (CODE | spelling | spelling ...)')

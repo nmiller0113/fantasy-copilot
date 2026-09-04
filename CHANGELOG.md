@@ -5,6 +5,37 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.20.0] - 2026-09-04
+
+**Rules changed: the gap rounds measure and select with `scripts/missing-lines.py`
+and hand every fill agent its own open-line list; the table-copy pass and the search
+pass are separate runs of the fill agents; a new table pulled mid-fill sends the data stage back over the
+files it answers before any search; and the schedule script reads its team codes from
+`data/teams.md` like the validator does.**
+
+New: `scripts/missing-lines.py`, the yardstick (the count of lines that say a fact is
+missing, the next round's file list, and one open-line list per file under `build/`).
+Four source tables the reference now names, all browser-only: the Pro Football
+Reference red zone pages (inside-20, inside-10 and inside-5 splits, which the first
+build had marked subscription-only), the fantasy rankings page per season (age, games
+played and started, three seasons back), the season index and opposition pages per
+season (team plays, sacks, blitz, hurry and pressure rates, prior stops), and the
+rbsdm neutral pass frequency table with its season-filter caveat. The browser pull
+method is written down: an in-page rewrite of the document body into pipe-separated
+rows, then the page text; the three shortcuts that fail are named so they are not
+retried. Refresh step 0 states the table cadence: weekly in season for the tables the
+games change, once a season for the annual articles and the prior-season pages, and a
+new season starts with `data/teams.md`.
+
+Changed: `scripts/schedule-tables.py` carries no team list; it reads `data/teams.md`,
+stops with a message when the file is missing or lists a code twice (the validator
+now stops on a doubled code too), and lists the rollup's rows in sorted
+code order (the 32 team tables are byte-identical to the previous version's output;
+two rollup rows move). Build step 7 adds the pilot rule (five files after any prompt
+change, read the returns), the rule that the prompt names every marker and prose form
+and that a reasoned marker older than a table is re-checked against it, and the rule
+that budget-narration lines are deleted rather than left to inflate the count.
+
 ## [1.19.0] - 2026-09-04
 
 **Rules changed: the knowledgebase build writes `data/teams.md` before the first pull
