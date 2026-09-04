@@ -47,6 +47,22 @@ the facts needed at the clock; this page holds the rest.
   DS's own docs say deleting the synced team and re-syncing fresh fixes "99% of sync
   issues"; do it the day before, never on the clock.
 
+## The scoring editor's fields
+
+The editor's inventory, a snapshot from synced Yahoo leagues in 2026: Passing (yards
+per point, TD, completions, interceptions, sacks taken, first downs, long-play and
+yardage-threshold bonuses, long-TD bonuses); Rushing (yards, TD, attempts, fumbles
+lost, first downs, the same bonus rows); Receiving (yards, TD, targets, PPR set per
+position for WR, RB and TE, punt and kick return yards, first downs, the same bonus
+rows); Kicking (XP made and missed, FG missed, FG by distance bucket); Team Defense
+(TD, special-teams TD, sacks, interceptions, fumble recoveries, safety, points-allowed
+and yards-allowed ladders); IDP (tackles, assists, sacks, interceptions, fumbles
+recovered and forced, passes defended, tackles for loss, QB hits, tackle-count
+bonuses, TDs); Misc (head-coach win and points only). Host categories with no field
+anywhere in that inventory, so they score nothing in DS's projections: player 2-point
+conversions, blocked kicks, returned extra points, player return touchdowns (only
+return yards exist), offensive fumble-return TDs.
+
 ## Personalized Advice (top tier only)
 
 A league-aware form under Support, Advice section (categories: start-sit, waivers,

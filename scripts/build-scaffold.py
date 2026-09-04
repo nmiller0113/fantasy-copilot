@@ -4,8 +4,8 @@
     python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season 2026            # write missing files as skeletons
     python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season 2026 --ages     # fill "-" Age / Vet age / Vet games missed cells by player name
 
-Skeleton: every heading and table header of build/templates-lean.md for teams/, coach/ and
-oline/, a header line with the code, and the team-level numeric cells a saved table holds:
+Skeleton: every heading and table header of the templates in references/knowledgebase.md
+(hardcoded here) for teams/, coach/ and oline/, a header line with the code, and the team-level numeric cells a saved table holds:
 the four gives-up rows from ds-fantasy-points-allowed-<season-1>.md and the ESPN win rates
 and sacks from espn-win-rates-<season-1>.md and pfr-team-offense-<season-1>.md when
 present, each stamped [filled <date>: <file>]. Player rows are judgment and stay empty for

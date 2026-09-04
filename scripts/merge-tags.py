@@ -138,7 +138,7 @@ if not os.path.isfile(teams_md): die([f'no team list at {teams_md}'])
 spellings = {}
 for raw in open(teams_md, encoding='utf-8'):
     if '|' not in raw: continue
-    cs = [c.strip() for c in raw.split('|')]
+    cs = [c.strip() for c in raw.strip().strip('|').split('|')]
     if not CODE.match(cs[0]): continue
     for c in cs:
         if c: spellings.setdefault(c.lower(), cs[0])

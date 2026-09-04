@@ -5,6 +5,54 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.29.1] - 2026-09-04
+
+**No rule changes: a sweep review's findings applied as text. Contradictions between
+sections reconciled, claims trimmed to what the scripts actually do, stale counts and
+dead cross-references corrected, and the skill body cut back below the validator's
+ceiling.**
+
+### Changed
+
+- Contradictions: three places said the knowledgebase is read "alongside" or "not ahead
+  of" the engine's projection while section 10's rule has the read done first and the
+  case and the number said together; all three now say "said beside the engine's
+  projection, never instead of it". Section 5's settings-blind rule now carries the
+  exception section 4 already states (a host tool the settings panel shows scored to
+  this league). Section 6's post-draft IR step now runs the stash procedure at once and
+  again on the clear date, which is what section 8 and the reference say.
+- Claims the scripts do not keep: the refresh seed is described as seeding the role
+  collector from the starters whose absence plan is still open, not "the collectors"
+  from every `-` cell (skill section 10, and the sentence removed from
+  `scripts/kb-lint.py`'s docstring); README names the nine rollup files rather than
+  "every NFL-wide file"; `scripts/pull-list.py --check` no longer claims to check dates;
+  the knowledgebase reference names the rollup outputs the script actually writes.
+- `scripts/merge-tags.py` reads `data/teams.md` the way the other three readers do, a
+  leading and trailing pipe stripped, so a markdown-table row is accepted.
+- Stale text: the build's agent count, the burn-the-claim test's contention input (the
+  host's transaction trends, per section 4), the joins list, and the location the
+  scripts are copied to and run from (the knowledgebase's `build/` folder, in the
+  reference's every command and in README).
+- Dead cross-references: the draft-time IR value test points at itself and section 7's
+  dart forecast rather than a value test section 7 does not hold; `scripts/kb-lint.py`
+  and `scripts/build-scaffold.py` cite the templates in `references/knowledgebase.md`
+  instead of a `build/templates-lean.md` the plugin does not ship; the refresh's
+  runnable form is described as the user's own workflow file; the validator is named;
+  and the draft-time comparator names the healthy player the pick would otherwise take,
+  which is what "the bench player he displaces" meant at a draft.
+- Bloat, every rule kept: the scoring editor's field inventory moves verbatim from
+  SKILL.md section 6 to `references/draft-sharks.md` under its own heading, with the
+  audit rules and the pointer left in the skill; section 10's prose copy of the
+  knowledgebase layout becomes one clause per set; the IR bullet drops the restatement
+  of the section 10 read it already points at; and the reference's guide-pass step, its
+  build history clauses and README's fill-check paragraph defer to the scripts'
+  `--help`.
+
+Why: a sweep review of 1.29.0 read every rule against every other rule and against the
+shipped scripts. Nothing it found changed a rule; what it found was text that had drifted
+from the rules and from the code, and a skill body 489 lines into a 500-line ceiling with
+no room for the next rule.
+
 ## [1.29.0] - 2026-09-04
 
 **The draft-season guide pass is a script: extractor agents write JSON tag rows from a

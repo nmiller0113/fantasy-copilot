@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Lint every profile against the lean template (build/templates-lean.md): headings in order,
+"""Lint every profile against the templates in references/knowledgebase.md (hardcoded
+here): headings in order,
 table headers exact, column counts right, minimum rows, no Sources or Gaps sections, no gap
 parentheticals, no process tags except the two marker families [filled <date>: <source>] and
 [unverified <date>], no URLs, no tool-budget narration. Exit 1 on any failure; the build and
 every refresh stop on it. The last line also counts the "-" cells in the required columns
 (age, role, status, absence plan, rookie evidence and verdict, tendency direction and number,
 player direction, points allowed, defender status and what it softens, line starters): that
-count is the build's progress figure and the refresh seed reads the same cells.
+count is the build's progress figure.
 
     python3 kb-lint.py --dir <kb> [--quiet]
 """

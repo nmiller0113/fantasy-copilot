@@ -135,7 +135,8 @@ live offering disagrees, the live offering wins.
 ## 5. Field rules (live-tested against a host)
 
 - **Settings-blind numbers are noise**: host grades, matchup ratings, trade evaluators
-  and generic ranks ignore the format; the league-aware signal wins every decision.
+  and generic ranks ignore the format unless the tool's own settings panel shows it
+  scored to this league (section 4); the league-aware signal wins every decision.
 - **Reload the standalone War Room tab about three picks before every turn**; its
   rankings list goes stale within a few picks while the pick ticker and roster panel
   stay live. Verify the name at the clock against the reloaded list and the ticker, and
@@ -163,25 +164,13 @@ live offering disagrees, the live offering wins.
    are the classic import miss); confirm the board's QB ordering matches the format.
    Audit against the HOST's full category list, not DS's: DS's scoring editor holds a
    fixed set of fields, and a host category with no DS field imports as nothing, silently.
-   The editor's inventory, a snapshot from synced Yahoo leagues in 2026: Passing (yards
-   per point, TD, completions, interceptions, sacks taken, first downs, long-play and
-   yardage-threshold bonuses, long-TD bonuses); Rushing (yards, TD, attempts, fumbles
-   lost, first downs, the same bonus rows); Receiving (yards, TD, targets, PPR set per
-   position for WR, RB and TE, punt and kick return yards, first downs, the same bonus
-   rows); Kicking (XP made and missed, FG missed, FG by distance bucket); Team Defense
-   (TD, special-teams TD, sacks, interceptions, fumble recoveries, safety, points-allowed
-   and yards-allowed ladders); IDP (tackles, assists, sacks, interceptions, fumbles
-   recovered and forced, passes defended, tackles for loss, QB hits, tackle-count
-   bonuses, TDs); Misc (head-coach win and points only). Host categories with no field
-   anywhere in that inventory, so they score nothing in DS's projections: player 2-point
-   conversions, blocked kicks, returned extra points, player return touchdowns (only
-   return yards exist), offensive fumble-return TDs. Record them in the private document
-   as a known gap and never fake them with Adjust Projections. Like the tier gates in the
-   subscription section, this inventory is a snapshot: re-read the live editor on every
-   new league, and when it disagrees with this list, the live editor wins. The editor's
-   Advanced Scoring switch is ON after a sync and is what shows the bonus rows and the
-   per-position PPR fields; switched off, those rows disappear from the editor, so read
-   its state and never toggle it during an audit.
+   Record such gaps in the private document and never fake them with Adjust Projections.
+   Like the tier gates in the subscription section, the editor's field inventory is a
+   snapshot: re-read the live editor on every new league, and when it disagrees, the live
+   editor wins. The editor's Advanced Scoring switch is ON after a sync and is what shows
+   the bonus rows and the per-position PPR fields; switched off, those rows disappear from
+   the editor, so read its state and never toggle it during an audit. The editor's field
+   inventory is in `references/draft-sharks.md`.
 2. Delete-and-resync if anything looks stale, the day before and never on the clock;
    update the extension.
 3. Run several league-synced mocks from the user's slot once known; chart the range of
@@ -223,8 +212,8 @@ live offering disagrees, the live offering wins.
    Re-verify the whole list day-of, close to lineup lock; statuses flip on practice reports.
 10. **Post-draft IR sweep.** When the draft ends, state the date and time the undrafted
     pool clears to free agency under the host's rules, then run the IR stash procedure
-    (section 8) on that day so the IR slots fill with returns-this-season players for
-    free, not with claims.
+    (section 8) at once to name the candidates, and again on that day so the IR slots
+    fill with returns-this-season players for free, not with claims.
 
 ## 7. Live-draft loop (every pick)
 
@@ -301,10 +290,11 @@ players straight to the IR slot, a player carrying an IR-eligible designation
 (reserve/PUP, IR, or the host's equivalent) costs no bench slot; the IR doctrine
 (section 8, `references/ir-stash.md`) applies at the draft with its tags and value test
 read against the board: RETURNS only, and his rest-of-season projection beats both the
-best healthy player left for the slot and the bench player he displaces. He is taken
-before the room takes him and outranks a healthy bench dart of similar value when the
-dart is not contested; when the forecast says the dart does not reach us and the room
-is not drafting designated players, the dart goes first and the stash waits a pick.
+best healthy player left for the slot and the healthy player the pick would otherwise
+take. He is taken before the room takes him and outranks a healthy bench dart of similar
+value when the dart is not contested; when the forecast says the dart does not reach us
+and the room is not drafting designated players, the dart goes first and the stash waits
+a pick.
 The designation is the test, not the injury: questionable with no designation is a
 bench body. Read the tag on the host's row before naming him either way.
 
@@ -331,9 +321,9 @@ agree beforehand which league gets full attention.
 - **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent
   Finder, sorted by rest-of-season projection for breakouts and stashes, by next week for
   streamers (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against
-  the successor map alongside his projection, not ahead of it: a full-role replacement
-  earns a claim, a committee member a maybe. Mind the DROP side. Re-run after waivers
-  clear.
+  the successor map, said beside the engine's projection, never instead of it: a
+  full-role replacement earns a claim, a committee member a maybe. Mind the DROP side.
+  Re-run after waivers clear.
 - **The replaceability test, on every add-or-drop.** The add's cost is named in the
   same line as the recommendation, in one of two forms: free and instant, or a
   priority or FAAB cost with the clear date. It is read from the host's own row for
@@ -379,13 +369,10 @@ agree beforehand which league gets full attention.
   costs nothing either, so the value test does not apply and "leave it empty" is never
   the answer while such a player exists. A candidate still on waivers is not free: he
   goes through the burn-the-claim test below before any claim is spent. At the draft
-  the pick is the cost, so section 7's value test governs and the dart forecast still
+  the pick is the cost, so this value test applies and section 7's dart forecast
   decides the order. **Order the eligible pool by the knowledgebase read and state the
-  projection for each name, neither ahead of the other**: the projection alone ranks
-  nothing here, because it prices the starter ahead of him staying healthy and scores
-  every backup near zero. The read is the starter's age, status and absence plan from
-  his Rooms row, his games missed over three seasons from the rookies table where that
-  row exists, and the stash's own history under that staff; the case and the number
+  projection for each name, neither ahead of the other** (section 10's read; the rows
+  that decide a stash are in `references/ir-stash.md`): the case and the number
   are both said, for each name, and the user decides. The burn-the-claim test:
   default to the free window (the host's clear date, recorded once in the private
   document) and never spend priority or FAAB on a stash unless RETURNS, starter-level
@@ -402,8 +389,7 @@ agree beforehand which league gets full attention.
 Keep everything user-specific OUT of this skill and IN a private local document the user
 controls (league names and ids, scoring quirks, team names, draft slots, voice preferences,
 dated lessons, submitted advice questions). Read it at the start of any fantasy task; append
-dated lessons there after every draft and season. The knowledgebase of section 10 lives
-beside that document, private to the user, refreshed on the cadence in section 10. This
+dated lessons there after every draft and season. This
 skill stays user-agnostic; improve it only with knowledge that is true for every Draft
 Sharks subscriber.
 
@@ -414,25 +400,14 @@ injured starter's replacement is one man or a committee, how old the veteran ahe
 a rookie is, or who was rested in the preseason finale because the staff had decided on
 him. Those facts decide bench rounds, stashes and waiver claims, and nobody can look
 them up on a live clock unless they are already written down. So the copilot keeps a
-knowledgebase beside the private document: a dossier per team (rooms by position with
-age, role, status and designation; the coach's plan for absences; an availability
-table; rookies and young players behind veterans with the veteran's games missed over
-three seasons and the share trajectory; a media read with preseason usage and rest
-signals and the sleeper, breakout, bust and risk tags; hype labeled as hype) plus
-NFL-wide cross-cuts (the availability list with each replacement plan; a successor map
-with PRIMARY, COMMITTEE or UNSETTLED for every NFL RB, WR and TE starter; rookies;
-recent reporting and hype; suspensions and open reviews; play callers and scheme) and
-three per-team profile sets with their own NFL-wide rollups: the whole staff's
-tendencies from prior stops, with numbers, the play caller's matched player by player
-to his roster as bounceback, step-forward, downgrade or unchanged and checked in season
-against actual usage, the defensive coordinator's as the DEF/ST unit's direction and
-what his scheme gives up by position; the offensive line, measured, with its impact on
-the back, the quarterback and the pass-catchers; and the schedule with every defense
-rated by position per week, playoff windows marked, refreshed from actual points
-allowed and adjusted each week for injured key defenders, because a defense missing
-its top corner or its edge rusher is a different matchup that week. All of it is read
-alongside the engine's projection, never ahead of it. The template, the build, the
-refresh and the search commands are in `references/knowledgebase.md`; read it when
+knowledgebase beside the private document: a dossier per team (rooms, absence plans,
+rookies behind veterans, the media read); a play-caller, a defensive-coordinator and an
+offensive-line profile per team; the schedule with every defense rated by position per
+week, adjusted for injured key defenders; and the NFL-wide cross-cuts a script joins
+from them (availability, successor map, rookies, reporting and hype, suspensions, play
+callers and scheme). All of it is said beside the engine's projection, never instead of
+it. The template, the build, the refresh and the search commands are in
+`references/knowledgebase.md`; read it when
 building or refreshing, not at the clock. Judgment work in a build or refresh runs
 on the strongest model available; extraction from league-wide pages runs on a lower
 tier; anything derivable from two existing files is a script (the schedule tables are
@@ -446,9 +421,10 @@ names the twenty-one kept tables, their cadence and the columns kept; `--check` 
 run until they are present), Draft Sharks' own tools first and then the free public
 pages the browser can read; `scripts/check-fills.py` holds every filled number to the
 rows of the table it cites. There are no gap rounds: a cell the judgment agent could not
-fill holds `-`, the next refresh's collectors are seeded from those cells
-(`scripts/refresh-seed.py`), and a fact nobody will ever publish, or that no decision in
-this skill reads, is never a cell at all (the reference's never-collected list: paywalled
+fill holds `-`, the next refresh's role collector is seeded from the starters whose
+absence plan is still open (`scripts/refresh-seed.py`), and a fact nobody will ever
+publish, or that no decision in this skill reads, is never a cell at all (the
+reference's never-collected list: paywalled
 charting, camp rep counts, contract dollars, box-score lines the engine already prices,
 source lists, method notes). A page the fetch tool cannot reach is read in the browser
 and saved as a table.

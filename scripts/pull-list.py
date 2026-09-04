@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """The source tables the knowledgebase keeps, and nothing else: print the pull list for a
-build or a refresh, or check that the files a run needs are present and dated.
+build or a refresh, or check that the files a run needs are present.
 
     python3 pull-list.py --dir <kb> --annual            # new season: everything
     python3 pull-list.py --dir <kb> --week N            # in season: the weekly set

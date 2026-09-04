@@ -9,6 +9,12 @@ Draft War Room, 3D Value, live-draft sync extension, injury model, and in-season
 Without a paid Draft Sharks subscription it has nothing to steer by. **Only Draft Sharks is
 supported today; other tools may be added in the future.**
 
+It also supports whatever your league host's paid subscription tiers provide, Yahoo
+Fantasy Plus and Yahoo Fantasy Ultra today, as data points beside the engine, never as a
+second engine: it asks which tier you pay for, records it in your private league
+document, and reads the live offering rather than a list it carries, because what a tier
+provides changes.
+
 Two things the skill will establish up front:
 
 - **Your subscription tier.** Draft Sharks sells several tiers and they gate real features
@@ -75,40 +81,34 @@ Then `/reload-plugins`, or restart. Update later with
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
 skill file, its reference files, and a manifest. Ten optional scripts ship with it
-(Python 3.8 or later, nothing else; the skill copies them into the knowledgebase folder
-and runs them there, and without Python it reports the joins as not built rather than
-having an agent write them): `scripts/pull-list.py` names the source tables the
-knowledgebase keeps, their cadence and the columns kept at pull time, and refuses a run
-until they are present; `scripts/kb-lint.py` enforces the profile templates (headings,
-table headers, column counts, no source lists, no gap or method notes) and every build
-and refresh stops on it; `scripts/rollups.py` writes every NFL-wide file as a join over
-the per-team tables; `scripts/refresh-seed.py` prints the starters whose absence plan is
-still open, which seeds the refresh's role collector; `scripts/build-scaffold.py` writes
-every profile in its template shape with the team-level table cells filled, and later
-fills ages and games missed by player name from the fantasy pages; `scripts/schedule-tables.py` builds
-the schedule-strength tables from the schedule and the defense-ratings files, reading the
-team codes from the knowledgebase's own `data/teams.md`; `scripts/missing-lines.py` and
+(Python 3.8 or later, nothing else; the skill copies them into the knowledgebase's
+`build/` folder and runs them from there, and without Python it reports the joins as not
+built rather than having an agent write them): `scripts/pull-list.py` names the source
+tables the knowledgebase keeps, their cadence and the columns kept at pull time, and
+refuses a run until they are present; `scripts/kb-lint.py` enforces the profile
+templates (headings, table headers, column counts, no source lists, no gap or method
+notes) and every build
+and refresh stops on it; `scripts/rollups.py` writes the nine NFL-wide cross-cut files as
+a join over the per-team tables; `scripts/refresh-seed.py` prints the starters whose
+absence plan is still open, which seeds the refresh's role collector;
+`scripts/build-scaffold.py` writes every profile in its template shape with the
+team-level table cells filled, and later fills ages and games missed by player name from
+the fantasy pages; `scripts/schedule-tables.py` builds the schedule-strength tables from
+the schedule and the defense-ratings files, reading the team codes from the
+knowledgebase's own `data/teams.md`; `scripts/missing-lines.py` and
 `scripts/gap-list.py` count and list the cells still open in a knowledgebase written as
 prose (the first build's shape) and are the yardstick for one; `scripts/merge-tags.py`
 writes extractor agents' JSON tag rows from a subscriber draft guide into the team
 files' media-read tables under the guide's outlet label, so no agent edits a profile
 and a new edition of the guide is one rerun. The tenth,
 `scripts/check-fills.py` (same requirement; without Python the build reports the fills as
-unchecked rather than checked, and the set is not called complete), checks that each cell
-a build filled from a saved source table cites a table that exists and carries at least
-one of the cell's numbers in the rows of a player or team the line, its heading or its
-file name names. A marker that names no source does not pass, and neither does a cell
-whose subject is absent from the table it cites. A name several players answer to is held
-to the teams that same line names, so another club's row cannot answer for the player the
-line is about; a name only one row answers to is already one player and finds him
-wherever he plays, and a row that names no team at all answers to any name; those are the
-two ways a figure from a club the line never mentions still passes. Two things a clean
+unchecked rather than checked, and the set is not called complete), holds each cell a
+build filled from a saved source table to the table it cites, requiring one of the cell's
+numbers in the rows of a player or team the line, its heading or its file name names; see
+its `--help` for how the anchors and the search space are resolved. Two things a clean
 run does not prove: that the figure came from the right column; and that the cell's other
 figures are right, since one correct figure carries the cell past every wrong one beside
-it. A line that names two teams is still checked against both, so name the team beside
-the number when two are in play. A depth-chart
-citation is checked by player name instead, searched across all 32 teams, since a depth
-chart holds no numbers worth checking. The release validator, `scripts/check.sh`, is a
+it. The release validator, `scripts/check.sh`, is a
 maintainer tool run by hand before publishing and needs bash and git; on Windows, Git
 for Windows provides both. Users never run it, and Claude never runs it inside the skill.
 

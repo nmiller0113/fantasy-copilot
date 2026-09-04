@@ -96,7 +96,8 @@ period no recorded setting predicts.
 
 Say "worth the claim" only when all three hold: RETURNS with a stated window, DS
 rest-of-season projection at starter level for the league's format, and real contention
-(rising percent rostered, or another team with an open IR or bench slot and a reason to
+(the host's transaction trends where the tier holds them, skill section 4; rising
+percent rostered; or another team with an open IR or bench slot and a reason to
 want him). Name the cost in the same line (back of the rolling list, or the FAAB amount)
 so the user decides with the price in view.
 
