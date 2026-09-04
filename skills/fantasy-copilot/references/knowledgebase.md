@@ -195,7 +195,7 @@ The line a filled number sits on has to say whose number it is: the check finds 
 row by the player's name or the team, taking both from the line, its heading and the
 profile's file name, and a line naming neither fails. A heading here is a markdown
 heading, a bold-led bullet, or a plain label line ending in a colon, which is how the
-coach files introduce a benchmark unit ("2025 San Francisco under Saleh:"). Keep a
+coach files introduce a benchmark unit ("<season> <team> under <coordinator>:"). Keep a
 filled sentence and its marker on one line: the check reads one line at a time, and a
 sentence wrapped across two fails for want of a number. Write the number as the table
 writes it, sign included. A number the pass computed rather than read (a rank, a
@@ -208,8 +208,8 @@ any one line. And keep one subject to a line where the attribution matters, beca
 script holds you to it: a name several players answer to reaches only the rows of a team
 that same line names, or rows carrying no team, so a figure from a club the line never
 mentions does not pass. A name only one row answers to is already one player, which is
-how a surname on its own ("Andrews 10") still finds the benchmark player under a
-different club's profile. A line carrying two teams is checked against both, and neither
+how a surname on its own still finds the benchmark player under a different club's
+profile. A line carrying two teams is checked against both, and neither
 figure is pinned to its own team, so name the team beside the number when two are in
 play.
 
@@ -333,9 +333,13 @@ save nothing else under one.
 
 0. Confirm the location with the user and get an explicit go-ahead (skill section 10);
    offer the NFL-wide cross-cuts alone as the starter set when the full build is more
-   than the user wants. Then pull the source tables above into `data/` before any
-   profile pass starts, so no pass fetches one of those tables on its own (the
-   season schedule in step 6 is fetched there, twice, by design).
+   than the user wants. Write `data/teams.md` first: one team per line, the code the
+   profiles use, then every spelling the tables to be pulled print for it (another
+   site's code, the city, the nickname, the full name); the check script reads its
+   teams from that file and carries none of its own. Then pull the source tables
+   above into `data/` before any profile pass starts, so no pass fetches one of those
+   tables on its own (the season schedule in step 6 is fetched there, twice, by
+   design).
 1. One pass per team, in parallel where the harness offers subagents and one at a time
    where it does not, each writing the dossier from the hierarchy above. Ground rules
    for every pass: today's date and the Week 1 dates stated up front; sources from the

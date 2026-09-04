@@ -9,8 +9,9 @@ rows, not against the file as a whole:
      heading, a bold-led bullet, or a plain label line ending in a colon) and the
      profile's own file name: every player name, every team code, and every NFL city or
      nickname that maps to a code. A data file may spell the team its own way, so a code
-     is searched as PFR spells it too (TAM, KAN, NWE, LVR, GNB, SFO, NOR, JAC) and as the
-     full name ("Cincinnati Bengals") for the tables that print names instead of codes.
+     is searched under every spelling data/teams.md lists for it (another site's code,
+     the city, the nickname, the full name) for the tables that print names instead
+     of codes. The script carries no team of its own; the list is the knowledgebase's.
   2. The rows of the cited table carrying one of those anchors are the search space. On
      a player table a name finds the row; on a team-level table (points allowed, EPA,
      win rates, scheme rates, line rankings) only the code does; a name that matches
@@ -22,9 +23,9 @@ rows, not against the file as a whole:
      name, it reaches only the rows that also carry one of the line's teams, or rows
      carrying no team at all; a name that answers to exactly one row in the table is
      already one player and reaches it either way, which is what lets a surname on its
-     own find a benchmark player on another club. A word inside a multi-word city or
-     nickname is never a name, so "Bay" cannot carry a Green Bay line into Tampa Bay's
-     rows and "New" cannot carry a New England line into New Orleans or New York.
+     own find a benchmark player on another club. A word inside a multi-word team
+     spelling is never a name, so a city word two clubs share, or a direction word
+     three clubs share, cannot carry one club's line into the others' rows.
   3. At least one number in the sentence, bare four-digit seasons excluded, must appear
      as a whole token in that search space, with the sign respected. Both ends of a
      hyphenated range count; a season span or an ISO date is blanked first, so its tail
@@ -41,8 +42,8 @@ sits in the rows of one of them. What it does NOT prove:
   - that the sentence's other figures are right, only that one of them is in the rows.
     A sentence carrying one correct figure passes with every other figure wrong;
   - that a figure belongs to the team it is written under when the line names two teams.
-    Every team on the line contributes its rows, so on "Cincinnati allowed this,
-    Baltimore that" a Baltimore figure passes under either. That is deliberate: the
+    Every team on the line contributes its rows, so on "<team A> allowed this,
+    <team B> that" a team-B figure passes under either. That is deliberate: the
     coach and line profiles quote a coordinator's previous stop on the same line as his
     current one, and no rule of shape tells those two apart. Write one subject to a line
     when the attribution has to be checkable, and a line naming one team is now held to
@@ -123,35 +124,28 @@ SPAN = re.compile(r'(?:19[5-9]\d|20[0-3]\d)-\d\d(?:-\d\d)?(?!\d)')
 # word boundary so that "the highest. " still ends a sentence.
 BOUNDARY = re.compile(r'(?<!vs)(?<!Jr)(?<!Sr)(?<!No)(?<!St)(?<!\bavg)(?<!\bapprox)(?<!\best)\. |\| |; ')
 
-TEAMS = {
-    'ARI': ('Arizona', 'Cardinals'), 'ATL': ('Atlanta', 'Falcons'), 'BAL': ('Baltimore', 'Ravens'),
-    'BUF': ('Buffalo', 'Bills'), 'CAR': ('Carolina', 'Panthers'), 'CHI': ('Chicago', 'Bears'),
-    'CIN': ('Cincinnati', 'Bengals'), 'CLE': ('Cleveland', 'Browns'), 'DAL': ('Dallas', 'Cowboys'),
-    'DEN': ('Denver', 'Broncos'), 'DET': ('Detroit', 'Lions'), 'GB': ('Green Bay', 'Packers'),
-    'HOU': ('Houston', 'Texans'), 'IND': ('Indianapolis', 'Colts'), 'JAX': ('Jacksonville', 'Jaguars'),
-    'KC': ('Kansas City', 'Chiefs'), 'LAC': ('Chargers',), 'LAR': ('Rams',),
-    'LV': ('Las Vegas', 'Raiders'), 'MIA': ('Miami', 'Dolphins'), 'MIN': ('Minnesota', 'Vikings'),
-    'NE': ('New England', 'Patriots'), 'NO': ('New Orleans', 'Saints'), 'NYG': ('Giants',),
-    'NYJ': ('Jets',), 'PHI': ('Philadelphia', 'Eagles'), 'PIT': ('Pittsburgh', 'Steelers'),
-    'SEA': ('Seattle', 'Seahawks'), 'SF': ('San Francisco', '49ers'), 'TB': ('Tampa Bay', 'Buccaneers'),
-    'TEN': ('Tennessee', 'Titans'), 'WAS': ('Washington', 'Commanders'),
-}
-# The same team as the data files spell it: PFR and the Draft Sharks depth charts differ.
-VARIANTS = {'TB': ['TAM'], 'KC': ['KAN'], 'NE': ['NWE'], 'LV': ['LVR', 'OAK'], 'GB': ['GNB'],
-            'SF': ['SFO'], 'NO': ['NOR'], 'JAX': ['JAC'], 'LAR': ['RAM'], 'WAS': ['WSH']}
-WORD_TO_CODE = {}
-for code, words in TEAMS.items():
-    for w in words:
-        WORD_TO_CODE[w] = code
-CODES = set(TEAMS)
-# How a data file may spell one team in a row: the code, PFR's code, the full name, the
-# nickname. Pro Football Reference's team page prints "Cincinnati Bengals", not "CIN".
+# The teams and every spelling the pulled tables use come from the knowledgebase's own
+# data/teams.md, never from this script: one team per line, cells split on "|", the
+# first cell the code the profiles use, the rest every other form a data file prints
+# (another site's code, the city, the nickname, the full name). Lines starting with "#"
+# or holding no "|" are ignored. The build writes that file before the first pull.
+TEAMS_FILE = os.path.join(data_dir, 'teams.md')
+if not os.path.isfile(TEAMS_FILE):
+    raise SystemExit(f'no {TEAMS_FILE}: write it first (one team per line: CODE | spelling | spelling ...)')
 SPELLINGS = {}
-for code, words in TEAMS.items():
-    forms = [code] + VARIANTS.get(code, []) + list(words)
-    if len(words) == 2:
-        forms.append(' '.join(words))
-    SPELLINGS[code] = sorted(set(forms), key=len, reverse=True)
+for raw in open(TEAMS_FILE, encoding='utf-8'):
+    if raw.lstrip().startswith('#') or '|' not in raw:
+        continue
+    cells = [c.strip() for c in raw.strip().strip('|').split('|')]
+    cells = [c for c in cells if c and not set(c) <= set('-: ')]
+    if len(cells) < 2 or not re.fullmatch(r'[A-Z]{2,3}', cells[0]):
+        continue
+    SPELLINGS[cells[0]] = sorted(set(cells), key=len, reverse=True)
+if not SPELLINGS:
+    raise SystemExit(f'{TEAMS_FILE} holds no team lines (CODE | spelling | spelling ...)')
+CODES = set(SPELLINGS)
+# A word or phrase that names a team, mapped to its code: every non-code spelling.
+WORD_TO_CODE = {f: c for c, fs in SPELLINGS.items() for f in fs if not re.fullmatch(r'[A-Z]{2,3}', f)}
 # One pass that finds every team a line mentions, however the file spells it.
 FORM_TO_CODE = {f: c for c, fs in SPELLINGS.items() for f in fs}
 ANY_TEAM = re.compile(r'(?<![\w])(' + '|'.join(re.escape(f) for f in
@@ -171,17 +165,14 @@ NOT_A_NAME = {
     'Air', 'Yards', 'Attempts', 'Deep', 'Short', 'Motion', 'Shotgun', 'Empty', 'Screen',
     'Personnel', 'Down', 'Third', 'Neutral', 'Carries', 'Dropbacks', 'Share', 'Splits',
 }
-# A word inside a multi-word city or nickname is never a player name, because on its own
-# it reaches the wrong club: "Bay" would take a Green Bay line into Tampa Bay's rows and
-# "New" would take a New England line into New Orleans, New York Giants and New York Jets.
-TEAM_WORDS = {
-    'New', 'England', 'Green', 'Bay', 'Kansas', 'City', 'Tampa', 'San', 'Francisco',
-    'Las', 'Vegas', 'Orleans', 'York', 'Angeles', 'Los',
-}
+# A word inside a multi-word team spelling is never a player name, because on its own it
+# reaches every other club that shares the word (a city word two clubs share, a
+# direction word three clubs share).
+TEAM_WORDS = {w for f in WORD_TO_CODE for w in f.split() if len(f.split()) > 1}
 NAME_TOKEN = re.compile(r"\b[A-Z][a-zA-Z'.-]{2,}\b")
 # The heading a bullet sits under names its subject when the bullet itself does not: a
 # markdown heading, a bold-led bullet, or a plain label line ending in a colon, which is
-# how the coach profiles introduce a benchmark unit ("2025 San Francisco under Saleh:").
+# how the coach profiles introduce a benchmark unit ("<season> <team> under <coordinator>:").
 HEADING = re.compile(r'^\s*(?:#{1,6}\s|[-*]?\s*\*\*[^*]+\*\*|[^-*#\s][^\n]{0,140}:\s*$)')
 # Table lines that are prose, not data: a header, a source note, a column list, a rule.
 PROSE = re.compile(r'^\s*(?:#|\|?\s*-{3,}|Source|Sources|Columns|Glossary|Note|Notes|Definitions)\b')
@@ -247,8 +238,8 @@ def whole_number_in(n, table):
 
 def anchors(line, file_code):
     """The player names and teams a stretch of text is about, plus the profile's own
-    team. An all-capitals token is never a player here: the tables print "Joe Burrow",
-    so OLB, ADOT and YBC are column and position labels, not names."""
+    team. An all-capitals token is never a player here: the tables print names in
+    mixed case, so OLB, ADOT and YBC are column and position labels, not names."""
     names = set()
     for w in NAME_TOKEN.findall(line):
         w = re.sub(r"'s$", '', w)
@@ -300,13 +291,13 @@ def rows_for(names, codes, lines):
 
     A name that several rows answer to is scoped to the teams the line names: it counts
     only where the row also carries one of those teams, however the file spells it, or
-    carries no team at all. Without that, "Chris Jones" on a Kansas City line reaches
-    Chris Paul's Washington row and D.J. Jones's Denver row, and "Quinnen Williams" on
-    a Dallas line reaches Trent Williams's San Francisco row, so a figure from a team
-    the line never names passes. A name that answers to exactly one row in the table is
-    already one player and needs no tie-break, which is what lets a surname on its own
-    ("Andrews 10") find him on the team the line is benchmarking against. When the line
-    names no team at all there is nothing to scope to, and every name stands alone."""
+    carries no team at all. Without that, a common first name or surname on one team's
+    line reaches every other player who shares it, on every other team, so a figure
+    from a team the line never names passes. A name that answers to exactly one row in
+    the table is already one player and needs no tie-break, which is what lets a surname
+    on its own find a benchmark player on the club the line is comparing against. When
+    the line names no team at all there is nothing to scope to, and every name stands
+    alone."""
     forms = [f for c in codes for f in SPELLINGS[c]]
     by_code = [ln for ln in lines
                if any(re.search(r'(?<![\w])' + re.escape(f) + r'(?![\w])', ln) for f in forms)]

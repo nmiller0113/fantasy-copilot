@@ -5,6 +5,19 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.18.1] - 2026-09-04
+
+Fixed: the 1.18.0 text used real players as examples in the check script's docstring,
+in the 1.18.0 entry below and in one line of the knowledgebase reference. The skill
+carries no player names, ever: they date, they are nobody's business in a public file,
+and an example that names a player reads as a rule about that player. The examples now
+describe the shape (a shared surname, a benchmark player on another club) and the
+1.18.0 entry is corrected in place. The same rule covers teams: the check script no
+longer carries the league's teams and spellings; it reads them from the knowledgebase's
+own `data/teams.md` (one team per line, the profile code first, then every spelling the
+pulled tables print), which build step 0 now writes, and it stops with a message when
+that file is missing. No rule of the skill changed.
+
 ## [1.18.0] - 2026-09-03
 
 **Rules changed: a knowledgebase build pulls its source tables once, into a `data/`
@@ -38,14 +51,15 @@ different teams is a league-wide list rather than one subject's row, so it is sp
 "; " first and only the entry carrying the anchor is searched; without that, ESPN's
 player top twenties put twenty teams' numbers within reach of any one of them. A name
 several players answer to is held to the teams the line itself names, or to rows carrying
-no team, so Chris Paul's Washington row does not answer for Chris Jones on a Kansas City
-line and Trent Williams's does not answer for Quinnen Williams on a Dallas one; a name
-only one row answers to is already one player and reaches it either way, which is what
-lets "Andrews 10" find the benchmark tight end under another club's profile. A word
-inside a multi-word city or nickname is never a name, so "Bay" cannot carry a Green Bay
-line into Tampa Bay's rows, nor "New" a New England line into New Orleans or New York. An
-all-capitals token is never read as a player name: the tables print "Joe Burrow", so
-OLB and ADOT are labels. At least one of the sentence's numbers must be in those rows,
+no team, so a shared first name or surname on one club's line no longer reaches the
+other players who carry it on other clubs; a name only one row answers to is already one
+player and reaches it either way, which is what lets a surname on its own find a
+benchmark player under another club's profile. A word inside a multi-word team spelling
+is never a name, so a city word two clubs share cannot carry one club's line into the
+other's rows. The teams and their spellings are read from the knowledgebase's own
+`data/teams.md`, which the build writes; the script carries no team. An all-capitals token is
+never read as a player name: the tables print names in mixed case, so OLB and ADOT are
+labels. At least one of the sentence's numbers must be in those rows,
 sign included, counting both ends of a hyphenated range and no part of a season span or
 an ISO date; a line naming no player or team the table covers fails, and so does a
 sentence wrapped across two lines, because the check reads one line at a time. A
