@@ -5,6 +5,25 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.27.0] - 2026-09-04
+
+**Rule changed: the cost of an add is read from the host's own row for that player,
+never from the engine's free-agent finder.**
+
+### Changed
+
+- Section 8, replaceability test: the add's cost is named in one of two forms, free
+  and instant or a priority or FAAB cost with the clear date, and read from the host's
+  row for that player; the engine's Free Agent Finder does not distinguish a free
+  agent from a player on waivers and carries neither the cost nor the clear date.
+- `references/ir-stash.md`, the free window: the recorded settings give the cadence,
+  the player's own host row gives his current status, because a just-dropped player
+  sits on a fresh waiver period no recorded setting predicts.
+
+Why: a copilot called two dropped players "free agency, instant" from the finder's add
+label while the host's transaction log, already read that morning, showed both on
+two-day waivers. The user caught it.
+
 ## [1.26.0] - 2026-09-04
 
 **Rules changed: every add-or-drop runs the replaceability test beside the number; a

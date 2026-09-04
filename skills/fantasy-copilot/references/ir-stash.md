@@ -88,7 +88,9 @@ waivers after the draft and for how long, whether injured adds can go straight t
 and the priority mechanism (rolling list or FAAB). A player who has cleared to free
 agency is instant and free. Default: wait for the clear date and take him free; never
 spend rolling priority or FAAB on a stash by default. State the clear date next to every
-candidate.
+candidate. The recorded settings give the cadence; the player's own host row gives his
+current status, because a player another team just dropped sits on a fresh waiver
+period no recorded setting predicts.
 
 ## Burn-the-claim flag
 

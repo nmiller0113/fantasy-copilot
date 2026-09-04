@@ -308,23 +308,26 @@ agree beforehand which league gets full attention.
   the successor map alongside his projection, not ahead of it: a full-role replacement
   earns a claim, a committee member a maybe. Mind the DROP side. Re-run after waivers
   clear.
-- **The replaceability test, on every add-or-drop.** After the full read (section
-  10) and beside the engine's number, with the add's cost in priority or FAAB named in
-  the same line, say for each side whether he can be re-acquired from this league's
-  pool later: a player at a position the pool still holds several of at the same tier
-  (a second quarterback in a one-quarterback league where the pool holds starters, a
-  streaming defense or kicker) can, and a player whose value is contingent on an
-  injury or a role change cannot, because he is claimed the day it happens. The test
-  argues the bench slot for the one who cannot be replaced and says how the
-  replaceable need is met the week it arises from whatever the pool holds then. A
-  projection gap alone does not settle an add-or-drop between a replaceable player
-  and an unreplaceable one; the gap is said, the test is said, and the user decides.
-  When both sides carry the same tag the test is silent and the projection and the
-  read decide; how many contingent stashes a bench carries is the user's call, said
-  with the test. The knowledgebase's successor rows name the contingent players: a
-  back or receiver the successor map lists under COMMITTEE, or as PRIMARY if the
-  starter is out, holds that value on the user's bench whether or not the user owns
-  the starter.
+- **The replaceability test, on every add-or-drop.** The add's cost is named in the
+  same line as the recommendation, in one of two forms: free and instant, or a
+  priority or FAAB cost with the clear date. It is read from the host's own row for
+  that player; the engine's Free Agent Finder does not distinguish a free agent from a
+  player on waivers and carries neither the cost nor the clear date. Then, after the
+  full read (section 10) and beside the engine's number, say for each side whether he
+  can be re-acquired from this league's pool later: a player at a position the pool
+  still holds several of at the same tier (a second quarterback in a one-quarterback
+  league where the pool holds starters, a streaming defense or kicker) can, and a player
+  whose value is contingent on an injury or a role change cannot, because he is claimed
+  the day it happens. The test argues the bench slot for the one who cannot be replaced
+  and says how the replaceable need is met the week it arises from whatever the pool
+  holds then. A projection gap alone does not settle an add-or-drop between a
+  replaceable player and an unreplaceable one; the gap is said, the test is said, and
+  the user decides. When both sides carry the same tag the test is silent and the
+  projection and the read decide; how many contingent stashes a bench carries is the
+  user's call, said with the test. The knowledgebase's successor rows name the
+  contingent players: a back or receiver the successor map lists under COMMITTEE, or as
+  PRIMARY if the starter is out, holds that value on the user's bench whether or not the
+  user owns the starter.
 - **Post-waivers**: Team Dashboard check for the recommended lineup and injury flags.
 - **Practice-report days**: Shark Bites news; a starter going down means an immediate
   handcuff run before league-mates react.
