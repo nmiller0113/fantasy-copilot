@@ -39,6 +39,9 @@ Two things the skill will establish up front:
   named, whether an injured starter's replacement is one man or a committee, the rookie
   behind the aging veteran, preseason usage and rest) plus NFL-wide cross-cuts, built
   before the season with your go-ahead and refreshed as a delta before every decision.
+  The numbers behind it come from source tables pulled once (Draft Sharks' own tools
+  first, then the free public tables) and saved beside the profiles, so no pass has to
+  fetch a table on its own.
 - **Discipline you'll be glad it has:** it never clicks a pick or submits a roster move
   (you drive, always), it never skews Draft Sharks' projections to match its own opinions
   (two independent signals, argued out loud), and it keeps your league details in your own
@@ -71,14 +74,30 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. One optional script ships with it:
+skill file, its reference files, and a manifest. Two optional scripts ship with it:
 `scripts/schedule-tables.py` builds the knowledgebase's schedule-strength tables from
 the schedule and the defense-ratings files (Python 3.8 or later, nothing else); the
 skill copies it into the knowledgebase folder and runs it there during a build or
 refresh, and without Python it reports the tables as not built rather than having an
-agent write them. The release validator, `scripts/check.sh`, is a maintainer tool
-run by hand before publishing and needs bash and git; on Windows, Git for Windows
-provides both. Users never run it, and Claude never runs it inside the skill.
+agent write them. A second optional script, `scripts/check-fills.py` (same
+requirement), checks that each profile sentence a build filled from a saved source
+table cites a table that exists and carries at least one of the sentence's numbers in
+the rows of a player or team the line, its heading or its file name names. A marker
+that names no source does not pass, and neither does a sentence whose subject is absent
+from the table it cites. A name several players answer to is held to the teams that same
+line names, so another club's row cannot answer for the player the line is about; a name
+only one row answers to is already one player and finds him wherever he plays, which is
+also the one way a figure from a club the line never mentions still passes. Two things a
+clean run does not prove: that the figure came from the right column; and that the
+sentence's other figures are right, since one correct figure carries the sentence past
+every wrong one beside it. A line that names two teams is still checked against both,
+which is how the coach files quote a coordinator's previous unit beside his current one,
+so write one subject to a line where the attribution has to be checkable. A depth-chart
+citation is checked by player name instead, searched across all 32 teams, since a depth
+chart holds no numbers worth checking. The release validator, `scripts/check.sh`, is a
+maintainer tool run by hand before publishing and needs bash and git; on Windows, Git
+for Windows provides both.
+Users never run it, and Claude never runs it inside the skill.
 
 ## License
 

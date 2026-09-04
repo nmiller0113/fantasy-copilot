@@ -10,6 +10,7 @@ Beside the user's private document, under the user's control, never inside this 
     kb/<season>/
       README.md                       structure, vocabulary, refresh procedure
       refresh-log.md                  one line per refresh: date, trigger, what changed
+      data/                           the source tables, saved as pulled, one file per table
       teams/<CODE>.md                 one dossier per NFL team, same headings in every file
       nfl/availability.md             everyone not fully available, with replacement plan
       nfl/successor-map.md            PRIMARY / COMMITTEE / UNSETTLED per RB, WR, TE starter
@@ -175,7 +176,42 @@ plan is PRIMARY (one man takes the whole role), COMMITTEE (a named split) or UNS
 and the file says which source made it so. Hype is labeled hype; reporting is labeled
 reporting. Markers on a line: `[verified <date>]` a skeptic corrected it, `[unverified
 <date>]` no dated source was found either way, `[gap fill <date>]` a critic round added
-it, `[<date>]` a refresh changed it.
+a fact that is not a number from a table, `[<date>]` a refresh changed it, `(Gap)` a
+number or fact the pass could not reach (written in place of the number, never
+omitted), `[filled <date>: <data file>]` a cell filled from a saved source table,
+naming the file under `data/` with its extension, and `[filled <date>: <outlet>
+<date>]` a cell filled from a dated search result. Any number copied from a table
+carries the filled form, never `[gap fill]`. The check script tells the two apart by
+shape, not by date: a citation with no spaces in it, or one carrying `data/` or a file
+extension, is a file citation, so a misspelled, extensionless or wrongly dated file
+name fails instead of passing as a search fill, even when the file's own name ends in
+a date. The search form is counted and never checked against a table. Write the marker
+exactly: a bracket carrying the word "filled" in any other shape (a missing colon, a
+missing date, no source named at all) fails as a malformed marker, and a set whose
+`data/` holds tables but whose profiles hold no well-formed marker fails as well, so a
+drifted vocabulary cannot pass the check by hiding every cell from it.
+
+The line a filled number sits on has to say whose number it is: the check finds the
+row by the player's name or the team, taking both from the line, its heading and the
+profile's file name, and a line naming neither fails. A heading here is a markdown
+heading, a bold-led bullet, or a plain label line ending in a colon, which is how the
+coach files introduce a benchmark unit ("2025 San Francisco under Saleh:"). Keep a
+filled sentence and its marker on one line: the check reads one line at a time, and a
+sentence wrapped across two fails for want of a number. Write the number as the table
+writes it, sign included. A number the pass computed rather than read (a rank, a
+per-game average, a share) is in no row, so keep the table's own input beside it:
+"22.2 percent play-action, 67 of 302" checks, while "22.2 percent" alone normally fails
+and passes only where it happens to match some other column. Only one of a sentence's
+figures has to land, so a sentence carrying one correct number passes with every other
+number on it wrong: the check thins the wrong figures out over a set, it does not clear
+any one line. And keep one subject to a line where the attribution matters, because the
+script holds you to it: a name several players answer to reaches only the rows of a team
+that same line names, or rows carrying no team, so a figure from a club the line never
+mentions does not pass. A name only one row answers to is already one player, which is
+how a surname on its own ("Andrews 10") still finds the benchmark player under a
+different club's profile. A line carrying two teams is checked against both, and neither
+figure is pinned to its own team, so name the team beside the number when two are in
+play.
 
 ## Source hierarchy for roles and usage
 
@@ -192,11 +228,114 @@ value, projections and injury timelines, Draft Sharks stays the primary source (
 section 6, step 9): its Injury Predictor, Shark Bites and rest-of-season projections
 supply the numbers the dossier records next to the role.
 
+## Source tables: pull the numbers before the profiles ask for them
+
+A profile that needs a number should never send an agent to find it. The first build
+of this knowledgebase wrote 439 cells reading "not reached", "paywalled" or "(Gap)"
+because 130 agents each tried to fetch the same handful of tables through a fetch tool
+that a bot check, a truncation cap or a sign-up gate stopped, while every one of those
+tables was open to a signed-in browser or a plain page load. The fix is a step, not a
+retry: pull each table once, save it under `data/` with its URL, pull date, season and
+column order, and hand the profiles the file. Filling a cell from a saved table is
+extraction, so it runs on the lower tier and is checked by a script that anchors each
+filled sentence to the rows it should have come from, by player name or team, and
+requires at least one of the sentence's numbers to be in those rows. A clean exit proves
+the citation resolves, the line is about a team or player the cited table covers, and
+one of the sentence's figures is in the rows of a team or player the line, its heading
+or its file name names. A name several players answer to is held to the teams that line
+names, or to rows carrying no team, so another club's figure cannot pass under it; a
+name only one row answers to reaches that row wherever it sits, since one row is already
+one player. It does not prove the figure came from the right column; and it does not
+prove the sentence's other figures are right, only that one of them is in the rows, so
+one correct figure carries a line past every wrong figure beside it. A line naming two
+teams is checked against both, which is deliberate: a coach or line profile quotes a
+coordinator's previous stop on the same line as his current one, and no rule of shape
+tells those two apart. One subject to a line is what makes the attribution checkable,
+and the script now enforces it for every other case. The number itself is read from the
+table, not remembered.
+
+What each table answers, and where it comes from (all read for a visitor or a Draft
+Sharks subscriber on the pull date; check the page still loads before trusting the
+list, because sites gate and ungate):
+
+- Draft Sharks Fantasy Points Allowed (Tools, Intel): points allowed per game and
+  adjusted percentage for every defense by position, seasons back to 2021. The second
+  basis source under the defense ratings and the positional points-allowed split.
+- Draft Sharks Historical Stats (Tools, Intel): per player by season and week range.
+  Backs carry opportunity share, red-zone snap share and red-zone opportunities;
+  receivers and tight ends carry target share, end-zone targets, average target
+  distance and yards per route; quarterbacks carry dropbacks, air yards per attempt
+  and QBR. Twenty-five rows load at a time and the Load More control is slow; the
+  Player Name box answers a single lookup faster than paging.
+- Draft Sharks depth charts (Tools, Intel; the print-all page holds all 32 teams,
+  offense and defense): who is listed first. The weakest source in the hierarchy,
+  never a rep count.
+- Draft Sharks offensive line rankings (the annual article): all 32 lines ranked,
+  with PFF grade ranks, ESPN win-rate ranks and adjusted sack rate ranks quoted for
+  the top and bottom tiers.
+- Pro Football Reference advanced passing, rushing, receiving and defense pages
+  (free; the site runs a bot check that clears on its own in a browser and blocks a
+  fetch tool): pressure rate, pocket time, blitzes faced, scrambles, RPO and
+  play-action volume per quarterback; yards before and after contact and broken
+  tackles per back; depth of target, YAC and drops per receiver; coverage numbers,
+  missed-tackle rate and pressures per defender; the same at team level on the team
+  advanced page.
+- ESPN Analytics win rates (the annual leaderboard article, free): pass rush, run
+  stop, pass block and run block win rate for all 32 teams with ranks, and the
+  player top twenties.
+- Sharp Football Analysis coverage schemes and defensive tendencies pages (free):
+  man and zone rate, single-high and two-high rate, blitz, light and heavy box, sub
+  package, all 32 defenses for the last completed season, published before the new
+  season under the new season's date.
+- Sumer Sports team defense (free): EPA per play, per pass and per rush, success
+  rate, yards and touchdowns allowed, interception rate.
+- Next Gen Stats passing leaders (free, but the page is a JS app that is blank to a
+  fetch tool and renders in a browser): time to throw, completed and intended air
+  yards, aggressiveness, air yards to the sticks, completion rate over expectation.
+- TeamRankings team stat pages (free; 403 to a fetch tool, open in a browser): plays
+  per game, pass play share, opponent plays per game, red-zone touchdown rate for and
+  against, each with the prior season beside it.
+- rbsdm.com team tiers (free JS app, browser only): offensive and defensive EPA per
+  play and success rate; its pass-rate-over-expectation tab is a second read on the
+  same page.
+- The same Pro Football Reference advanced pages for each earlier season a coach
+  profile names (the play caller's prior stops): one pull per season, saved with the
+  season in the file name, so a prior-stop cell is a copy and not a search.
+
+A page that answers a cell but returns 403, 404 or an empty body to the fetch tool is
+read in the browser (Claude in Chrome or the user's own) and saved like any other
+table; "unreachable by the fetch tool" is never a reason to leave a cell open.
+
+Not available to a visitor on the last pull and left out until the user holds a
+subscription: PFF grades beyond what an article quotes, FTN adjusted line yards and
+DVOA, Fantasy Points Data, Sharp Football's book-only splits (personnel groupings,
+alignment and route rates), Sumer Sports' paid tier.
+
+Two rules follow. A cell that says a number was not reached is a table not yet pulled,
+not a search to run: pull the table, then fill. And a pulled table is data, saved
+verbatim with its header; a profile cites the file and the season, never a memory of
+the page, and `scripts/check-fills.py` (copied into the season folder like the
+schedule script and run from there, `python3 check-fills.py --dir . --date <fill
+date>`, or `--date all` for every fill) confirms that the cited file exists and that at
+least one number in each filled sentence is in that file's rows for the player or team
+the line, its heading or its file name names, and exits non-zero when either fails. One
+number landing is the whole of it, so the check thins wrong figures out of a set without
+clearing any one line. A citation naming a depth chart
+is the one exception: a depth chart holds names and no meaningful numbers, so it is
+checked by player name, searched across all 32 teams the print-all page carries rather
+than scoped to the profile's own, and its numbers are not checked at all. That exemption is earned
+twice over, so it cannot be borrowed: the file's name has to carry `depth-chart`, and
+the file itself has to read like a depth chart, fewer than one row in ten holding three
+or more numbers. Save the depth-chart pull under a name that carries `depth-chart`, and
+save nothing else under one.
+
 ## Build (once, before the season)
 
 0. Confirm the location with the user and get an explicit go-ahead (skill section 10);
    offer the NFL-wide cross-cuts alone as the starter set when the full build is more
-   than the user wants.
+   than the user wants. Then pull the source tables above into `data/` before any
+   profile pass starts, so no pass fetches one of those tables on its own (the
+   season schedule in step 6 is fetched there, twice, by design).
 1. One pass per team, in parallel where the harness offers subagents and one at a time
    where it does not, each writing the dossier from the hierarchy above. Ground rules
    for every pass: today's date and the Week 1 dates stated up front; sources from the
@@ -226,7 +365,28 @@ supply the numbers the dossier records next to the role.
    writes each team's weekly matchup table (`schedule/<CODE>.md`) and the NFL-wide
    schedule-strength rollup from those two files.
 7. A critic reads the whole set and lists what is missing or thin, most severe first;
-   a gap round fills the high and medium items.
+   a gap round fills the high and medium items, from the saved tables first (marked
+   `[filled <date>: <data file>]`) and by search second, then `scripts/check-fills.py`
+   runs from the season folder and must exit clean before the set is called complete.
+   The gap rounds run this way, learned the hard way on the first build:
+   - Select the files by what they say, not by the marker: a profile carries most of
+     its missing facts as prose ("not found", "not retrieved", "not obtained") with no
+     marker at all, so a selection on `(Gap)` alone skipped a third of the pool.
+   - Progress is measured on that same yardstick, the count of lines that say a fact is
+     missing, before and after; the marker count rises during a round because the
+     round stamps unmarked prose, so it measures nothing on its own.
+   - One agent per file per round, handed the previous round's open list with what it
+     tried and why it failed, a fixed search budget, and the rule that a cell no public
+     source can answer is relabeled `(Gap: no public source, <reason>)` in place, never
+     left bare; a file gets another round only while its last round filled something.
+   - The search tool's quota is per session (200 calls on this harness); a round that
+     needs more is planned across sessions, and the browser-read tables above are
+     pulled first so the searches go to facts no table holds.
+   - The check script runs after every round, not only at the end, because extraction
+     agents write undated citations, sourceless markers and bracketed notes that only
+     the script catches; the marker grammar goes into every prompt verbatim.
+   - An agent records what it tried in its return value, never in the profile: a
+     profile line narrating a failed fetch is noise at the clock and is deleted.
 8. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
    up-and-comers, preseason usage and rest, coach statements on roles, injury risk and
    timelines, handcuffs to own), each reading many whole articles, merged into every
@@ -248,21 +408,24 @@ every draft, lineup lock, trade decision, waiver or free-agent move, and roster 
    search of its own, "what changed since <last refresh date>" for the local reporting
    the wide net misses, same ground rules, same headings, editing in place and marking
    changed lines with the date. Verify: a skeptic re-checks every changed high-impact
-   claim and applies corrections.
+   claim and applies corrections. Any cell a merge filled from a saved table carries
+   `[filled <date>: <data file>]`, and `scripts/check-fills.py` runs after the merge
+   with that date and must exit clean.
 3. Usage check (in season): for every fantasy-relevant player, compare the week's
-   actual snap share, carries, routes and targets (collected once from the league-wide
-   tables at PFF, Fantasy Points, Next Gen Stats or the box scores) against his
-   caller's tendency profile and the direction the profile gave him, and mark the line
-   confirmed, diverging or new (a role the profile did not predict). Two diverging
-   weeks change the direction; one is noise. In-season calls read the comparison
-   rather than the preseason profile, alongside the engine's projection and not ahead
-   of it.
+   actual snap share, carries, routes and targets (collected once from the box scores
+   and the free league-wide tables, with PFF, Fantasy Points and Next Gen Stats only
+   where the user holds the subscription) against his caller's tendency profile and the
+   direction the profile gave him, and mark the line confirmed, diverging or new (a role
+   the profile did not predict). Two diverging weeks change the direction; one is noise.
+   In-season calls read the comparison rather than the preseason profile, alongside the
+   engine's projection and not ahead of it.
 4. Schedule and defense update (in season): refresh the defensive-injuries file from
    the week's practice reports and designations (every key defender out, doubtful or
-   on IR, and the position group his absence softens); refresh the defense ratings
-   from the season's points allowed by position (blended with last season until four
-   weeks are in) and write the injury adjustments for the coming week as the table the
-   script reads; then run `scripts/schedule-tables.py` with the coming week, which
+   on IR, and the position group his absence softens); re-pull the Draft Sharks
+   Fantasy Points Allowed table for the current season into `data/` and refresh the
+   defense ratings from its points allowed by position (blended with last season until
+   four weeks are in) and write the injury adjustments for the coming week as the table
+   the script reads; then run `scripts/schedule-tables.py` with the coming week, which
    re-rates every team's table and re-counts its windows; and edit the line profile,
    with its player impact, only for the teams whose collected items carry a line
    change (an injury to a starter, a position switch).
@@ -289,10 +452,17 @@ Three kinds, and what each runs on:
   thing the user is relying on.
 - **Extraction**: transcribing a structured page that already covers all 32 teams (a
   transactions wire, an official injury report, a snap-count table) into items with
-  team codes, and comparing collected numbers to a stated direction. A lower tier does
-  this as well as the strongest one; the two-week rule absorbs a single mislabel in
-  the usage check. Give the tier the numbers; never make it fetch what a collector can
-  hand it.
+  team codes, comparing collected numbers to a stated direction, and filling a
+  profile's cell from a saved source table found by grep. A lower tier does this as
+  well as the strongest one; the two-week rule absorbs a single mislabel in the usage
+  check, and `scripts/check-fills.py` checks each filled sentence against the rows of
+  the table it cites for the player or team the line, its heading or its file name names
+  (at least one of the sentence's numbers must be in those rows, which is why one right
+  figure carries a line; a shared name is held to the teams the line names, so another
+  club's figure does not pass; a depth-chart citation is checked by name instead,
+  searched across all 32 teams). Give the tier the numbers; never make it
+  fetch what a collector can hand it, and never let it read a data folder whole when a
+  grep for the team code finds the row.
 - **Joins**: anything derivable from two files that already exist (the schedule tables,
   the window counts, the matchup grid, any ranking by count). A script, never a model:
   it is exact, free, seconds instead of dozens of agents, and re-runnable every week.

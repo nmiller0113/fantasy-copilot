@@ -376,6 +376,23 @@ building or refreshing, not at the clock. Judgment work in a build or refresh ru
 on the strongest model available; extraction from league-wide pages runs on a lower
 tier; anything derivable from two existing files is a script (the schedule tables are
 `scripts/schedule-tables.py`), never an agent. The reference says which is which.
+The numbers a profile needs are pulled once, as whole tables, into the knowledgebase's
+`data/` folder before any profile pass runs, Draft Sharks' own tools first and then
+the free public tables the reference lists; a cell that says a number was not reached
+is a table not yet pulled, not a search to run, and `scripts/check-fills.py` confirms
+that each sentence filled from a table cites a file that exists and carries at least
+one number found in that file's rows for the player or team the line, its heading or
+its file name names (a depth-chart citation is checked by name alone, searched across all
+32 teams); one correct figure carries a sentence, so the check reaches neither the
+column nor the sentence's other figures; a computed number keeps the table's own input
+beside it, because alone it is in no row and passes only by matching some other column;
+and a shared name reaches only the rows of a team the line names, or rows carrying no
+team, so one subject to a line is the rule the script now enforces and a line naming two
+teams is still checked against both. A page the fetch tool cannot reach is read in the
+browser and saved as a table, never left as a gap; gap rounds select files by the prose
+that says a fact is missing, measure progress on that count, loop a file only while a
+round fills something, and write the reason in place for a cell no public source holds
+(the reference, build step 7).
 The build writes dozens of files and runs many searches: confirm the location with the
 user and get an explicit go-ahead before the first build, and offer the NFL-wide
 cross-cuts alone as the starter set when the full build is more than the user wants.

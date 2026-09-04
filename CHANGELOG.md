@@ -5,6 +5,116 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.18.0] - 2026-09-03
+
+**Rules changed: a knowledgebase build pulls its source tables once, into a `data/`
+folder, before any profile pass runs; a profile cell that says a number was not
+reached is a table not yet pulled, never a search to run.**
+
+New in `references/knowledgebase.md`, "Source tables": the map of which table
+answers which cell and where each comes from. Draft Sharks Fantasy Points Allowed
+(points allowed by position, seasons back to 2021), Historical Stats (opportunity
+share, red-zone share, target share, end-zone targets, depth of target, yards per
+route, dropbacks, QBR), depth charts (the print-all page) and the annual line
+rankings article; Pro Football Reference advanced passing, rushing, receiving and
+defense (pressure rate, pocket time, blitzes faced, RPO and play-action volume, yards
+before and after contact, broken tackles, depth of target, drops, coverage numbers,
+missed tackles); ESPN Analytics win rates (all 32 teams, four rates, with ranks);
+Sharp Football coverage schemes and defensive tendencies (man, zone, single-high,
+two-high, blitz, box, sub package); Sumer Sports team defense (EPA and success rate).
+Each is saved verbatim with its URL, pull date, season and column order, and the
+list names what stays out for a visitor (PFF grades, FTN line yards and DVOA, Next
+Gen Stats, Fantasy Points Data).
+
+New: `scripts/check-fills.py` (Python 3.8 or later): after a fill, every cell marked
+"[filled <date>: <data file>]" must cite a file that exists, and the sentence carrying
+the marker is checked against that file's rows for the player or team that line is
+about, not against the file as a whole. The row is found by player name or team code,
+read from the line, the heading above it (a markdown heading, a bold-led bullet, or a
+plain label line ending in a colon) and the profile's own file name, and matched through
+the spellings a data file may use (PFR's TAM, KAN, NWE, LVR, GNB, SFO, NOR, JAC and the
+full team names its team page prints). A line in a data file that names three or more
+different teams is a league-wide list rather than one subject's row, so it is split on
+"; " first and only the entry carrying the anchor is searched; without that, ESPN's
+player top twenties put twenty teams' numbers within reach of any one of them. A name
+several players answer to is held to the teams the line itself names, or to rows carrying
+no team, so Chris Paul's Washington row does not answer for Chris Jones on a Kansas City
+line and Trent Williams's does not answer for Quinnen Williams on a Dallas one; a name
+only one row answers to is already one player and reaches it either way, which is what
+lets "Andrews 10" find the benchmark tight end under another club's profile. A word
+inside a multi-word city or nickname is never a name, so "Bay" cannot carry a Green Bay
+line into Tampa Bay's rows, nor "New" a New England line into New Orleans or New York. An
+all-capitals token is never read as a player name: the tables print "Joe Burrow", so
+OLB and ADOT are labels. At least one of the sentence's numbers must be in those rows,
+sign included, counting both ends of a hyphenated range and no part of a season span or
+an ISO date; a line naming no player or team the table covers fails, and so does a
+sentence wrapped across two lines, because the check reads one line at a time. A
+citation shaped like a file name is a file citation even
+when the file's own name ends in a date, so a misspelled or extensionless name fails
+instead of passing as a search fill, and a one-word citation naming no saved file fails
+with its own message. A depth-chart citation is checked by player name only, searched
+across all 32 teams and having no
+numbers worth checking, and a file earns that exemption only by carrying `depth-chart`
+in its name AND reading like a depth chart (fewer than one row in ten holding three or
+more numbers), so renaming a stats table does not buy it. A bracket carrying the word
+"filled" in any other shape fails as a malformed marker, and a set whose `data/` holds
+tables but whose profiles hold no well-formed marker fails too, so a drifted vocabulary
+cannot pass by hiding every cell from the check. The script prints the counts and every
+failing sentence and exits 1 on any failure, and when data/ is missing or no profile is
+found.
+
+What a clean exit does not prove is written down beside what it does, in the same words
+in the README, the skill, the reference and the script's own docstring: not the column a
+figure came from; and not the sentence's other figures, since one correct figure carries
+a line past every wrong figure beside it, which makes this a check that thins wrong
+numbers out of a set rather than one that clears any single line. What it now does prove
+is the third item that used to sit in that list: one subject to a line is no longer only
+advice, since a shared name is held to the teams the line names. A line that names two
+teams is still checked against both, because the coach and line files quote a
+coordinator's previous unit on the same line as his current one and no rule of shape
+tells those two apart; name the team beside the number when two are in play. One gap is
+left in the scoping and is written down with the rest: a capitalized word that is no
+player's name but matches exactly one row is admitted as a name, and that row may belong
+to a team the line never mentions. The column labels these tables use are listed as
+non-names, so it takes an unlisted one to happen.
+
+Also new, in the marker vocabulary: `(Gap)` is now written in place of a number or fact
+the pass could not reach, never omitted; `[gap fill <date>]` narrows to a fact that is
+not a number from a table, so any number copied from a table carries the filled form
+instead; `[filled <date>: <outlet> <date>]` is the form for a cell filled from a dated
+search result, counted and never checked against a table; a filled line has to say
+whose number it is; and a number the pass computed rather than read (a rank, a per-game
+average, a share) keeps the table's own input beside it, because a computed figure is
+in no row.
+
+Also new, the gap-round procedure under build step 7, from the first build's fill:
+files are selected by the prose that says a fact is missing, not by the marker, and
+progress is measured on that same count; one agent per file per round carries the
+previous round's open list and reasons, a fixed search budget, and the rule that an
+unanswerable cell is relabeled with its reason in place; a file loops only while a
+round fills something; the search quota is per session, so rounds are planned across
+sessions after the browser-read tables are pulled; the check script runs after every
+round; an agent's fetch narration stays in its return value and never in a profile.
+The source-table list gains Next Gen Stats passing, TeamRankings, rbsdm team tiers and
+the prior-season PFR pages, with the rule that a page the fetch tool cannot reach is
+read in the browser, never left as a gap; Next Gen Stats leaves the exclusion list.
+
+Changed: build step 0 pulls the tables before the first profile pass; refresh step 2
+runs the check after the merge and refresh step 4 re-pulls the Draft Sharks
+points-allowed table for the current season before the ratings refresh; build step 7
+fills the gap round from the saved tables first and gates the set on a clean check;
+refresh step 3 collects the weekly usage numbers from the box scores and the free
+league-wide tables, with PFF, Fantasy Points and Next Gen Stats used only where the
+user holds the subscription; "Agents, models and scripts" counts filling a cell from a
+saved table as extraction (lower tier, found by grep, never the folder read whole) and
+names the check script as its verification.
+
+Why: the first build left 439 cells reading "not reached" or "paywalled" because 130
+agents each tried the same handful of tables through a fetch tool that a bot check, a
+truncation cap or a sign-up gate stopped, while every one of those tables opened for a
+signed-in browser or a plain page load. Pulling each once and handing the profiles
+the file closed the cells that the tables cover in one pass.
+
 ## [1.17.0] - 2026-09-03
 
 **Rules changed: a knowledgebase build or refresh puts judgment on the strongest
