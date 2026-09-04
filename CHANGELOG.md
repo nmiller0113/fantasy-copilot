@@ -5,6 +5,21 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.21.0] - 2026-09-04
+
+**Rules changed: a gap round ends with `scripts/gap-list.py`, which writes every line
+that still says a fact is missing, by file, with the reason where a round wrote one,
+and that list is the report.**
+
+New: `scripts/gap-list.py` (Python 3.8 or later, nothing else; copied into the season
+folder like the other scripts): `python3 gap-list.py --dir . --date <today>` writes
+`build/gaps-remaining-<date>.md` and prints the totals. It matches the same lines the
+yardstick counts (gap markers, unverified lines, and the unstamped prose forms), so its
+total equals the yardstick's and no open line is missing from the report. Build step 7 names it as the
+round's last step and says what the report to the user quotes: the yardstick before and
+after, the check script's line, and that file, never a marker-count table. README lists
+the four scripts.
+
 ## [1.20.0] - 2026-09-04
 
 **Rules changed: the gap rounds measure and select with `scripts/missing-lines.py`

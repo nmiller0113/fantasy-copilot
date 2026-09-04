@@ -449,6 +449,12 @@ save nothing else under one.
    - After a new table is pulled mid-fill, the data stage runs again, before any search
      round, on the files whose open lines name what the table answers, selected by
      keyword from the open-line lists.
+   - The round ends with `scripts/gap-list.py` (copied into the season folder like the
+     others): `python3 gap-list.py --dir . --date <today>` writes
+     `build/gaps-remaining-<date>.md`, every line the yardstick counts (markers with
+     the reason beside them, unverified lines, unstamped prose), by file, and prints the
+     totals, which equal the yardstick's; the report to the user quotes the yardstick before and
+     after, the check script's line, and that file, never a marker-count table.
 8. A media pass: themed sweeps (sleepers, breakouts, busts and risky picks, rookies and
    up-and-comers, preseason usage and rest, coach statements on roles, injury risk and
    timelines, handcuffs to own), each reading many whole articles, merged into every
