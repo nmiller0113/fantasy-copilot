@@ -74,32 +74,36 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. Four optional scripts ship with it:
-`scripts/schedule-tables.py` builds the knowledgebase's schedule-strength tables from
-the schedule and the defense-ratings files (Python 3.8 or later, nothing else), reading
-the team codes from the knowledgebase's own `data/teams.md` and stopping when that file
-is missing; the skill copies it into the knowledgebase folder and runs it there during a
-build or refresh, and without Python it reports the tables as not built rather than
-having an agent write them. `scripts/missing-lines.py` (same requirement) is the gap
-rounds' yardstick: it counts the profile lines that say a fact is missing, writes the
-next round's file list, and writes each file's open lines with their line numbers for
-the fill prompts; `scripts/gap-list.py` (same requirement) ends a round by writing every
-line that still says a fact is missing, by file, with the reason where one was written,
-which is the report. The fourth, `scripts/check-fills.py` (same
-requirement; without Python the build reports the fills as unchecked rather than
-checked, and the set is not called complete), checks that each profile sentence a build filled from a saved source
-table cites a table that exists and carries at least one of the sentence's numbers in
-the rows of a player or team the line, its heading or its file name names. A marker
-that names no source does not pass, and neither does a sentence whose subject is absent
-from the table it cites. A name several players answer to is held to the teams that same
-line names, so another club's row cannot answer for the player the line is about; a name
-only one row answers to is already one player and finds him wherever he plays, and a
-row that names no team at all answers to any name; those are the two ways a figure from
-a club the line never mentions still passes. Two things a clean run does not prove: that the figure came from the right column; and that the
-sentence's other figures are right, since one correct figure carries the sentence past
-every wrong one beside it. A line that names two teams is still checked against both,
-which is how the coach files quote a coordinator's previous unit beside his current one,
-so write one subject to a line where the attribution has to be checkable. A depth-chart
+skill file, its reference files, and a manifest. Nine optional scripts ship with it
+(Python 3.8 or later, nothing else; the skill copies them into the knowledgebase folder
+and runs them there, and without Python it reports the joins as not built rather than
+having an agent write them): `scripts/pull-list.py` names the source tables the
+knowledgebase keeps, their cadence and the columns kept at pull time, and refuses a run
+until they are present; `scripts/kb-lint.py` enforces the profile templates (headings,
+table headers, column counts, no source lists, no gap or method notes) and every build
+and refresh stops on it; `scripts/rollups.py` writes every NFL-wide file as a join over
+the per-team tables; `scripts/refresh-seed.py` prints the starters whose absence plan is
+still open, which seeds the refresh's role collector; `scripts/build-scaffold.py` writes
+every profile in its template shape with the team-level table cells filled, and later
+fills ages and games missed by player name from the fantasy pages; `scripts/schedule-tables.py` builds
+the schedule-strength tables from the schedule and the defense-ratings files, reading the
+team codes from the knowledgebase's own `data/teams.md`; `scripts/missing-lines.py` and
+`scripts/gap-list.py` count and list the cells still open in a knowledgebase written as
+prose (the first build's shape) and are the yardstick for one. The ninth,
+`scripts/check-fills.py` (same requirement; without Python the build reports the fills as
+unchecked rather than checked, and the set is not called complete), checks that each cell
+a build filled from a saved source table cites a table that exists and carries at least
+one of the cell's numbers in the rows of a player or team the line, its heading or its
+file name names. A marker that names no source does not pass, and neither does a cell
+whose subject is absent from the table it cites. A name several players answer to is held
+to the teams that same line names, so another club's row cannot answer for the player the
+line is about; a name only one row answers to is already one player and finds him
+wherever he plays, and a row that names no team at all answers to any name; those are the
+two ways a figure from a club the line never mentions still passes. Two things a clean
+run does not prove: that the figure came from the right column; and that the cell's other
+figures are right, since one correct figure carries the cell past every wrong one beside
+it. A line that names two teams is still checked against both, so name the team beside
+the number when two are in play. A depth-chart
 citation is checked by player name instead, searched across all 32 teams, since a depth
 chart holds no numbers worth checking. The release validator, `scripts/check.sh`, is a
 maintainer tool run by hand before publishing and needs bash and git; on Windows, Git

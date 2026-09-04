@@ -5,6 +5,41 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.23.0] - 2026-09-04
+
+**Rules changed: the knowledgebase is tables, not prose. Every profile follows a fixed
+template, the NFL-wide files are joins a script writes, a refresh writes cells, and the
+build has no gap rounds, no critic and no synthesis agents. Twenty source tables are
+kept; the fat a decision never reads is on a never-collected list.**
+
+Why: the owner's audit of 2026-09-04 (seven auditors, one skeptic per set) found half
+to four-fifths of every profile set to be build exhaust and depth no decision procedure
+reads: source URL lists, method notes, gap sections, contract dollars, box-score lines
+the engine's projection is built on, the same absence call written four times, and
+per-season tendency splits; and the first refresh design (a merge agent per file and a
+re-searching skeptic per team, about 115 agents) could not finish inside one session's
+search quota. The measured bill was 20M tokens for the build and 52M for the fill after
+it; the reshaped build is estimated at 5 to 13M and the weekly refresh under 1M.
+
+New: `scripts/build-scaffold.py` (every profile in its template shape with the team-level
+table cells filled; `--ages` fills ages and games missed by name from the fantasy pages),
+`scripts/kb-lint.py` (the template, enforced; builds and refreshes stop on it; its last
+line counts the open cells in the required columns, the build's progress figure),
+`scripts/rollups.py` (every NFL-wide file as a join over the team tables),
+`scripts/pull-list.py` (the twenty kept tables, cadence, columns, `--check`),
+`scripts/refresh-seed.py` (starters whose absence plan is still open, for the role
+collector). The reference's templates section (four table shapes), a rewritten Source
+tables section (kept twenty, never-collected list), a rewritten Build (pull, scaffold by
+script, one judgment agent per team, one skeptic per division, scripts) and Refresh
+(three collectors, division editors, division skeptics, one ratings agent in season,
+scripts after), and an Agents section that says which tier does what and why. Five
+scripts are new, not four.
+
+Changed: the vocabulary keeps two markers (`[filled <date>: <data file>]`,
+`[unverified <date>]`) and drops the rest; skill section 10 says the same in one
+paragraph; README lists the nine scripts. `missing-lines.py` and `gap-list.py` stay as
+the yardstick for a prose-shaped knowledgebase from the first build.
+
 ## [1.22.0] - 2026-09-04
 
 **Rules changed: a cell no public source will ever answer is deleted from the profile,
