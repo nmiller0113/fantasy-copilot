@@ -35,6 +35,7 @@ TABLES = [
     ('espn-win-rates-<season>.md', 'season (the annual leaderboard)', 'ESPN Analytics win rates article', 'team PBWR RBWR PRWR RSWR with ranks'),
     ('sharp-defense-scheme-rates-<season>.md', 'season (published before the new season)', 'Sharp Football Analysis coverage and tendencies pages', 'man zone single-high blitz box sub'),
     ('rbsdm-neutral-pass-rate-<span>.md', 'season', 'rbsdm.com Neutral Pass Freq table', 'team pass rate, the span the tab covers'),
+    ('host-adp-<date>.md', 'before each draft, draft season only', "the host's draft-analysis ADP page where a sharp-user ADP is published", 'player, pos, team, basic ADP last 7 days, sharp-user ADP last 7 days'),
     ('ngs-passing-<season>.md', 'weekly in season', 'nextgenstats.nfl.com passing leaders', 'time to throw, aggressiveness, CPOE'),
     ('teamrankings-<season>.md', 'weekly in season', 'teamrankings.com team stat pages', 'plays per game, pass share, opponent plays, red-zone TD rate'),
 ]
@@ -46,10 +47,14 @@ rows = TABLES if a.annual or not a.week else weekly
 print(f'{"file":45s} {"cadence":40s} source | keep')
 for f, cad, src, keep in rows: print(f'{f:45s} {cad:40s} {src} | {keep}')
 if a.check:
+    # A "before each draft" table exists only in draft season and only where the host
+    # publishes a sharp-user ADP, so it is listed but never required by the gate.
+    required = [t for t in rows if not t[1].startswith('before each draft')]
     missing = []
-    for f, cad, src, keep in rows:
-        pat = os.path.join(a.dir, 'data', f.replace('<season>', '*').replace('<span>', '*'))
+    for f, cad, src, keep in required:
+        pat = os.path.join(a.dir, 'data', f.replace('<season>', '*').replace('<span>', '*').replace('<date>', '*'))
         if not glob.glob(pat): missing.append(f)
     if missing:
         print('MISSING:', ', '.join(missing)); sys.exit(1)
-    print(f'check: all {len(rows)} present')
+    optional = len(rows) - len(required)
+    print(f'check: all {len(required)} present' + (f' ({optional} draft-season table listed, not required)' if optional else ''))

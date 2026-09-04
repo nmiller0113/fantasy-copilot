@@ -188,10 +188,14 @@ and the outlet, quoted at most a dozen words verbatim and then paraphrased. Pres
 usage: snap and touch counts, first-team reps, and rest, because a young player held
 out of the finale after playing earlier is a player the staff has decided on. Beat
 reporting from the last two weeks. Themed article sweeps seeded with the season's
-sleeper, breakout, bust, risky-pick and handcuff pieces from the major outlets and from
-Draft Sharks' own advice pages, because the same name in three outlets says something
-about what a draft room will do. Depth charts last: a depth chart is a list, not a
-plan, and it says nothing about share. This hierarchy is for roles and usage only. For
+sleeper, breakout, bust, risky-pick and handcuff pieces from the major outlets, from
+Draft Sharks' own advice pages, and from a draft guide the user's host subscription
+publishes (its per-team sleeper, breakout, target, fade and regression sections, read
+in the browser page by page during draft season; its tags and names are recorded in
+the media read like any other outlet, its pages are never saved as files under
+`data/`), because the same name in three outlets says something about what a draft
+room will do. Depth charts last: a depth chart is a list, not a plan, and it says
+nothing about share. This hierarchy is for roles and usage only. For
 value, projections and injury timelines, Draft Sharks stays the primary source (skill
 section 6, step 9): its Injury Predictor, Shark Bites and rest-of-season projections
 supply the numbers the dossier records next to the role.
@@ -200,13 +204,17 @@ supply the numbers the dossier records next to the role.
 A profile that needs a number never sends an agent to find it. Every number a template
 row asks for comes from a table pulled once into `data/`, saved as read with its URL,
 pull date, season, row floor and column order in the header. `pull-list.py` is the list:
-twenty tables and nothing else, each with its cadence (weekly in season, once a season,
-or the prior two seasons once) and the columns kept at pull time, and `--check` refuses
+twenty-one tables and nothing else, each with its cadence (weekly in season, once a season,
+the prior two seasons once, or before each draft in draft season, which the check
+lists but never requires) and the columns kept at pull time, and `--check` refuses
 a build or a refresh until the files a run needs are present. Trim at the pull: a player
 table is cut at a stated points or attempts floor, a wide page to the columns a template
 row uses; width that never lands in the folder never costs a token again.
 
-The kept twenty, by what they answer: the team codes and spellings; Draft Sharks points
+The kept twenty-one, by what they answer: the team codes and spellings; the host's
+ADP table where the host publishes a sharp-user ADP (basic and sharp-user ADP over the
+last seven days per player, pulled before each draft in draft season and read at the
+clock by grep, skill section 4); Draft Sharks points
 allowed by position (the ratings basis and the defense gives-up rows), Draft Sharks
 historical stats for RB, WR and TE (opportunity and target shares, red-zone and end-zone
 opportunities), the Draft Sharks line rankings article; the Pro Football Reference
@@ -231,7 +239,9 @@ publishes (PFF grades beyond what an article quotes, FTN line yards and DVOA, Fa
 Points Data, Sharp's book-only splits, paid Sumer Sports and Next Gen Stats tiers:
 personnel groupings, alignment and route rates, tempo and no-huddle rates, pass rate over
 expectation, designed-run splits, most deep-ball rates) unless the user holds that
-subscription and says so; a figure no outlet prints (camp rep counts, preseason snap
+subscription and says so, except the league host's own advanced-stat and
+alternative-projection views, which duplicate the engine and the pulled tables and are
+never collected even when held (skill section 4); a figure no outlet prints (camp rep counts, preseason snap
 counts and shares); and the fat the 2026 audit named, which no decision reads: contract
 dollars and cap figures, birth dates, season box-score lines the engine's projection is
 built on, practice-squad and cut lists, position-coach rosters, kickoff logistics and

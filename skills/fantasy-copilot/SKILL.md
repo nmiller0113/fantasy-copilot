@@ -110,6 +110,28 @@ as priors to update, never as directives to execute.
   setting up or rehearsing a league, drafting advice questions, or when a DS tool
   misbehaves; not at the clock.
 
+**Host subscriptions are data points, not a second engine.** Ask which host tier the
+user pays for and record it in the private document. Where the host offers it, read
+three things from the tier beside the engine's number, never instead of it. Before
+every draft, the host's sharp-user ADP (an ADP computed from its top-tier users only)
+beside its basic ADP, pulled as a table into the knowledgebase's `data/` folder (the
+pull list names it) so the clock reads it by grep: the gap is the room's likely reach,
+and it enters the one-round-earlier band of section 6 and the ADP input of section 7's
+snipe forecast.
+During draft season, the host's subscriber draft guide as one seeded outlet for the
+knowledgebase's media read (section 10): its tags and the names it raises are recorded
+in the profile's media read like any other outlet, and its pages are never saved as
+files in the knowledgebase. In season, the host's transaction trends (adds, drops,
+sharp-user start and roster rates) as the contention input of the burn-the-claim test
+(section 8); they read the room, not the player, which is why they survive section 5.
+The host's lineup assistant and trade market are second opinions only where the tool
+is scored to this league's actual settings, verified in the tool's own settings panel;
+where it falls back to generic scoring it is noise under section 5, and the
+league-aware signal still wins. The host's advanced-stat and alternative-projection
+views duplicate the engine and the knowledgebase's pulled tables and are not collected
+even when held. Like the tier gates above, this feature list is a snapshot; when the
+live offering disagrees, the live offering wins.
+
 ## 5. Field rules (live-tested against a host)
 
 - **Settings-blind numbers are noise**: host grades, matchup ratings, trade evaluators
@@ -167,7 +189,10 @@ as priors to update, never as directives to execute.
 4. Build a slot-specific plan: round-band targets, tier-cliff triggers, pivot trees ("if X
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
    In a public or money room, place every riser from the sweep one round EARLIER than host
-   ADP implies: those rooms draft off the news feed, and ADP lags the feed by days.
+   ADP implies: those rooms draft off the news feed, and ADP lags the feed by days. Where
+   the host publishes a sharp-user ADP (section 4), a name it prices earlier than the
+   basic ADP is banded at the earlier of the sharp price and one round before the basic
+   ADP. That is one adjustment, not two.
    The plan carries a bye map: the bye week next to every target in the round bands, so a
    stack with an earlier pick is visible before the clock, not discovered after.
 5. Clean junk and clone leagues out of DS My Leagues.
@@ -235,7 +260,8 @@ the name.
 **Snipe first: forecast the picks between now and our turn.** Between picks, for the
 opponents who pick before us (in a long gap, those whose need matches a target of
 ours), name the position each roster needs most and the player the board gives them
-for it, from their roster, the live trend and ADP. That forecast is the list of players
+for it, from their roster, the live trend and ADP (the sharp-user ADP where the host
+publishes one, section 4). That forecast is the list of players
 least likely to reach us: a forecast, not a promise, one data point among the rest. It
 decides which pick is the early one for the research-targets rule; whether the target
 is worth taking early is that rule's band. A target not on the forecast leaves the odds
@@ -416,7 +442,7 @@ NFL-wide files are joins a script writes (`scripts/rollups.py`) and a refresh wr
 cells, not prose; `scripts/kb-lint.py` enforces the shape and the build and every refresh
 stop on it. The numbers a profile needs are pulled once, as trimmed tables, into the
 knowledgebase's `data/` folder before any profile pass runs (`scripts/pull-list.py`
-names the twenty kept tables, their cadence and the columns kept; `--check` refuses a
+names the twenty-one kept tables, their cadence and the columns kept; `--check` refuses a
 run until they are present), Draft Sharks' own tools first and then the free public
 pages the browser can read; `scripts/check-fills.py` holds every filled number to the
 rows of the table it cites. There are no gap rounds: a cell the judgment agent could not

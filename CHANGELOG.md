@@ -5,6 +5,46 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.28.0] - 2026-09-04
+
+**Rules changed: a host subscription the user holds is read as three data points beside
+the engine (sharp-user ADP before a draft, the subscriber draft guide as a media-read
+outlet in draft season, transaction trends and the lineup assistant and trade market in
+season) and nothing else.**
+
+### Changed
+
+- New paragraph after section 4, "Host subscriptions are data points, not a second
+  engine": the host tier is asked for and recorded in the private document; where the
+  host offers it, the sharp-user ADP (top-tier users only) is read beside the basic ADP
+  before every draft, pulled as a table into `data/` (pull-list table twenty-one,
+  cadence before each draft in draft season) and read at the clock by grep, and enters
+  the one-round-earlier band and the snipe forecast's ADP input; the subscriber draft guide is one seeded outlet for the knowledgebase's media
+  read, its tags recorded like any outlet and its pages never saved as files; in season
+  the transaction trends are the contention input of the burn-the-claim test (they read
+  the room, not the player); the lineup assistant and trade market are second opinions
+  only where verified as scored to the league's settings, otherwise noise under section
+  5. The host's advanced-stat and alternative-projection views are not collected even
+  when held. The feature list is a snapshot; the live offering wins.
+- Section 6 step 4: a name the sharp-user ADP prices earlier than the basic ADP is banded
+  at the earlier of the sharp price and one round before the basic ADP, one adjustment,
+  not two. Section 7's snipe forecast names the sharp-user ADP as its ADP input where
+  the host publishes one.
+- `references/knowledgebase.md`: the host subscription's draft guide joins the
+  themed-sweep outlets for the media read (pages never saved under `data/`); the kept
+  tables become twenty-one with the host ADP table; the never-collected paragraph
+  carries the host advanced-stat exclusion so a collector working from that file sees
+  it.
+- `scripts/pull-list.py`: the host ADP table row, cadence "before each draft, draft
+  season only", columns player, pos, team, basic and sharp-user ADP over the last seven
+  days; `--check` substitutes the `<date>` placeholder and lists a before-each-draft
+  table without requiring it, since it exists only in draft season and only where the
+  host publishes a sharp-user ADP.
+
+Why: the user upgraded to the host's top tier and asked that it be used the way the
+engine's subscription is used, without adding fat. A survey of the tier found three
+features a decision in this skill reads and a set that duplicates what is already held.
+
 ## [1.27.0] - 2026-09-04
 
 **Rule changed: the cost of an add is read from the host's own row for that player,
