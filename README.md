@@ -79,16 +79,17 @@ skill file, its reference files, and a manifest. Two optional scripts ship with 
 the schedule and the defense-ratings files (Python 3.8 or later, nothing else); the
 skill copies it into the knowledgebase folder and runs it there during a build or
 refresh, and without Python it reports the tables as not built rather than having an
-agent write them. A second optional script, `scripts/check-fills.py` (same
-requirement), checks that each profile sentence a build filled from a saved source
+agent write them. A second script, `scripts/check-fills.py` (same
+requirement; without Python the build reports the fills as unchecked rather than
+checked, and the set is not called complete), checks that each profile sentence a build filled from a saved source
 table cites a table that exists and carries at least one of the sentence's numbers in
 the rows of a player or team the line, its heading or its file name names. A marker
 that names no source does not pass, and neither does a sentence whose subject is absent
 from the table it cites. A name several players answer to is held to the teams that same
 line names, so another club's row cannot answer for the player the line is about; a name
-only one row answers to is already one player and finds him wherever he plays, which is
-also the one way a figure from a club the line never mentions still passes. Two things a
-clean run does not prove: that the figure came from the right column; and that the
+only one row answers to is already one player and finds him wherever he plays, and a
+row that names no team at all answers to any name; those are the two ways a figure from
+a club the line never mentions still passes. Two things a clean run does not prove: that the figure came from the right column; and that the
 sentence's other figures are right, since one correct figure carries the sentence past
 every wrong one beside it. A line that names two teams is still checked against both,
 which is how the coach files quote a coordinator's previous unit beside his current one,
@@ -96,8 +97,7 @@ so write one subject to a line where the attribution has to be checkable. A dept
 citation is checked by player name instead, searched across all 32 teams, since a depth
 chart holds no numbers worth checking. The release validator, `scripts/check.sh`, is a
 maintainer tool run by hand before publishing and needs bash and git; on Windows, Git
-for Windows provides both.
-Users never run it, and Claude never runs it inside the skill.
+for Windows provides both. Users never run it, and Claude never runs it inside the skill.
 
 ## License
 

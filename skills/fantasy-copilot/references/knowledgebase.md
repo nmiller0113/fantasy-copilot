@@ -178,7 +178,8 @@ reporting. Markers on a line: `[verified <date>]` a skeptic corrected it, `[unve
 <date>]` no dated source was found either way, `[gap fill <date>]` a critic round added
 a fact that is not a number from a table, `[<date>]` a refresh changed it, `(Gap)` a
 number or fact the pass could not reach (written in place of the number, never
-omitted), `[filled <date>: <data file>]` a cell filled from a saved source table,
+omitted) and `(Gap: <reason>)` the same after a gap round has established why no
+public source answers it, `[filled <date>: <data file>]` a cell filled from a saved source table,
 naming the file under `data/` with its extension, and `[filled <date>: <outlet>
 <date>]` a cell filled from a dated search result. Any number copied from a table
 carries the filled form, never `[gap fill]`. The check script tells the two apart by
@@ -196,8 +197,9 @@ row by the player's name or the team, taking both from the line, its heading and
 profile's file name, and a line naming neither fails. A heading here is a markdown
 heading, a bold-led bullet, or a plain label line ending in a colon, which is how the
 coach files introduce a benchmark unit ("<season> <team> under <coordinator>:"). Keep a
-filled sentence and its marker on one line: the check reads one line at a time, and a
-sentence wrapped across two fails for want of a number. Write the number as the table
+filled sentence and its marker on one line: the check reads only the marker's own line,
+so a sentence wrapped across two is checked on its second half alone and its subject and
+other figures on the first line are never seen. Write the number as the table
 writes it, sign included. A number the pass computed rather than read (a rank, a
 per-game average, a share) is in no row, so keep the table's own input beside it:
 "22.2 percent play-action, 67 of 302" checks, while "22.2 percent" alone normally fails
@@ -383,8 +385,8 @@ save nothing else under one.
      tried and why it failed, a fixed search budget, and the rule that a cell no public
      source can answer is relabeled `(Gap: no public source, <reason>)` in place, never
      left bare; a file gets another round only while its last round filled something.
-   - The search tool's quota is per session (200 calls on this harness); a round that
-     needs more is planned across sessions, and the browser-read tables above are
+   - The search tool's quota is per session; find the limit before the round and plan
+     rounds inside it, across sessions when the pool is larger than one session's quota, and the browser-read tables above are
      pulled first so the searches go to facts no table holds.
    - The check script runs after every round, not only at the end, because extraction
      agents write undated citations, sourceless markers and bracketed notes that only
@@ -417,8 +419,8 @@ every draft, lineup lock, trade decision, waiver or free-agent move, and roster 
    with that date and must exit clean.
 3. Usage check (in season): for every fantasy-relevant player, compare the week's
    actual snap share, carries, routes and targets (collected once from the box scores
-   and the free league-wide tables, with PFF, Fantasy Points and Next Gen Stats only
-   where the user holds the subscription) against his caller's tendency profile and the
+   and the free league-wide tables, Next Gen Stats included, with PFF and Fantasy Points
+   only where the user holds the subscription) against his caller's tendency profile and the
    direction the profile gave him, and mark the line confirmed, diverging or new (a role
    the profile did not predict). Two diverging weeks change the direction; one is noise.
    In-season calls read the comparison rather than the preseason profile, alongside the

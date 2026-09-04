@@ -54,8 +54,9 @@ match exactly one row is admitted as a name, and that row can belong to a team t
 never mentions. The column labels these tables use are listed as non-names, so it takes
 an unlisted one to happen.
 
-The check reads one line at a time, so a filled sentence and its marker have to sit on
-one line; a sentence wrapped across two lines fails for want of a number.
+The check reads only the marker's own line, so a filled sentence and its marker have to
+sit on one line; a sentence wrapped across two lines is checked on its second half
+alone, and its subject and its other figures on the first line are never seen.
 
 A number the pass computed rather than copied is in no row, so a computed figure has to
 keep the table's own input beside it ("22.2 percent, 67 of 302"). Alone it normally
@@ -78,7 +79,8 @@ too, so a mis-shaped marker vocabulary cannot pass the check by hiding every cel
 it.
 
 Prints the counts and every failing sentence; exits 1 on any failure, and when data/ is
-missing or no profile was found. Run it from the season folder:
+missing, data/teams.md is missing or empty, or no profile was found. Run it from the
+season folder:
 
     python3 check-fills.py --dir . --date 2026-09-03      one fill date
     python3 check-fills.py --dir . --date all             every fill marker in the set
@@ -298,9 +300,9 @@ def rows_for(names, codes, lines):
     on its own find a benchmark player on the club the line is comparing against. When
     the line names no team at all there is nothing to scope to, and every name stands
     alone."""
-    forms = [f for c in codes for f in SPELLINGS[c]]
-    by_code = [ln for ln in lines
-               if any(re.search(r'(?<![\w])' + re.escape(f) + r'(?![\w])', ln) for f in forms)]
+    # Longest spelling first, one pass: a short spelling that is also the start of another
+    # team's spelling never claims that other team's row.
+    by_code = [ln for ln in lines if any(FORM_TO_CODE[m.group(1)] in codes for m in ANY_TEAM.finditer(ln))]
     coded = {id(ln) for ln in by_code}
     by_name, seen_name = [], set()
     for n in names:
@@ -334,7 +336,7 @@ def sentence_before(line, pos):
 
 
 def team_code_of(path):
-    """The team a profile is about, from teams/CIN.md, coach/CIN-defense.md, oline/CIN.md."""
+    """The team a profile is about, from teams/<CODE>.md, coach/<CODE>-defense.md, oline/<CODE>.md."""
     stem = os.path.basename(path)[:-3]
     head = stem.split('-')[0].upper()
     return head if head in CODES else None
@@ -347,7 +349,7 @@ for p in profiles:
     rel = os.path.relpath(p, a.dir)
     file_code = team_code_of(p)
     text = open(p, encoding='utf-8').read()
-    gaps += text.count('(Gap)')
+    gaps += len(re.findall(r'\(Gap\b', text))   # (Gap) and (Gap: <reason>) alike
     unverified += text.count('[unverified')
     if a.date != 'all':
         verified += text.count(f'[verified {a.date}]')

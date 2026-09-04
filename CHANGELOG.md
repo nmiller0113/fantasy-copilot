@@ -5,6 +5,31 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.19.0] - 2026-09-04
+
+**Rules changed: the knowledgebase build writes `data/teams.md` before the first pull
+(introduced in 1.18.1 under a patch bump, corrected here), and a team spelling is
+matched longest-first so a short spelling never claims another team's row.**
+
+Fixed: `scripts/check-fills.py` matched each team spelling separately, so a spelling
+that is also the start of another team's spelling (a two-letter city code shared by
+two clubs) reached the other club's rows and let its figure pass under the first
+club's line; the rows are now found in one longest-first pass. The `(Gap ...)` tally
+counts the reasoned form `(Gap: <reason>)` as well as the bare one, which the gap-round
+procedure writes and the tally previously dropped. The script's exit summary names the
+teams-file stop.
+
+Changed: the marker vocabulary defines `(Gap: <reason>)`; the "wrapped sentence" rule
+in the script, the reference and this log now says what actually happens (only the
+marker's own line is read, so a wrapped sentence is checked on its second half alone);
+README states the two ways a figure from an unnamed club can still pass (a name only one
+row answers to, and a row naming no team) and says what a build does without Python (the
+fills are reported as unchecked, the set is not called complete); refresh step 3 no
+longer gates Next Gen Stats behind a subscription, matching the source-table list; the
+1.18.0 entry's exclusion list matches the shipped reference; the search-quota sentence
+no longer names one harness's number. The 1.18.1 entry now says its teams file was a
+rules change.
+
 ## [1.18.1] - 2026-09-04
 
 Fixed: the 1.18.0 text used real players as examples in the check script's docstring,
@@ -16,7 +41,8 @@ describe the shape (a shared surname, a benchmark player on another club) and th
 longer carries the league's teams and spellings; it reads them from the knowledgebase's
 own `data/teams.md` (one team per line, the profile code first, then every spelling the
 pulled tables print), which build step 0 now writes, and it stops with a message when
-that file is missing. No rule of the skill changed.
+that file is missing. That file is a new required build output, which by this
+changelog's own convention is a rules change; 1.19.0 carries the corrected bump.
 
 ## [1.18.0] - 2026-09-03
 
@@ -36,8 +62,8 @@ missed tackles); ESPN Analytics win rates (all 32 teams, four rates, with ranks)
 Sharp Football coverage schemes and defensive tendencies (man, zone, single-high,
 two-high, blitz, box, sub package); Sumer Sports team defense (EPA and success rate).
 Each is saved verbatim with its URL, pull date, season and column order, and the
-list names what stays out for a visitor (PFF grades, FTN line yards and DVOA, Next
-Gen Stats, Fantasy Points Data).
+list names what stays out for a visitor (PFF grades, FTN line yards and DVOA, Fantasy
+Points Data, Sharp Football's book-only splits, Sumer Sports' paid tier).
 
 New: `scripts/check-fills.py` (Python 3.8 or later): after a fill, every cell marked
 "[filled <date>: <data file>]" must cite a file that exists, and the sentence carrying
@@ -45,8 +71,8 @@ the marker is checked against that file's rows for the player or team that line 
 about, not against the file as a whole. The row is found by player name or team code,
 read from the line, the heading above it (a markdown heading, a bold-led bullet, or a
 plain label line ending in a colon) and the profile's own file name, and matched through
-the spellings a data file may use (PFR's TAM, KAN, NWE, LVR, GNB, SFO, NOR, JAC and the
-full team names its team page prints). A line in a data file that names three or more
+the spellings `data/teams.md` lists for it (another site's code, the city, the
+nickname, the full name). A line in a data file that names three or more
 different teams is a league-wide list rather than one subject's row, so it is split on
 "; " first and only the entry carrying the anchor is searched; without that, ESPN's
 player top twenties put twenty teams' numbers within reach of any one of them. A name
@@ -62,7 +88,8 @@ never read as a player name: the tables print names in mixed case, so OLB and AD
 labels. At least one of the sentence's numbers must be in those rows,
 sign included, counting both ends of a hyphenated range and no part of a season span or
 an ISO date; a line naming no player or team the table covers fails, and so does a
-sentence wrapped across two lines, because the check reads one line at a time. A
+sentence whose subject and figures sit on the line above its marker, because only the
+marker's own line is read. A
 citation shaped like a file name is a file citation even
 when the file's own name ends in a date, so a misspelled or extensionless name fails
 instead of passing as a search fill, and a one-word citation naming no saved file fails
