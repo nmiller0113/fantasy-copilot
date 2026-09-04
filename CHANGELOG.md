@@ -5,6 +5,54 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.29.0] - 2026-09-04
+
+**The draft-season guide pass is a script: extractor agents write JSON tag rows from a
+subscriber draft guide, `scripts/merge-tags.py` writes them into the team files' media
+reads.**
+
+### Added
+
+- `scripts/merge-tags.py`: `--dir <kb> --outlet "<guide> <date>" --json <rows> [--json
+  ...] [--dry-run]`. Each row (team, player, tag, line) lands in the team file's Media
+  read table: a known player keeps his row with the tag added, the line appended under
+  the outlet label and the Outlets count up one per outlet, not per row; a new player
+  gets a row with count 1. The row is matched in two passes over the whole table, case
+  ignored -- an exact name first, then the surname with a first name that fits (an
+  initial matches a letter; two full first names must match or share three letters) --
+  so a near-name higher in the table cannot take a line meant for the player below it,
+  and a first name that does not fit is a new row rather than someone else's. A rerun
+  under the same `--outlet` string is idempotent: the outlet's fragments and its count
+  are lifted out before the new ones go in, so twice equals once. That holds per row the
+  rerun names, so a rerun carries the guide's full set: a player the new edition dropped
+  keeps the previous edition's line and count under that label, since a row the run
+  never touches is a row it never reads. A new date in the label keeps both editions on
+  the row. Tags are never removed, because which tag an outlet contributed is not
+  recorded. Team spellings come from `data/teams.md`, matched
+  exactly first and by substring only when that fits one code; "rookie" is recorded as
+  sleeper; pipes become slashes and semicolons commas in the line and the label, so a
+  guide's punctuation can neither break a table nor blur a fragment boundary. Everything
+  refuses before it writes: a pre-flight pass over the rows, the teams and the tables,
+  then every new file built in memory and written only after the last team succeeds.
+  Verified on the guide's 368 rows across all 32 files: the second run left the tree
+  byte-identical to the first, and each refusal left it untouched.
+
+### Changed
+
+- `references/knowledgebase.md`, Build: step 2b, the draft-season guide pass, names the
+  extractor read (at most eight pages per read, JSON outside the knowledgebase), the
+  merge command and what it does to a row -- the two matching passes, the count that
+  rises once per outlet, the several tag rows a player may hold and which one the lines
+  land on, the sanitizing of pipes and semicolons, `rookie` recorded as sleeper, the
+  rerun that replaces this outlet's lines and leaves the tags -- and says to rerun on
+  each new edition before the season, the guide's full set and not a hand-picked few,
+  with the same label to replace the previous edition and a new date to keep both, and
+  lists what refuses the whole set before any write.
+- README: ten optional scripts.
+
+Why: the guide's tags were merged by a one-off script the first time; the rule that
+research is not done until the skill can repeat it puts the script in the plugin.
+
 ## [1.28.0] - 2026-09-04
 
 **Rules changed: a host subscription the user holds is read as three data points beside

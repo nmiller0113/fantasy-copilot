@@ -74,7 +74,7 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. Nine optional scripts ship with it
+skill file, its reference files, and a manifest. Ten optional scripts ship with it
 (Python 3.8 or later, nothing else; the skill copies them into the knowledgebase folder
 and runs them there, and without Python it reports the joins as not built rather than
 having an agent write them): `scripts/pull-list.py` names the source tables the
@@ -89,7 +89,10 @@ fills ages and games missed by player name from the fantasy pages; `scripts/sche
 the schedule-strength tables from the schedule and the defense-ratings files, reading the
 team codes from the knowledgebase's own `data/teams.md`; `scripts/missing-lines.py` and
 `scripts/gap-list.py` count and list the cells still open in a knowledgebase written as
-prose (the first build's shape) and are the yardstick for one. The ninth,
+prose (the first build's shape) and are the yardstick for one; `scripts/merge-tags.py`
+writes extractor agents' JSON tag rows from a subscriber draft guide into the team
+files' media-read tables under the guide's outlet label, so no agent edits a profile
+and a new edition of the guide is one rerun. The tenth,
 `scripts/check-fills.py` (same requirement; without Python the build reports the fills as
 unchecked rather than checked, and the set is not called complete), checks that each cell
 a build filled from a saved source table cites a table that exists and carries at least

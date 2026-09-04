@@ -277,6 +277,38 @@ first build (skill section 10).
    team site, a wire team page, one beat outlet; at most three searches) fills the
    judgment cells of all four files from the source hierarchy, with the vocabulary above,
    inventing nothing and writing `-` where nothing dated exists.
+2b. The draft-season guide pass, for each subscriber draft guide the user holds (skill
+   section 4): extraction-tier agents read the guide's per-team sleeper, breakout,
+   rookie, target, fade and regression pages (at most eight pages per read) and write
+   JSON rows (team, player, tag, one paraphrased line of at most 25 words) to files
+   outside the knowledgebase; `merge-tags.py --dir . --outlet "<guide> <date>" --json
+   <file>` writes them into the Media read tables, and no agent edits a profile. A row
+   finds its player in two passes over the whole table, never the first row that looks
+   close: an exact name match, and only where there is none, the surname with a first
+   name that fits (an initial matches a letter; two full first names must match or share
+   three letters, so a nickname merges and a different name under the same initial does
+   not). Case decides nothing, and a tag of `rookie` is recorded as sleeper. The matched
+   row keeps its place, with the tag added if new, the line appended under the outlet
+   label, and the Outlets count up one per outlet rather than one per row -- a second
+   line from the same guide does not raise it again. Where a player already holds
+   several tag rows, the guide's lines all land on the first of them. A player the table
+   does not hold gets a new row. A pipe in the player, the line or the label becomes a
+   slash and a semicolon in the line or the label a comma, so the guide's punctuation
+   can neither break a table nor blur where a fragment begins. Rerunning the same JSON
+   under the same `--outlet` string leaves the files exactly as one run left them: the
+   outlet's fragments are lifted out of the Line cell and rewritten, and its count with
+   them. Tags are the exception, never removed, because which tag an outlet contributed
+   is not recorded. So rerun whenever the guide publishes a new edition before the
+   season -- with the same label to replace the previous edition's lines, with a new
+   date in the label to keep both editions on the row -- and rerun the guide's full set,
+   never a hand-picked few: a row the new edition does not name is a row the script
+   never reads, so a player the new edition dropped keeps the previous edition's line
+   and count under that label. The whole set is refused before a single file
+   is written, on an unknown team spelling, a spelling that fits more than one code, a
+   tag outside the vocabulary, an empty team, player, tag or line, a team file without a
+   Media read table, or a surname match that fits more than one player or lands on a
+   player whose name the table of another team holds exactly. The guide's pages are
+   never saved under `data/`.
 3. One skeptic per division (session model, fetch first, at most three searches) re-checks
    the high-impact cells of EVERY team in its division, never a sample: starters'
    designations and timelines, absence plans, the caller and coordinator in the header,
