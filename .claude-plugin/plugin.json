@@ -1,7 +1,7 @@
 {
   "name": "fantasy-copilot",
   "description": "Fantasy football copilot for Draft Sharks subscribers: live draft-day advising, pre-draft strategy, and season-long weekly guidance. Requires Draft Sharks.",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "author": {
     "name": "Nathan Miller"
   },

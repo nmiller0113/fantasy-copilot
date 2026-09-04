@@ -5,6 +5,34 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.26.0] - 2026-09-04
+
+**Rules changed: every add-or-drop runs the replaceability test beside the number; a
+back or receiver on the successor map holds bench value whether or not the starter is
+owned.**
+
+### Changed
+
+- Section 8, new bullet after waiver eve: after the full read and beside the engine's
+  number, with the add's cost in priority or FAAB named in the same line, each side of
+  an add-or-drop is tagged as re-acquirable from the league's pool later or not. A
+  player at a position the pool still holds several of at the same tier (a second
+  quarterback in a one-quarterback league, a streaming defense or kicker) can be; a
+  player whose value is contingent on an injury or role change cannot, because he is
+  claimed the day it happens. The test argues the slot for the one who cannot be
+  replaced and says how the replaceable need is met the week it arises; a projection
+  gap alone does not settle the call: the gap and the test are both said and the user
+  decides. When both sides carry the same tag the test is silent, and how many
+  contingent stashes a bench carries is the user's call. The successor map names the
+  contingent players: a back or receiver listed under COMMITTEE, or as PRIMARY if the
+  starter is out, holds that value on the user's bench whether or not the user owns
+  the starter.
+
+Why: with the full read done and every row said, a copilot still let the engine's
+projection gap decide a bench slot between a second quarterback and a committee back
+who becomes the lead the day the starter is hurt. The user asked the question the read
+did not: which of the two can I get back from the pool later.
+
 ## [1.25.0] - 2026-09-04
 
 **Rules changed: every name in a decision gets the knowledgebase's full read, said
