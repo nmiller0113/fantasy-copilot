@@ -5,6 +5,63 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.30.0] - 2026-09-04
+
+**The season comes out of the scripts. Every place a year was typed into a shape the lint
+enforces exactly is now derived, so the first build of a new season passes its own lint
+with no script edited, and `rollups.py` creates the output folder instead of ending the
+build in a traceback.**
+
+### Breaking
+
+- `rollups.py` now requires `--season N`; every saved invocation (a refresh script, a
+  REFRESH note) must add it. It is required rather than derived from `--date` because a
+  refresh run in January belongs to the season that just ended, not to the calendar year,
+  and a season guessed from the date would name the wrong file and read the wrong heading.
+  A `--season` that no profile's defence heading agrees with now stops the run before
+  anything is written, instead of writing a defence table of `-` cells and exiting 0.
+
+### Changed
+
+- `scripts/kb-lint.py` takes an optional `--season N`. The defence heading
+  "## Gives up by position (<year> basis)" and the rookies header's "Vet games missed
+  <year>-<yy>" column are no longer hardcoded: with `--season` both are computed from it
+  (basis year `season-1`, span `season-3` to `season-1`), and without it both are read
+  out of the knowledgebase's own files, taking the value most of the files carry. An
+  existing knowledgebase therefore lints unchanged with no flag, a new season's lints as
+  soon as its files carry its year, and a single file that disagrees with the rest still
+  fails. When a kind of file is present and no year can be read from any of them, or when
+  the top two years are tied, the script stops and names the flag rather than lints
+  against a guess or breaks the tie by glob order.
+- `scripts/build-scaffold.py` builds the rookies header's span from `--season` the way it
+  already built the defence heading and the blitz-rate line, so a scaffold and the lint
+  agree on the first run of a new season.
+- `scripts/rollups.py`: the season sets the coaching file's name and title, the defence
+  heading the script reads out of the profiles, the rookies header's span, and the ratings
+  file the defence rollup points at. The script also creates `nfl/` when it is not there,
+  so the first build of a season no longer crashes on a missing folder.
+- All three scripts that take `--season` reject a value below 1900 with `--season must be
+  a four-digit year`, rather than computing a basis year from it.
+- `scripts/pull-list.py`: the fantasy page's keep rule said a specific year's rosters; it
+  now says the coming season's.
+- `references/knowledgebase.md`: the templates carry `<season>` and `<season-1>` in place
+  of typed years, with a line saying the scaffold writes them and the lint reads them
+  back; the layout names `coaching-and-scheme-<season>`; the Build and Refresh steps pass
+  `--season <season>` to `rollups.py`; the ratings-basis sentences name the season rather
+  than a year. README says what the two scripts now derive. Dated prose about past events
+  is left as it stands.
+
+Why: a plugin other people install must not fail its own lint the first time a new season
+starts. The shape was enforced exactly while the year inside it was typed in several
+files, so the first build of a season would have needed the scripts and the templates
+edited together, by whoever remembered that they had to be. No rule changed.
+
+Note for anyone upgrading a knowledgebase built on an earlier version: the scripts are
+copied into the knowledgebase's `build/` folder, so the copies and that knowledgebase's
+own refresh notes have to be updated together. Copying the new `rollups.py` in without
+adding `--season <season>` to the command written in `REFRESH.md` leaves a refresh that
+stops on a missing argument.
+
 ## [1.29.1] - 2026-09-04
 
 **No rule changes: a sweep review's findings applied as text. Contradictions between

@@ -29,7 +29,7 @@ TABLES = [
     ('pfr-redzone-rushing-<season>.md', 'weekly in season', 'pro-football-reference.com/years/<season>/redzone-rushing.htm', 'rows with 5+ attempts'),
     ('pfr-redzone-receiving-<season>.md', 'weekly in season', 'pro-football-reference.com/years/<season>/redzone-receiving.htm', 'rows with 5+ targets'),
     ('pfr-redzone-passing-<season>.md', 'weekly in season', 'pro-football-reference.com/years/<season>/redzone-passing.htm', 'quarterback rows'),
-    ('pfr-fantasy-<season>.md', 'season; prior two seasons once', 'pro-football-reference.com/years/<season>/fantasy.htm', 'Player Tm Pos Age G GS RushAtt Tgt Rec PPR, 100-PPR floor or 2026-rostered'),
+    ('pfr-fantasy-<season>.md', 'season; prior two seasons once', 'pro-football-reference.com/years/<season>/fantasy.htm', 'Player Tm Pos Age G GS RushAtt Tgt Rec PPR, 100-PPR floor or rostered for the coming season'),
     ('pfr-team-offense-<season>.md', 'weekly in season; prior two seasons once', 'pro-football-reference.com/years/<season>/index.htm', 'plays, attempts, sacks taken, sack rate'),
     ('pfr-team-defense-<season>.md', 'weekly in season; prior two seasons once', 'pro-football-reference.com/years/<season>/opp.htm', 'blitz hurry pressure sacks missed tackles'),
     ('espn-win-rates-<season>.md', 'season (the annual leaderboard)', 'ESPN Analytics win rates article', 'team PBWR RBWR PRWR RSWR with ranks'),

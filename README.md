@@ -87,9 +87,11 @@ built rather than having an agent write them): `scripts/pull-list.py` names the 
 tables the knowledgebase keeps, their cadence and the columns kept at pull time, and
 refuses a run until they are present; `scripts/kb-lint.py` enforces the profile
 templates (headings, table headers, column counts, no source lists, no gap or method
-notes) and every build
+notes), deriving the two parts of the shape that name a season from the files themselves
+unless `--season` is given, so no script needs editing when a new season starts, and every build
 and refresh stops on it; `scripts/rollups.py` writes the nine NFL-wide cross-cut files as
-a join over the per-team tables; `scripts/refresh-seed.py` prints the starters whose
+a join over the per-team tables and takes the season as a required flag rather than
+guessing it from the date; `scripts/refresh-seed.py` prints the starters whose
 absence plan is still open, which seeds the refresh's role collector;
 `scripts/build-scaffold.py` writes every profile in its template shape with the
 team-level table cells filled, and later fills ages and games missed by player name from

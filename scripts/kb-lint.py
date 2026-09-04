@@ -9,16 +9,30 @@ every refresh stop on it. The last line also counts the "-" cells in the require
 player direction, points allowed, defender status and what it softens, line starters): that
 count is the build's progress figure.
 
-    python3 kb-lint.py --dir <kb> [--quiet]
-"""
-import argparse, glob, os, re, sys
+Two parts of the shape carry a season: the defence heading "## Gives up by position
+(<year> basis)" and the rookies header's "Vet games missed <year>-<yy>" column. Neither is
+hardcoded. With --season the two are computed from it (the basis year is season-1, the span
+is season-3 to season-1), and WITHOUT it they are DERIVED FROM THE FILES: the basis year is
+the one most of the coach/<CODE>-defense.md files already carry, the span the one most of
+the teams/<CODE>.md files already carry. So an existing knowledgebase lints unchanged with
+no flag, a new season's lints once its own files carry its year, and a file that disagrees
+with the rest still fails. The derivation stops with a message, asking for --season, when
+there are files of a kind and no year can be read from any of them, and equally when the
+top two years are tied: a tie-break would be glob order, not a fact about the files.
 
-SPEC = {
+    python3 kb-lint.py --dir <kb> [--season N] [--quiet]
+"""
+import argparse, collections, glob, os, re, sys
+
+def spec_for(basis, span):
+    """The template shape for a defence basis year and a rookies games-missed span."""
+    gives = f'## Gives up by position ({basis} basis)'
+    return {
     'teams': {
         'head': re.compile(r'^# [A-Z]{2,3} .+ - refreshed \d{4}-\d{2}-\d{2}$'),
         'headings': ['## Rooms', '## Rookies and young players behind veterans', '## Coach statements', '## Media read (last 14 days)', '## Watch'],
         'tables': {'## Rooms': '| Player | Pos | Age | Role | Status | If out | Preseason usage and rest | Direction |',
-                   '## Rookies and young players behind veterans': '| Player | Pos | Veteran ahead | Vet age | Vet games missed 2023-25 | Evidence | Takeover verdict |',
+                   '## Rookies and young players behind veterans': f'| Player | Pos | Veteran ahead | Vet age | Vet games missed {span} | Evidence | Takeover verdict |',
                    '## Media read (last 14 days)': '| Player | Tag | Outlets | Line |'},
         'minrows': {'## Rooms': 8},
         'required': {'## Rooms': [2, 3, 4, 5], '## Rookies and young players behind veterans': [5, 6]},
@@ -33,11 +47,11 @@ SPEC = {
     },
     'coach-defense': {
         'head': re.compile(r'^# [A-Z]{2,3} defense - refreshed \d{4}-\d{2}-\d{2}$'),
-        'headings': ['## Gives up by position (2025 basis)', '## Key defenders', '## DEF/ST direction'],
-        'tables': {'## Gives up by position (2025 basis)': '| Position | Points allowed per game | Rank (1 = softest) | Note |',
+        'headings': [gives, '## Key defenders', '## DEF/ST direction'],
+        'tables': {gives: '| Position | Points allowed per game | Rank (1 = softest) | Note |',
                    '## Key defenders': '| Player | Pos | Status | Absence softens |'},
-        'minrows': {'## Gives up by position (2025 basis)': 4, '## Key defenders': 4},
-        'required': {'## Gives up by position (2025 basis)': [1], '## Key defenders': [2, 3]},
+        'minrows': {gives: 4, '## Key defenders': 4},
+        'required': {gives: [1], '## Key defenders': [2, 3]},
     },
     'oline': {
         'head': re.compile(r'^# [A-Z]{2,3} offensive line - refreshed \d{4}-\d{2}-\d{2}$'),
@@ -46,7 +60,30 @@ SPEC = {
         'minrows': {'## Starters': 5},
         'required': {'## Starters': [1]},
     },
-}
+    }
+
+# What the derivation reads out of the files when --season is not given. Any four-digit
+# year is accepted, so a knowledgebase of any season is read, not just this one.
+RX_BASIS = re.compile(r'^## Gives up by position \((\d{4}) basis\)\s*$')
+RX_SPAN = re.compile(r'Vet games missed (\d{4}-\d{2})')
+
+def derive(paths, rx, what):
+    """The value most of these files carry, or None when none of them carries one. A tie
+    between the top two stops the run: breaking it would pick by glob order, which is not
+    a fact about the knowledgebase, and would then fail half the files against the other
+    half's year without saying why."""
+    seen = collections.Counter()
+    for p in paths:
+        for line in open(p, encoding='utf-8'):
+            m = rx.search(line)
+            if m: seen[m.group(1)] += 1; break
+    top = seen.most_common(2)
+    if not top: return None
+    if len(top) > 1 and top[0][1] == top[1][1]:
+        raise SystemExit(f'files disagree on the {what} ({top[0][0]} in {top[0][1]} files, '
+                         f'{top[1][0]} in {top[1][1]}); pass --season N')
+    return top[0][0]
+
 FORBID = [
     (re.compile(r'^#{2,4} (Sources|Gaps|Not retrieved)\b|\*\*(Sources|Gaps)\*\*', re.M), 'forbidden section'),
     (re.compile(r'\(Gap[:)]'), 'gap parenthetical'),
@@ -96,9 +133,23 @@ def lint(path, spec):
     return errs, open_cells
 
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-ap.add_argument('--dir', required=True); ap.add_argument('--quiet', action='store_true')
+ap.add_argument('--dir', required=True); ap.add_argument('--season', type=int)
+ap.add_argument('--quiet', action='store_true')
 a = ap.parse_args()
-files = sorted(glob.glob(os.path.join(a.dir, 'teams', '*.md')) + glob.glob(os.path.join(a.dir, 'coach', '*.md')) + glob.glob(os.path.join(a.dir, 'oline', '*.md')))
+team_files = sorted(glob.glob(os.path.join(a.dir, 'teams', '*.md')))
+coach_files = sorted(glob.glob(os.path.join(a.dir, 'coach', '*.md')))
+files = sorted(team_files + coach_files + glob.glob(os.path.join(a.dir, 'oline', '*.md')))
+if a.season is not None:
+    if a.season < 1900: raise SystemExit('--season must be a four-digit year')
+    basis, span = str(a.season - 1), f'{a.season - 3}-{(a.season - 1) % 100:02d}'
+else:
+    defense_files = [p for p in coach_files if p.endswith('-defense.md')]
+    basis = derive(defense_files, RX_BASIS, 'basis year')
+    span = derive(team_files, RX_SPAN, 'games-missed span')
+    blind = [what for what, v, fs in (('defence basis year', basis, defense_files),
+                                      ('rookies games-missed span', span, team_files)) if v is None and fs]
+    if blind: raise SystemExit('cannot read the ' + ' or the '.join(blind) + ' from the files; pass --season N')
+SPEC = spec_for(basis, span)
 bad = 0; open_total = 0
 for p in files:
     k = kind_of(p)

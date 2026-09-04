@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Scaffold the per-team profiles in the template shape, and fill what a table can fill.
 
-    python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season 2026            # write missing files as skeletons
-    python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season 2026 --ages     # fill "-" Age / Vet age / Vet games missed cells by player name
+    python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season <season>         # write missing files as skeletons
+    python3 build-scaffold.py --dir <kb> --date YYYY-MM-DD --season <season> --ages  # fill "-" Age / Vet age / Vet games missed cells by player name
 
 Skeleton: every heading and table header of the templates in references/knowledgebase.md
 (hardcoded here) for teams/, coach/ and oline/, a header line with the code, and the team-level numeric cells a saved table holds:
@@ -11,7 +11,7 @@ and sacks from espn-win-rates-<season-1>.md and pfr-team-offense-<season-1>.md w
 present, each stamped [filled <date>: <file>]. Player rows are judgment and stay empty for
 the judgment agent. --ages reads the pfr-fantasy-<season-1>, -<season-2>, -<season-3>
 pages and fills, by exact player name, the Age cell (last season's age plus one), and the
-Vet age and Vet games missed 2023-25 cells (17 minus games played per season, summed
+Vet age and Vet games missed <season-3>-<season-1> cells (17 minus games played per season, summed
 over the seasons the pages hold, and the cell says how many of the three that is; a
 season a player is absent from, below the pull floor or out of the league, is not
 counted as missed). Existing files are never overwritten; only "-" cells are filled.
@@ -28,6 +28,7 @@ ap.add_argument('--dir', required=True); ap.add_argument('--date', required=True
 ap.add_argument('--ages', action='store_true')
 a = ap.parse_args(); K, D, S = a.dir, a.date, a.season
 if not re.match(r'^\d{4}-\d{2}-\d{2}$', D): raise SystemExit('--date must be YYYY-MM-DD')
+if S < 1900: raise SystemExit('--season must be a four-digit year')
 teams_file = os.path.join(K, 'data', 'teams.md')
 if not os.path.isfile(teams_file): raise SystemExit(f'no {teams_file}: write it first')
 SPELL = {}
@@ -52,6 +53,9 @@ def team_row(rows, code):
     return None
 
 prior = S - 1
+# The rookies header's games-missed column names the three seasons behind the new one, so
+# the header the skeleton writes is built from --season and never from a hardcoded year.
+span = f'{S - 3}-{prior % 100:02d}'
 fpa = rows_of(os.path.join(K, 'data', f'ds-fantasy-points-allowed-{prior}.md'))
 espn = rows_of(os.path.join(K, 'data', f'espn-win-rates-{prior}.md'))
 toff = rows_of(os.path.join(K, 'data', f'pfr-team-offense-{prior}.md'))
@@ -81,7 +85,7 @@ Play caller: - | Head coach: - | Defensive coordinator: -
 
 ## Rookies and young players behind veterans
 
-| Player | Pos | Veteran ahead | Vet age | Vet games missed 2023-25 | Evidence | Takeover verdict |
+| Player | Pos | Veteran ahead | Vet age | Vet games missed {span} | Evidence | Takeover verdict |
 |---|---|---|---|---|---|---|
 
 ## Coach statements
