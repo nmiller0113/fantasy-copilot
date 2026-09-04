@@ -324,14 +324,29 @@ agree beforehand which league gets full attention.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
 - **Playoffs**: lean ceiling when underdog. One boom week decides titles.
 - **IR stash research (redraft)**: only a player tagged RETURNS this season (a stated
-  window, at least four games missed) earns a slot; no timetable is season-out. His
-  rest-of-season projection must beat both the best healthy free agent for the slot and
-  the bench player he displaces. Default to the free window (the host's clear date,
-  recorded once in the private document) and never spend priority or FAAB on a stash
-  unless RETURNS, starter-level projection and real contention all hold, with the cost
-  named in the same line. Run it on demand any week, on waiver eve, and right after
-  each draft, and lead every answer with the next clear date. Sources, tags and the
-  full procedure: `references/ir-stash.md`.
+  window, at least four games missed) earns a slot; no timetable is season-out. When
+  the stash costs a bench player (a draft pick, or a host without direct-to-IR adds),
+  his rest-of-season projection must beat both the best healthy free agent for the slot
+  and the bench player he displaces. **Once the draft is over, on a direct-to-IR host,
+  an open IR slot is filled, never held**: a RETURNS player who has cleared to free agency
+  displaces nobody and costs nothing, the swap for a better RETURNS candidate later
+  costs nothing either, so the value test does not apply and "leave it empty" is never
+  the answer while such a player exists. A candidate still on waivers is not free: he
+  goes through the burn-the-claim test below before any claim is spent. At the draft
+  the pick is the cost, so section 7's value test governs and the dart forecast still
+  decides the order. **Order the eligible pool by the knowledgebase read and state the
+  projection for each name, neither ahead of the other**: the projection alone ranks
+  nothing here, because it prices the starter ahead of him staying healthy and scores
+  every backup near zero. The read is the starter's age, status and absence plan from
+  his Rooms row, his games missed over three seasons from the rookies table where that
+  row exists, and the stash's own history under that staff; the case and the number
+  are both said, for each name, and the user decides. The burn-the-claim test:
+  default to the free window (the host's clear date, recorded once in the private
+  document) and never spend priority or FAAB on a stash unless RETURNS, starter-level
+  projection and real contention all hold, with the cost named in the same line. Run it
+  on demand any week, on waiver eve, and right after each draft, and lead every answer
+  with the next clear date. Sources, tags and the full procedure:
+  `references/ir-stash.md`.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
@@ -407,3 +422,27 @@ rather than browsing them: the successor map answers who eats if a starter is ou
 rookies file whether a young player is taking the job, the availability list whether a
 designation allows an IR slot. When a file and the live host page disagree, the host
 page wins and the file gets a refresh line.
+
+**Every name in a decision gets the full read before the number is looked up; the
+case and the number are then said together, neither ahead of the other.** Off the
+clock the read is stated in full; on the clock it is done beforehand and the two-line
+limit stands. The knowledgebase exists to evaluate every angle, and a decision that
+reads one file of it is a guess with a citation. For each player under consideration
+(an add, a drop, a stash, a start, a trade side), read and state: his team-file Rooms
+row (age, role, status, the coach's absence plan, preseason usage, his direction under
+this play caller); the starter ahead of or beside him (age, role, status and absence
+plan from his Rooms row, and his games missed over three seasons from the
+rookies-and-young-players table where that row exists); the rookies file (is a younger
+player taking the job); the play caller's tendencies and this player's roster-fit
+line; the offensive line's impact on his position; the schedule table for the weeks in
+play, with the defense's rating by position and its injured key defenders; and the
+media read (rest signals, sleeper, breakout, bust and risk tags, hype labeled as
+hype). A row the knowledgebase does not hold is named as not held, in one clause, and
+the read moves on; it is never inferred. The case comes from those rows and is said in
+two lines per name; the projection is quoted with it, as the engine's independent
+number over its own inputs, neither ahead of the other. Where the read and the number
+disagree, both are said and the user decides. A number quoted without the read is a
+finding the copilot did not make, and the user should not have to make it. On a live
+clock the name still comes first and the two-line limit stands: the full read is done
+in the pre-draft plan and refreshed between picks only for the names still live, and
+the pick's one line of reason is drawn from it.

@@ -31,10 +31,54 @@ and role can have changed since the last data you saw.
 
 ## Value test
 
-The returning player's DS rest-of-season projection must beat both the best healthy free
-agent for that slot and the bench player he would displace. Where the host does not
-allow adding an injured player straight to IR, the stash occupies a bench spot until he
-is eligible, so the bar is higher.
+The value test applies only when the stash costs a bench player: a draft pick, or a
+host that does not allow adding an injured player straight to IR (there the stash
+occupies a bench spot until he is eligible, so the bar is higher). Then the returning
+player's DS rest-of-season projection must beat both the best healthy free agent for
+that slot and the bench player he would displace.
+
+## Once the draft is over, an open IR slot is filled, never held
+
+Once the draft is over (the post-draft clear date included), on a direct-to-IR host, an
+open IR slot is filled with the best eligible RETURNS player who has cleared to free
+agency, whenever one exists. That add displaces nobody and costs nothing; swapping him
+out for a better RETURNS candidate later costs nothing either. Holding the slot empty
+"for a better name after the next injury week" gives up a free lottery ticket for no
+gain, because the swap is free when that name appears. A candidate still on waivers is
+not free: he goes through the burn-the-claim flag below before any claim is spent. At
+the draft the pick is the cost, so the value test above and skill section 7's dart
+forecast govern.
+
+## Order by ceiling, read from the knowledgebase
+
+The rest-of-season projection prices the starter ahead of the stash staying healthy,
+so every backup on it scores near zero, and ranking the pool by that number alone
+ranks nothing. Order the pool by the knowledgebase's full read (skill section 10) and
+state the projection for each name, neither ahead of the other; both are said and the
+user decides. For a stash the rows that decide are:
+
+- the starter ahead of him: age, role, status, camp participation and absence plan
+  from his Rooms row, and his games missed over the last three seasons from the
+  rookies-and-young-players table where that row exists;
+- the coach's stated plan for that starter's absence (PRIMARY, COMMITTEE, UNSETTLED
+  from the successor map, which is the team file's If out cell) with the coach
+  statement behind it from the team file's Coach statements section; a position the
+  successor map does not cover is read from the Rooms row directly;
+- the stash's own history under this staff (has he carried the role before) and his
+  risk tag from the media read; his injury history comes from the engine's Injury
+  Predictor, listed under Sources above;
+- the play caller's tendencies and the roster-fit line for his position, and the
+  offensive line's impact on it;
+- the schedule table for the weeks after his return window, including the playoff
+  weeks, where that table is built;
+- the designation's return window.
+
+A row the knowledgebase does not hold is named as not held, in one clause, and the
+read moves on; it is never inferred.
+
+A backup who has already started for this coach behind an aging starter who missed
+camp outranks a healthy-situation slot receiver at the same projection. Say the case
+and the number together, two lines per name, and the user decides.
 
 ## When: the free window
 

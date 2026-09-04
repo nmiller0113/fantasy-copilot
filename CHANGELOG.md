@@ -5,6 +5,50 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.25.0] - 2026-09-04
+
+**Rules changed: every name in a decision gets the knowledgebase's full read, said
+beside the engine's number; once the draft is over an open IR slot on a direct-to-IR
+host is filled from free agency, never held; the IR-eligible pool is ordered by that
+read.**
+
+### Changed
+
+- Section 8, IR stash research: the value test (projection beats the best healthy free
+  agent and the displaced bench player) now applies only when the stash costs a bench
+  player, at the draft or on a host without direct-to-IR adds. Once the draft is over
+  (the post-draft clear date included), on a direct-to-IR host, an open IR slot is
+  filled with the best eligible RETURNS player
+  who has cleared to free agency whenever one exists: the add displaces nobody and the
+  later swap is free, so "leave it empty" is never the answer; a candidate still on
+  waivers goes through the burn-the-claim flag first, and at the draft the pick is the
+  cost so section 7 governs. The pool is ordered by the knowledgebase read (the
+  starter's age, status and absence plan, his games missed where the rookies table
+  holds it, the coach's stated plan, the stash's own history under that staff, the
+  return window) with the projection stated beside it, neither ahead of the other,
+  because the projection alone prices the starter staying healthy and scores every
+  backup near zero. Both are said per name and the user decides.
+- `references/ir-stash.md`: the value test scoped the same way, plus two new sections
+  carrying the open-slot rule and the ceiling read.
+- Section 10, new rule: every name in a decision (add, drop, stash, start, trade
+  side) gets the knowledgebase's full read before the number is looked up, and the
+  case and the number are then said together:
+  Rooms row, the starter ahead of or beside him, the rookies file, the play caller's
+  tendencies and roster fit, the offensive line's impact, the schedule table with
+  defense ratings and injured key defenders, and the media read's tags; a row the
+  knowledgebase does not hold is named as not held, never inferred. The case is said
+  in two lines per name with the projection beside it as the engine's independent
+  number, neither ahead of the other; where they disagree both are said and the user
+  decides. On a live clock the name still comes first and the two-line limit stands;
+  the read is done in the pre-draft plan and refreshed between picks for the names
+  still live.
+
+Why: a copilot quoted a backup running back's near-zero projection and advised holding
+an open IR slot empty, while the knowledgebase already held the starter's age, his
+missed camp, the coach's stated uncertainty about the backup plan and the backup's prior
+starts under
+that staff. The user made the case the skill should have made.
+
 ## [1.24.0] - 2026-09-04
 
 **Rules changed: the division skeptic checks every team, never a sample; a computed
