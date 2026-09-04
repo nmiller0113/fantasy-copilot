@@ -58,9 +58,7 @@ The check reads only the marker's own line, so a filled sentence and its marker 
 sit on one line; a sentence wrapped across two lines is checked on its second half
 alone, and its subject and its other figures on the first line are never seen.
 
-A number the pass computed rather than copied is in no row, so a computed figure has to
-keep the table's own input beside it ("22.2 percent, 67 of 302"). Alone it normally
-fails, and when it passes it has only matched some other column.
+A number the pass computed rather than copied (a rank, a share, a per-game average) is in no row, so it carries no filled marker at all: it gets a parenthetical naming the table it was computed from, and this check never reads it.
 
 A depth chart holds names and no meaningful numbers, so a citation naming one is checked
 by player name only, searched across all 32 teams the print-all page carries, and its

@@ -173,8 +173,10 @@ The check script (`check-fills.py`) holds every filled number to the table it ci
 citation must resolve to a file under `data/`, the cell's row must name a player or team
 the table carries (the player from the row's first cell, the team from the file name), and
 at least one number in the cell must sit in that player's or team's rows. Write the number
-as the table writes it, sign included; a computed figure (a share, a per-game average, a
-rank you counted) keeps the table's own input beside it. A team spelling is matched
+as the table writes it, sign included. A computed figure (a share, a per-game average, a
+rank you counted from a column) carries no filled marker: it gets a parenthetical naming
+the table it was computed from, because the check reads a table cell on its own and a
+rank is in no row. A team spelling is matched
 longest-first from `data/teams.md`, so a short spelling never claims another club's row.
 One correct figure carries a cell, so the check thins wrong figures out of a set without
 clearing any one cell; that is what it proves and all it proves.
@@ -266,8 +268,14 @@ first build (skill section 10).
    judgment cells of all four files from the source hierarchy, with the vocabulary above,
    inventing nothing and writing `-` where nothing dated exists.
 3. One skeptic per division (session model, fetch first, at most three searches) re-checks
-   the high-impact cells of its four teams: starters' designations, absence plans, the
-   caller flag, line starters; corrects in place or marks `[unverified <date>]`.
+   the high-impact cells of EVERY team in its division, never a sample: starters'
+   designations and timelines, absence plans, the caller and coordinator in the header,
+   preseason rest, key defenders, line starters and the line rank; corrects in place or
+   marks `[unverified <date>]`. The same pass, against the previous copy, closes any
+   rewrite or reshape of existing profiles: on the first reshape a lower-tier rewrite
+   dropped about thirteen required facts per team (428 over 32 teams); a sample of two
+   teams in each of the eight divisions found 152 of them, and only the pass over the
+   other sixteen teams found the remaining 276.
 4. Scripts: `kb-lint.py` (must pass), `check-fills.py --date all` (must exit clean),
    `rollups.py` (writes every NFL-wide file from the tables), the defense ratings file
    from the points-allowed table with the profiles' notes, `schedule-tables.py` (the 32
@@ -349,7 +357,10 @@ Two shapes follow. Collect once, then route: a fact that covers the whole NFL is
 one collector and handed to the editors in their prompt. Edit only cells: the profiles
 are tables so that a refresh writes a cell and a script writes the rollups, which is
 what removes the per-file merge agent and the per-team skeptic that made the first
-refresh design unrunnable inside one session's search quota. Run one workflow at a time.
+refresh design unrunnable inside one session's search quota. A workflow runs a handful
+of agents at once (the harness caps concurrency by the machine's cores), so a pool of a
+hundred file-level agents is split across two or three workflows launched together, each
+with its own list; several judgment workflows at once still trip the API's rate limits.
 A failed agent call is retried once under a distinct label and then counted as a gap in
 the report, never filled in. The first run of any reshaped refresh logs its per-phase
 agent counts and tokens from the workflow's return before anyone quotes a cost.

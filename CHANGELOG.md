@@ -5,6 +5,25 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.24.0] - 2026-09-04
+
+**Rules changed: the division skeptic checks every team, never a sample; a computed
+figure carries a parenthetical naming its table, never a filled marker; and "run one
+workflow at a time" is withdrawn for file-level pools, which are split across two or
+three workflows launched together, while several judgment workflows at once remain a
+rate-limit risk.**
+
+Why: the reshape that followed 1.23.0 sampled two teams in each of the eight divisions
+(sixteen teams) and found 152 lost facts; the pass over the other sixteen found 276
+more, about thirteen per team over the 32. In a table, a computed rank or
+share cannot keep the table's input beside it, and the check reads a cell alone. The
+harness caps a workflow's concurrency by the machine's cores, so a hundred-file rewrite
+in one workflow ran four hours where three ran one.
+
+Changed: build step 3, the vocabulary's computed-figure sentence, the agents section,
+and the same sentence in `scripts/check-fills.py`'s docstring, which had kept the old
+rule.
+
 ## [1.23.0] - 2026-09-04
 
 **Rules changed: the knowledgebase is tables, not prose. Every profile follows a fixed
