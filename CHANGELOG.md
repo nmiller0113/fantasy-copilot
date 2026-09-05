@@ -5,6 +5,31 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.31.0] - 2026-09-05
+
+**Three rules a live draft wrote. The first bench body at a position is bye cover, so it
+gets the same bye check a starter gets; the host's own ranked suggestions join the inputs
+to the snipe forecast, because a public room drafts off them; and a suggestion card that
+has rendered its numbers but not its name is not a name to read a player off.**
+
+### Changed
+
+- Section 7's bye check no longer waves bench players through. The first bench body
+  drafted at a position exists to cover the starters' byes there and in the flex, so his
+  bye is compared to those starters exactly as a starter's would be: a stack is a
+  finding, and the second line names the week he covers or the stack. Bodies after the
+  first at that position stay unchecked, so the rule adds one comparison per position,
+  not a sweep of the bench.
+- The snipe forecast takes a fourth input: the ranked pick suggestions the host's draft
+  room shows every drafter. A public room drafts straight off that list, so its next
+  names weigh in the forecast alongside roster need, the trend and ADP. It is read
+  between picks as a data point, never as a directive.
+- `references/field-behaviors.md` records a rendering window observed live: for a few
+  seconds after a pick lands the sync panel can show its suggestion cards with the 3D
+  values and projections filled in and the name and team blank. A value-only card is not
+  a name, so the name comes off the reloaded War Room list in that window, and no player
+  is ever named from a card whose name has not rendered.
+
 ## [1.30.0] - 2026-09-04
 
 **The season comes out of the scripts. Every place a year was typed into a shape the lint

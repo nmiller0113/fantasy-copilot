@@ -233,8 +233,11 @@ candidate who would start in the flex is compared to every starter. Do it from t
 roster panel while the room picks; at the clock re-read only the named player's bye.
 If he stacks, the second line says so ("same bye as X") and names the best non-stacking
 candidate, and the user decides; if every viable candidate stacks, say so and give the
-top row. A stack with a bench player is not a finding. The plan's bye map is the input,
-not a substitute.
+top row. The first bench body drafted at a position exists to cover the starters' byes
+there and in the flex, so his bye is compared to those starters exactly as a starter's
+is: a stack there IS a finding, and the second line names the week(s) he covers
+("covers X's week N") or the stack. Bench bodies after the first at that position are not
+checked. The plan's bye map is the input, not a substitute.
 
 **Room trends: read them, never follow them; exploit them, never chase them.** A run,
 a fad or a streak of reaches is a data point (section 3) and never changes the plan
@@ -249,8 +252,11 @@ the name.
 **Snipe first: forecast the picks between now and our turn.** Between picks, for the
 opponents who pick before us (in a long gap, those whose need matches a target of
 ours), name the position each roster needs most and the player the board gives them
-for it, from their roster, the live trend and ADP (the sharp-user ADP where the host
-publishes one, section 4). That forecast is the list of players
+for it, from their roster, the live trend, ADP (the sharp-user ADP where the host
+publishes one, section 4) and the ranked pick suggestions the host's own draft room
+shows every drafter. A public room drafts straight off that list, so its next names
+weigh in the forecast alongside the roster, the trend and ADP; read it between picks as
+a data point, never a directive. That forecast is the list of players
 least likely to reach us: a forecast, not a promise, one data point among the rest. It
 decides which pick is the early one for the research-targets rule; whether the target
 is worth taking early is that rule's band. A target not on the forecast leaves the odds
@@ -272,8 +278,8 @@ research-targets rule settles those first), the judgment layer decides: section 
 criteria 5a, 6 and 8, plus the player's age and his current depth-chart role. The rec
 still leads with one name; the second line states the tie-break only when the layer
 favors a name other than the top row, before the clock, not after the user asks. When
-the bye check has claimed the second line, the stack finding keeps it and the tie-break
-is said between picks.
+the bye check has claimed the second line, the bye finding (stack or cover week) keeps
+it and the tie-break is said between picks.
 
 **Sweep names ride to the clock, and the name at the clock is final.** At every pick,
 bench rounds included, the candidate list is DS's top rows plus every sweep name still

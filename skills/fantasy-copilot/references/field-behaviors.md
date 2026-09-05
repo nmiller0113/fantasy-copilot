@@ -8,6 +8,10 @@ and the reasoning, so a maintainer can tell a still-true rule from a stale one.
 
 - Measured cross-off latency of the sync panel: 4 seconds or less per pick; panel
   attach under a minute.
+- For a few seconds after a pick lands, the panel can render its suggestion cards with
+  the 3D values and the projections filled in and the name and team still blank. A
+  value-only card is not a name: in that window read the name off the reloaded War Room
+  list, and never name a player from a card whose name has not rendered.
 - **Host mock rooms get fresh league ids**, so DS errors "Error Syncing!" on every mock
   and its Set-Up flow creates a junk clone league per mock. Real league rooms carry the
   linked ids and should attach clean. Delete clone leagues afterward: a wrong league
