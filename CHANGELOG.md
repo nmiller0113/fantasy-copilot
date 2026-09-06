@@ -5,6 +5,65 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.32.0] - 2026-09-06
+
+**Every room's moves become one report. A new script reads the transactions pulled from
+each of the user's leagues and prints what every manager added, dropped and swapped, each
+player dropped in the window with an estimated clear date (his drop date plus that
+league's waiver period), and the names other managers chased in more than one league.
+Section 8 says what the copilot does with each of those, on waiver eve and on demand.**
+
+### Added
+
+- `scripts/transactions.py` (Python 3.8 or later, nothing else). It reads a private
+  folder holding `leagues.md` and one pipe-row file per league, de-duplicates the rows
+  that repeat when pulls overlap, and prints four sections to standard output: the
+  per-league manager digest (adds and drops by position, swaps, last move date), every
+  player dropped in the window with what he was swapped for in each league that dropped
+  him and an estimated clear date there (the drop date plus that league's waiver period,
+  arithmetic and not the host's own processing), the players managers other than the user
+  added in two or more leagues (the user's own adds are left out of that count, since the
+  section is the market's read and not a list of his own stashes), and the user's own adds
+  and drops. A dropped player the same league has since added says so in his entry.
+  `--dir` is required, `--since` defaults to seven days before the newest row the run
+  read, and `--league` limits the run to one slug. Any line the shape cannot read stops
+  the run with the file and the line number, the txn cell included: it is the key that
+  pairs a drop with the add that made room for it, so it is required, is never `-`,
+  belongs to one timestamp, carries one manager's adds and drops (a trade's rows
+  excepted), and holds at most one add and one drop, which is what a host entry is. The
+  script surfaces what the rooms did; it does not rate, rank or recommend.
+- The row shape's txn is built by the puller from the timestamp, the manager and a suffix
+  when the page shows more than one of that manager's entries in that minute. Waiver
+  processing batches a manager's claims into a single minute, so the timestamp and the
+  manager alone are not unique on the morning the report matters most.
+- `references/transaction-watch.md`: what a host's transactions page shows, the browser
+  pull method, the shape of the two files, exactly what each section of the report holds,
+  and the command. It is a new file rather than a section of
+  `references/field-behaviors.md`, which holds the live draft-day observations behind
+  section 5 and not a pull method or a file format.
+
+### Changed
+
+- Section 8 gains one bullet, "Transaction watch", after "Waiver eve": the pull and the
+  run, then what each part of the report is for. Every dropped name is a candidate and
+  takes the full read plus this section's replaceability and burn-the-claim tests, whose
+  reading of the host's own row governs the real cost and clear date, the report's date
+  being arithmetic on the drop date; a dropped player already picked up in that league is
+  shown as such; a drop paired with a same-position add in one transaction is a role or
+  injury question for the knowledgebase before anything else; a dropped streaming defense
+  or kicker is noise unless the pool is thin; a name other managers added in two or more
+  leagues is the market's read, a data point and never a directive; and the manager
+  digest reads each room's needs, feeding the bye-week stretch's trade targets and the
+  burn-the-claim test's contention input.
+- Section 9's list of what the private document holds gains the transactions folder's
+  path, which is where the watch reads its rows from.
+- README counts eleven shipped scripts and names the new one.
+
+Why: the drop side of the wire is where the other rooms' mistakes land, and the copilot
+was reading one league's free agent list rather than every league's transaction page. No
+rule about how a candidate is judged changed; the report only puts the names in front of
+the tests that already existed.
+
 ## [1.31.0] - 2026-09-05
 
 **Three rules a live draft wrote. The first bench body at a position is bye cover, so it

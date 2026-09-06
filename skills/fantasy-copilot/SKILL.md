@@ -330,6 +330,21 @@ agree beforehand which league gets full attention.
   the successor map, said beside the engine's projection, never instead of it: a
   full-role replacement earns a claim, a committee member a maybe. Mind the DROP side.
   Re-run after waivers clear.
+- **Transaction watch**: on waiver eve and on demand, pull every league's transactions
+  page since the last pull into the private folder, then copy and run
+  `scripts/transactions.py` over that folder, per `references/transaction-watch.md`,
+  which holds the page, the pull method, the row shape and the command. Every player the
+  report shows dropped is a candidate, and takes the full read (section 10) and then
+  this section's replaceability and burn-the-claim tests, whose reading of the host's
+  own row governs the real cost and clear date: the report's clear date is arithmetic on
+  the drop date. A dropped player already picked up in that league is shown as such. A
+  drop paired with a same-position add in one transaction is a role or injury question,
+  answered in the knowledgebase before anything else; a
+  dropped streaming defense or kicker is noise unless the pool is thin. The names other
+  managers added in two or more leagues are the market's read: a data point, never a
+  directive (section 3). The manager digest reads each room's needs, since churn at a
+  position says short there, and it feeds the bye-week stretch's trade targets and the
+  burn-the-claim test's contention input. Two lines per name (section 10).
 - **The replaceability test, on every add-or-drop.** The add's cost is named in the
   same line as the recommendation, in one of two forms: free and instant, or a
   priority or FAAB cost with the clear date. It is read from the host's own row for
@@ -394,9 +409,9 @@ agree beforehand which league gets full attention.
 
 Keep everything user-specific OUT of this skill and IN a private local document the user
 controls (league names and ids, scoring quirks, team names, draft slots, voice preferences,
-dated lessons, submitted advice questions). Read it at the start of any fantasy task; append
-dated lessons there after every draft and season. This
-skill stays user-agnostic; improve it only with knowledge that is true for every Draft
+dated lessons, submitted advice questions, the transactions folder's path). Read it at
+the start of any fantasy task; append dated lessons there after every draft and season.
+This skill stays user-agnostic; improve it only with knowledge that is true for every Draft
 Sharks subscriber.
 
 ## 10. The knowledgebase: the state of the NFL, kept current

@@ -80,10 +80,11 @@ Then `/reload-plugins`, or restart. Update later with
 ## Maintaining
 
 The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. Ten optional scripts ship with it
-(Python 3.8 or later, nothing else; the skill copies them into the knowledgebase's
-`build/` folder and runs them from there, and without Python it reports the joins as not
-built rather than having an agent write them): `scripts/pull-list.py` names the source
+skill file, its reference files, and a manifest. Eleven optional scripts ship with it
+(Python 3.8 or later, nothing else; the skill copies each one beside the files it reads,
+ten of them into the knowledgebase's `build/` folder, and runs them from there, and
+without Python it reports the joins as not built rather than having an agent write
+them): `scripts/pull-list.py` names the source
 tables the knowledgebase keeps, their cadence and the columns kept at pull time, and
 refuses a run until they are present; `scripts/kb-lint.py` enforces the profile
 templates (headings, table headers, column counts, no source lists, no gap or method
@@ -110,7 +111,13 @@ numbers in the rows of a player or team the line, its heading or its file name n
 its `--help` for how the anchors and the search space are resolved. Two things a clean
 run does not prove: that the figure came from the right column; and that the cell's other
 figures are right, since one correct figure carries the cell past every wrong one beside
-it. The release validator, `scripts/check.sh`, is a
+it. The eleventh, `scripts/transactions.py`, is the one that reads no knowledgebase: it
+reads a private folder of transaction rows pulled from each of your leagues' host pages
+and prints what every manager added, dropped and swapped, every player dropped in the
+window with an estimated clear date (his drop date plus that league's waiver period, so
+your host's own row still governs the real cost and date), the names managers other than
+you added in more than one league, and your own adds and drops. It counts and lists what
+the rooms did; it does not rate or recommend. The release validator, `scripts/check.sh`, is a
 maintainer tool run by hand before publishing and needs bash and git; on Windows, Git
 for Windows provides both. Users never run it, and Claude never runs it inside the skill.
 
