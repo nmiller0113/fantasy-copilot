@@ -1,7 +1,7 @@
 # Verified field behaviors (live-tested against Yahoo)
 
-Read this when preparing a draft day or diagnosing a sync problem. Section 5 of the
-skill holds the rules these observations produced; this page holds the observations
+Read this when preparing a draft day or diagnosing a sync problem. Sections 5, 7 and 8
+of the skill hold the rules these observations produced; this page holds the observations
 and the reasoning, so a maintainer can tell a still-true rule from a stale one.
 
 ## Sync and latency
@@ -72,3 +72,12 @@ and then correct itself; read the analysis page, not the first card.
 - Public money rooms have been seen drafting IR-designated players as stashes in the
   last two rounds. If the plan wants an IR stash, take him before the user's final pick,
   not with it.
+- The Team Dashboard's Starters and Bench blocks have been seen disagreeing with the
+  lineup set on the host for the same roster, every player accounted for on both pages.
+  The sync carries who is on the roster and which slots the IR holds; the arrangement
+  of those players into starters and bench read as the engine's own recommendation, but
+  whether a re-sync would have aligned it with the host was not tested, so the mechanism
+  is inferred from one roster. Read as the user's slots, that arrangement said
+  a position had no bench cover when the host's team page showed one, and a bye-cover
+  answer built on it was wrong. Membership and IR occupancy can be read off the
+  dashboard; which player sits in which slot comes from the host's own team page only.

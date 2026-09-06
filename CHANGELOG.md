@@ -5,6 +5,30 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.33.0] - 2026-09-06
+
+**The engine's dashboard says who is on the roster, not who is starting. Its Starters
+and Bench blocks are the lineup the engine would play, so slot assignments are now read
+from the host's own team page and nowhere else. Roster membership and IR occupancy are
+still read off the dashboard.**
+
+### Changed
+
+- Section 8's "Post-waivers" bullet splits the dashboard into what it reports and what
+  it recommends. Membership and IR occupancy are the synced truth; the Starters and
+  Bench blocks are the engine's recommended lineup and not the lineup the user has set,
+  so every slot assignment, and with it every bye cover and every statement of who
+  covers whom, is read only from the host's own team page. Section 7's bye check is
+  cited, not restated: what changed is where its slots come from, not the check.
+- `references/field-behaviors.md` gains the observation behind the rule, under "Observed
+  engine behaviors": a dashboard whose starters and bench disagreed with the lineup set
+  on the host for the same roster, and the wrong bye-cover answer that reading them as
+  the user's slots produced.
+
+Why: a bye-cover read is only as good as the slots it is read from, and the dashboard's
+slots have been seen to differ from the host's; the host page is the one that is never
+wrong about them.
+
 ## [1.32.0] - 2026-09-06
 
 **Every room's moves become one report. A new script reads the transactions pulled from

@@ -366,6 +366,10 @@ agree beforehand which league gets full attention.
   PRIMARY if the starter is out, holds that value on the user's bench whether or not the
   user owns the starter.
 - **Post-waivers**: Team Dashboard check for the recommended lineup and injury flags.
+  Its roster membership and IR occupancy are the synced truth, but its Starters and
+  Bench blocks have been seen disagreeing with the lineup set on the host for the same
+  roster, so every slot assignment, and with it every bye cover and every statement of
+  who covers whom (section 7's bye check), is read only from the host's own team page.
 - **Practice-report days**: Shark Bites news; a starter going down means an immediate
   handcuff run before league-mates react.
 - **Lineup lock morning**: refresh the knowledgebase (section 10), then open its
