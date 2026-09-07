@@ -5,6 +5,48 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.34.0] - 2026-09-06
+
+**The name spoken at the clock is now a row the copilot can see on the engine's board at
+that moment, and a ranked list that omits a player is no longer evidence he is drafted.
+Waiting for the user's turn is done in short batches, because a batch of waits returns
+only when its last wait ends and a long one can swallow the clock.**
+
+### Changed
+
+- Section 7's "At the clock" sentence requires a visible engine row: the in-room sync
+  panel read by screenshot, or the standalone list reloaded this turn. With no row in
+  view when the clock goes live the copilot says "no read" and reloads or screenshots,
+  and never names from memory or inference; when the engine is still blank after that
+  reload or screenshot the section's DS-lags rule takes over and the name is said as the
+  plan's, not the engine's. Absence from a ranked list, the host's own pick suggestions
+  included, is never evidence a player is drafted, since such lists rank a tagged player
+  low; only the pick tape, the roster panel or the engine's crossed-off board says
+  drafted.
+- Section 7's "Sweep names ride to the clock" paragraph gives a claim that the named
+  player is gone, from the user or from the copilot's read of a host list, one look at
+  the engine's board or the pick tape, and changes the name only if that look shows him
+  crossed off or picked; a host list's filter has produced a false "gone".
+- Section 5 gains the waiting cadence: never more than six ten-second waits in one batch
+  between the user's turns, at most three before a read of the host's clock inside about
+  five picks of it, one wait per read inside two. Its War Room bullet now takes the
+  in-room panel by screenshot as an at-the-clock read beside the reloaded list.
+- `references/field-behaviors.md` gains the six observations behind those rules: the
+  sync panel is an extension frame whose text is not in the host page's text layer, so a
+  screenshot is the read; the host's ranked suggestions forecast the room well and
+  census the board badly, hiding a tagged player who is still available; the host's
+  autodraft control renders highlighted once the room is live even when off; a re-sync
+  before the room opened fetched join order and the engine re-slotted itself at the
+  first live pick; a batch of waits returns only when the last ends; and the War Room's
+  dead position filters put the kicker and defense rows out of sight, so the host's
+  player list finds the candidate and the in-room panel's row is the read.
+
+Why: both failures were the same mechanism, a name spoken from something other than a
+live read. One turn named off a list's silence while the highest value on the board sat
+undrafted, and two picks went unassisted inside one batch of waits. A rule that can be
+satisfied by memory is a rule that gets skipped; requiring a row on the screen, or the
+words "no read", makes the skip visible.
+
 ## [1.33.0] - 2026-09-06
 
 **The engine's dashboard says who is on the roster, not who is starting. Its Starters

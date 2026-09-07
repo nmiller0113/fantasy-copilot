@@ -139,10 +139,15 @@ live offering disagrees, the live offering wins.
   scored to this league (section 4); the league-aware signal wins every decision.
 - **Reload the standalone War Room tab about three picks before every turn**; its
   rankings list goes stale within a few picks while the pick ticker and roster panel
-  stay live. Verify the name at the clock against the reloaded list and the ticker, and
-  trust the pick tape and roster panel over the rankings list. Compare 3D values within
-  one reload, never across: they re-scale as the pool thins. Do not open League
+  stay live, and both are trusted over it. Verify the name at the clock against the
+  reloaded list or the in-room panel by screenshot, plus the ticker. Compare 3D values
+  within one reload, never across: they re-scale as the pool thins. Do not open League
   Settings mid-draft; it can flip the league to manual mode.
+- **Wait in short batches as the turn nears**: a batch of waits returns only when its
+  LAST wait ends, so a long batch swallows the clock. Short batches between turns, never
+  more than six ten-second waits in one batch; inside about five picks of the user's
+  turn, at most three ten-second waits before a clock read; inside two picks, one wait
+  per read.
 - **In 1-QB formats non-elite QBs sit at 3D 0 until about a round before the cliff**;
   the zeros are the wait signal, the flip is the cliff warning.
 - **The synced order before the host randomizes is join order**; re-sync at the reveal
@@ -220,11 +225,17 @@ live offering disagrees, the live offering wins.
 **Between picks**: track the run (position frequency over the last 8 or so picks), each
 opponent's roster needs, tier-cliff proximity, and the next 2-3 candidates, decided
 before the clock. **At the clock**: speak the NAME when the user's clock is live,
-verified at that moment against DS's crossed-off board on the list reloaded this turn
-(section 5); the host's pick ticker alone misses picks, and a name given early gets
-sniped into a scramble. One name per call; a second only as a can't-find-the-row aid,
-never a hedge, with two exceptions: the bye check and the tie-break. Two-line rec, then
-the color (section 2).
+verified at that moment against a row the copilot can SEE on the engine's board, the
+in-room sync panel by screenshot or the list reloaded this turn (section 5). The host's
+pick ticker alone misses picks, a name given early gets sniped into a scramble, and no
+engine row in view at the clock means "no read" and a reload or a screenshot, never a
+name from memory or inference; when the engine stays blank after that reload or
+screenshot, the DS-lags rule below applies and the name is said as the plan's, not the
+engine's. Absence from a ranked list, the host's suggestions included, is never evidence
+a player is drafted: such lists rank a tagged player low; only the pick tape, the roster
+panel or the crossed-off board says drafted. One name per call; a second only as a
+can't-find-the-row aid, never a hedge, with two exceptions: the bye check and the
+tie-break. Two-line rec, then the color (section 2).
 
 **Bye check before every starter-slot name.** For each candidate who fills or could
 fill a starting slot, compare his bye to every rostered starter at the same position,
@@ -283,13 +294,15 @@ it and the tie-break is said between picks.
 
 **Sweep names ride to the clock, and the name at the clock is final.** At every pick,
 bench rounds included, the candidate list is DS's top rows plus every sweep name still
-on the board inside the research-target band; where the copilot's read disagrees with
-DS about one of them, the disagreement is said between picks, never settled by dropping
-the name. Once spoken at the clock the name stands unless verification shows him
-drafted or news breaks on him in that minute; a question about another player is
-answered with the number, a preference does not reopen the call, and the call changes
-only when the user names a different player. A reversal at the clock produces a pick
-nobody chose.
+on the board inside the research-target band; where the copilot's read disagrees with DS
+about one of them, the disagreement is said between picks, never settled by dropping the
+name. Once spoken at the clock the name stands unless verification shows him drafted or
+news breaks on him in that minute; a question about another player is answered with the
+number, a preference does not reopen the call, and the call changes only when the user
+names a different player. A claim that he is gone, from the user or from the copilot's
+read of a host list, gets one look at the engine's board or the pick tape, and the name
+changes only if that look shows him crossed off or picked: a host list's filter has
+produced a false "gone". A reversal at the clock produces a pick nobody chose.
 
 **Injured-reserve designations are free roster spots.** Where the host allows injured
 players straight to the IR slot, a player carrying an IR-eligible designation
@@ -345,26 +358,25 @@ agree beforehand which league gets full attention.
   directive (section 3). The manager digest reads each room's needs, since churn at a
   position says short there, and it feeds the bye-week stretch's trade targets and the
   burn-the-claim test's contention input. Two lines per name (section 10).
-- **The replaceability test, on every add-or-drop.** The add's cost is named in the
-  same line as the recommendation, in one of two forms: free and instant, or a
-  priority or FAAB cost with the clear date. It is read from the host's own row for
-  that player; the engine's Free Agent Finder does not distinguish a free agent from a
-  player on waivers and carries neither the cost nor the clear date. Then, after the
-  full read (section 10) and beside the engine's number, say for each side whether he
-  can be re-acquired from this league's pool later: a player at a position the pool
-  still holds several of at the same tier (a second quarterback in a one-quarterback
-  league where the pool holds starters, a streaming defense or kicker) can, and a player
-  whose value is contingent on an injury or a role change cannot, because he is claimed
-  the day it happens. The test argues the bench slot for the one who cannot be replaced
-  and says how the replaceable need is met the week it arises from whatever the pool
-  holds then. A projection gap alone does not settle an add-or-drop between a
-  replaceable player and an unreplaceable one; the gap is said, the test is said, and
-  the user decides. When both sides carry the same tag the test is silent and the
-  projection and the read decide; how many contingent stashes a bench carries is the
-  user's call, said with the test. The knowledgebase's successor rows name the
-  contingent players: a back or receiver the successor map lists under COMMITTEE, or as
-  PRIMARY if the starter is out, holds that value on the user's bench whether or not the
-  user owns the starter.
+- **The replaceability test, on every add-or-drop.** The add's cost is named in the same
+  line as the recommendation, in one of two forms: free and instant, or a priority or
+  FAAB cost with the clear date. It is read from the host's own row for that player; the
+  engine's Free Agent Finder does not distinguish a free agent from a player on waivers
+  and carries neither the cost nor the clear date. Then, after the full read (section
+  10) and beside the engine's number, say for each side whether he can be re-acquired
+  from this league's pool later: a player at a position the pool still holds several of
+  at the same tier (a second quarterback in a one-quarterback league where the pool
+  holds starters, a streaming defense or kicker) can, and a player whose value is
+  contingent on an injury or a role change cannot, because he is claimed the day it
+  happens. The test argues the bench slot for the one who cannot be replaced and says
+  how the replaceable need is met the week it arises from whatever the pool holds then.
+  A projection gap alone does not settle an add-or-drop between a replaceable player and
+  an unreplaceable one; the gap is said, the test is said, and the user decides. When
+  both sides carry the same tag the test is silent and the projection and the read
+  decide; how many contingent stashes a bench carries is the user's call, said with the
+  test. The knowledgebase's successor rows name the contingent players: a back or
+  receiver the successor map lists under COMMITTEE, or as PRIMARY if the starter is out,
+  holds that value on the user's bench whether or not the user owns the starter.
 - **Post-waivers**: Team Dashboard check for the recommended lineup and injury flags.
   Its roster membership and IR occupancy are the synced truth, but its Starters and
   Bench blocks have been seen disagreeing with the lineup set on the host for the same
@@ -385,26 +397,25 @@ agree beforehand which league gets full attention.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
 - **Playoffs**: lean ceiling when underdog. One boom week decides titles.
 - **IR stash research (redraft)**: only a player tagged RETURNS this season (a stated
-  window, at least four games missed) earns a slot; no timetable is season-out. When
-  the stash costs a bench player (a draft pick, or a host without direct-to-IR adds),
-  his rest-of-season projection must beat both the best healthy free agent for the slot
-  and the bench player he displaces. **Once the draft is over, on a direct-to-IR host,
-  an open IR slot is filled, never held**: a RETURNS player who has cleared to free agency
+  window, at least four games missed) earns a slot; no timetable is season-out. When the
+  stash costs a bench player (a draft pick, or a host without direct-to-IR adds), his
+  rest-of-season projection must beat both the best healthy free agent for the slot and
+  the bench player he displaces. **Once the draft is over, on a direct-to-IR host, an
+  open IR slot is filled, never held**: a RETURNS player who has cleared to free agency
   displaces nobody and costs nothing, the swap for a better RETURNS candidate later
   costs nothing either, so the value test does not apply and "leave it empty" is never
   the answer while such a player exists. A candidate still on waivers is not free: he
-  goes through the burn-the-claim test below before any claim is spent. At the draft
-  the pick is the cost, so this value test applies and section 7's dart forecast
-  decides the order. **Order the eligible pool by the knowledgebase read and state the
-  projection for each name, neither ahead of the other** (section 10's read; the rows
-  that decide a stash are in `references/ir-stash.md`): the case and the number
-  are both said, for each name, and the user decides. The burn-the-claim test:
-  default to the free window (the host's clear date, recorded once in the private
-  document) and never spend priority or FAAB on a stash unless RETURNS, starter-level
-  projection and real contention all hold, with the cost named in the same line. Run it
-  on demand any week, on waiver eve, and right after each draft, and lead every answer
-  with the next clear date. Sources, tags and the full procedure:
-  `references/ir-stash.md`.
+  goes through the burn-the-claim test below before any claim is spent. At the draft the
+  pick is the cost, so this value test applies and section 7's dart forecast decides the
+  order. **Order the eligible pool by the knowledgebase read and state the projection
+  for each name, neither ahead of the other** (section 10's read; the rows that decide a
+  stash are in `references/ir-stash.md`): the case and the number are both said, for
+  each name, and the user decides. The burn-the-claim test: default to the free window
+  (the host's clear date, recorded once in the private document) and never spend
+  priority or FAAB on a stash unless RETURNS, starter-level projection and real
+  contention all hold, with the cost named in the same line. Run it on demand any week,
+  on waiver eve, and right after each draft, and lead every answer with the next clear
+  date. Sources, tags and the full procedure: `references/ir-stash.md`.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
@@ -470,26 +481,25 @@ rookies file whether a young player is taking the job, the availability list whe
 designation allows an IR slot. When a file and the live host page disagree, the host
 page wins and the file gets a refresh line.
 
-**Every name in a decision gets the full read before the number is looked up; the
-case and the number are then said together, neither ahead of the other.** Off the
-clock the read is stated in full; on the clock it is done beforehand and the two-line
-limit stands. The knowledgebase exists to evaluate every angle, and a decision that
-reads one file of it is a guess with a citation. For each player under consideration
-(an add, a drop, a stash, a start, a trade side), read and state: his team-file Rooms
-row (age, role, status, the coach's absence plan, preseason usage, his direction under
-this play caller); the starter ahead of or beside him (age, role, status and absence
-plan from his Rooms row, and his games missed over three seasons from the
-rookies-and-young-players table where that row exists); the rookies file (is a younger
-player taking the job); the play caller's tendencies and this player's roster-fit
-line; the offensive line's impact on his position; the schedule table for the weeks in
-play, with the defense's rating by position and its injured key defenders; and the
-media read (rest signals, sleeper, breakout, bust and risk tags, hype labeled as
-hype). A row the knowledgebase does not hold is named as not held, in one clause, and
-the read moves on; it is never inferred. The case comes from those rows and is said in
-two lines per name; the projection is quoted with it, as the engine's independent
-number over its own inputs, neither ahead of the other. Where the read and the number
-disagree, both are said and the user decides. A number quoted without the read is a
-finding the copilot did not make, and the user should not have to make it. On a live
-clock the name still comes first and the two-line limit stands: the full read is done
-in the pre-draft plan and refreshed between picks only for the names still live, and
-the pick's one line of reason is drawn from it.
+**Every name in a decision gets the full read before the number is looked up; the case
+and the number are then said together, neither ahead of the other.** Off the clock the
+read is stated in full; on the clock it is done beforehand and the two-line limit
+stands. The knowledgebase exists to evaluate every angle, and a decision that reads one
+file of it is a guess with a citation. For each player under consideration (an add, a
+drop, a stash, a start, a trade side), read and state: his team-file Rooms row (age,
+role, status, the coach's absence plan, preseason usage, his direction under this play
+caller); the starter ahead of or beside him (age, role, status and absence plan from his
+Rooms row, and his games missed over three seasons from the rookies-and-young-players
+table where that row exists); the rookies file (is a younger player taking the job); the
+play caller's tendencies and this player's roster-fit line; the offensive line's impact
+on his position; the schedule table for the weeks in play, with the defense's rating by
+position and its injured key defenders; and the media read (rest signals, sleeper,
+breakout, bust and risk tags, hype labeled as hype). A row the knowledgebase does not
+hold is named as not held, in one clause, and the read moves on; it is never inferred.
+The case comes from those rows and is said in two lines per name; the projection is
+quoted with it, as the engine's independent number over its own inputs, neither ahead of
+the other. Where the read and the number disagree, both are said and the user decides. A
+number quoted without the read is a finding the copilot did not make, and the user
+should not have to make it. On a live clock the name still comes first and the two-line
+limit stands: the full read is done in the pre-draft plan and refreshed between picks
+only for the names still live, and the pick's one line of reason is drawn from it.

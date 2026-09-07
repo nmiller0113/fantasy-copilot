@@ -12,6 +12,13 @@ and the reasoning, so a maintainer can tell a still-true rule from a stale one.
   the 3D values and the projections filled in and the name and team still blank. A
   value-only card is not a name: in that window read the name off the reloaded War Room
   list, and never name a player from a card whose name has not rendered.
+- The sync panel inside the host's draft window is an extension frame, and its text is
+  NOT in the host page's text layer: a text read of that page returns the host's own
+  rows and nothing of the panel. An empty text read is therefore a failed read, not an
+  empty panel, and a screenshot is the read that works. Naming off a memory or an
+  inference because the text read came back empty cost a pick: skill section 7 now
+  requires a row the copilot can see at that moment, and the words "no read" when
+  there is none.
 - **Host mock rooms get fresh league ids**, so DS errors "Error Syncing!" on every mock
   and its Set-Up flow creates a junk clone league per mock. Real league rooms carry the
   linked ids and should attach clean. Delete clone leagues afterward: a wrong league
@@ -19,7 +26,11 @@ and the reasoning, so a maintainer can tell a still-true rule from a stale one.
 - A synced draft order before the host randomizes is often just JOIN ORDER. Hosts
   commonly randomize 30-60 minutes out, and a DS re-sync before the room opens may not
   pick the randomized order up; the host's own draft room shows it. Re-sync at the
-  reveal and verify the user's slot before trusting any slot-specific plan.
+  reveal and verify the user's slot before trusting any slot-specific plan. Observed
+  again: a re-sync run after the order was revealed but before the room went live
+  fetched the join order, and the engine re-slotted itself only when the first live
+  pick landed. The re-sync is not the verification; the host's room is (skill
+  section 5).
 
 ## Settings-blind numbers
 
@@ -44,6 +55,24 @@ and then correct itself; read the analysis page, not the first card.
 - The host's draft room shows the market: a last-7-days ADP column and an injury tag
   on each player's row. That ADP is the price the room is likely to pay; the tag is
   what other drafters see and sometimes skip on sight, which is where a value falls.
+- The host's ranked pick suggestions are a good forecast of what the room takes (in one
+  room they matched the first nineteen picks exactly) and a bad census of what is left.
+  That list ranks an injury-tagged player low enough to keep him off its top rows while
+  he sits undrafted, so absence from it is absence from the FORECAST, never absence from
+  the board. Reading it as a census left a back with the highest value on the board
+  unpicked for two turns. The pick tape, the roster panel and the engine's crossed-off
+  board are the only evidence a player is drafted (skill section 7), and two players
+  sharing a surname are told apart on the tape, not on a list.
+- The host's autodraft control changes its border style once the room goes live, and
+  renders highlighted even when autodraft is confirmed OFF. The border is a state the
+  room paints, not the setting; read the control's own state, and have the user confirm
+  it before the clock as skill section 5 already requires.
+- Waiting for the user's turn is done in SHORT batches. A batch of waits returns only
+  when its last wait ends, so a long batch issued a few picks out returns after the
+  clock has come and gone: eighteen ten-second waits in one batch cost a whole turn, and
+  the user drafted two picks unassisted. Skill section 5 carries the cadence: never more
+  than six ten-second waits in one batch between turns, at most three before a clock
+  read inside about five picks, one wait per read inside two.
 
 ## The standalone War Room tab
 
@@ -52,12 +81,18 @@ and then correct itself; read the analysis page, not the first card.
   while the header pick ticker and the roster panel stay live. Reload the tab about
   three picks before each of the user's turns, every turn; sync survives the reload.
   The at-the-clock verification in skill section 7 runs against the live pick ticker
-  plus the reloaded list, never against a list that has not been reloaded this turn.
-  Trust the pick tape and roster panel over the rankings list.
+  plus a row in view, the reloaded list or the in-room panel by screenshot, never
+  against a list that has not been reloaded this turn. Trust the pick tape and roster
+  panel over the rankings list.
 - Do not open League Settings mid-draft: visiting that pane can silently flip the
   league to Manual Mode (a re-sync clears it).
 - On a freshly synced league the position filter buttons may not apply, and two
   rankings tables can exist in the page at once; read the visible rows of the ALL list.
+  Still true in a live room, and it bites hardest on the last two positions: with no
+  working filter the kicker and defense rows sit far below the visible rows of the ALL
+  list. Read them from the in-room sync panel at the clock, by screenshot; the host's
+  own player list filtered there finds the candidate, the panel's row is the read
+  (skill section 7).
 - 3D values re-scale as the draft goes: the same player's number rises as the user's
   next pick approaches and the pool thins. Compare rows within one reload, never across.
 
