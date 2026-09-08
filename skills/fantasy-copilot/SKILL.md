@@ -114,21 +114,18 @@ pays for and record it in the private document. Where the host offers it, read t
 things from the tier beside the engine's number, never instead of it. Before every draft,
 the host's sharp-user ADP (an ADP computed from its top-tier users only) beside its basic
 ADP, pulled as a table into the knowledgebase's `data/` folder (the pull list names it) so
-the clock reads it by grep: the gap is the room's likely reach, and it enters the
-one-round-earlier band of section 6 and the ADP input of section 7's snipe forecast.
-During draft season, the host's subscriber draft guide as one seeded outlet for the
-knowledgebase's media read (section 10): its tags and the names it raises are recorded in
-the profile's media read like any other outlet, and its pages are never saved as files in
-the knowledgebase. In season, the host's transaction trends (adds, drops, sharp-user start
-and roster rates) as the contention input of the burn-the-claim test (section 8); they
-read the room, not the player, which is why they survive section 5. The host's lineup
-assistant and trade market are second opinions only where the tool is scored to this
-league's actual settings, verified in the tool's own settings panel; where it falls back
-to generic scoring it is noise under section 5, and the league-aware signal still wins.
-The host's advanced-stat and alternative-projection views duplicate the engine and the
-knowledgebase's pulled tables and are not collected even when held. Like the tier gates
-above, this feature list is a snapshot; when the live offering disagrees, the live
-offering wins.
+the clock reads it by grep: the gap is the room's likely reach. During draft season, the
+host's subscriber draft guide as one seeded outlet for the knowledgebase's media read
+(section 10), recorded like any other outlet, its pages never saved as files. In season,
+the host's transaction trends (adds, drops, sharp-user start and roster rates) as the
+contention input of the burn-the-claim test (section 8); they read the room, not the
+player, which is why they survive section 5. The host's lineup assistant and trade market
+are second opinions only where the tool is scored to this league's actual settings,
+verified in the tool's own settings panel; where it falls back to generic scoring it is
+noise under section 5, and the league-aware signal still wins. The host's advanced-stat
+and alternative-projection views duplicate the engine and the knowledgebase's pulled
+tables and are not collected even when held. Like the tier gates above, this feature list
+is a snapshot; when the live offering disagrees, the live offering wins.
 
 ## 5. Field rules (live-tested against a host)
 
@@ -137,10 +134,9 @@ offering wins.
   scored to this league (section 4); the league-aware signal wins every decision.
 - **Reload the standalone War Room tab about three picks before every turn**; its
   rankings list goes stale within a few picks while the pick ticker and roster panel
-  stay live, and both are trusted over it. Verify the name at the clock against the
-  reloaded list or the in-room panel by screenshot, plus the ticker. Compare 3D values
-  within one reload, never across: they re-scale as the pool thins. Do not open League
-  Settings mid-draft; it can flip the league to manual mode.
+  stay live, and both are trusted over it. Compare 3D values within one reload, never
+  across: they re-scale as the pool thins. Do not open League Settings mid-draft; it
+  can flip the league to manual mode.
 - **Wait in short batches as the turn nears**: a batch of waits returns only when its LAST
   wait ends, so a long batch swallows the clock. Short batches between turns, never more
   than six ten-second waits in one batch; inside about five picks of the user's turn, at
@@ -169,9 +165,8 @@ offering wins.
    Like the tier gates in the subscription section, the editor's field inventory is a
    snapshot: re-read the live editor on every new league, and when it disagrees, the live
    editor wins. The editor's Advanced Scoring switch is ON after a sync and is what shows
-   the bonus rows and the per-position PPR fields; switched off, those rows disappear from
-   the editor, so read its state and never toggle it during an audit. The editor's field
-   inventory is in `references/draft-sharks.md`.
+   the bonus rows and the per-position PPR fields; read its state and never toggle it
+   during an audit. The editor's field inventory is in `references/draft-sharks.md`.
 2. Delete-and-resync if anything looks stale, the day before and never on the clock;
    update the extension.
 3. Run several league-synced mocks from the user's slot once known; chart the range of
@@ -194,8 +189,7 @@ offering wins.
    instead of it.** This builds the who's-in/out and riser/faller layer. Five rules, because
    skipping them dresses correctly-priced players as "edges":
    - **Refresh the knowledgebase first (section 10), then sweep only what is newer than
-     that refresh**, inside the recency window below; read every target against the
-     successor map, the rookies file and the media read before it earns a band.
+     that refresh**, inside the recency window below.
    - **DS tools are the PRIMARY source for value and timelines; web news is the
      supplement.** Start from DS's own Injury Predictor (games-missed already baked into
      projections), Shark Bites news, depth charts (for the roster, not the share), Free
@@ -256,22 +250,20 @@ plan takes the discussion, taking value the room dropped takes only the name.
 **Snipe first: forecast the picks between now and our turn.** Between picks, for the
 opponents who pick before us (in a long gap, those whose need matches a target of ours),
 name the position each roster needs most and the player the board gives them for it, from
-their roster, the live trend, ADP (the sharp-user ADP where the host publishes one,
-section 4) and the ranked pick suggestions the host's own draft room shows every drafter.
-A public room drafts straight off that list, so its next names weigh in the forecast
-alongside the roster, the trend and ADP; read it between picks as a data point, never a
-directive. That forecast is the list of players least likely to reach us, not a promise.
-It decides which pick is the early one for the research-targets rule; whether the target
-is worth taking early is that rule's band. A target not on the forecast leaves the odds
-column its say. Said in one line between picks ("three of the next five need RB; X and Y
-do not get back to us"); the rec at the clock stays name first.
+their roster, the live trend, ADP (the sharp-user ADP where the host publishes one, section
+4) and the ranked pick suggestions the host's own draft room shows every drafter. A public
+room drafts straight off that list, so its next names weigh as one input, never a directive.
+That forecast is the list of players least likely to reach us, not a promise. It decides
+which pick is the early one for the research-targets rule; whether the target is worth
+taking early is that rule's band. A target not on the forecast leaves the odds column its
+say. Said in one line between picks ("three of the next five need RB; X and Y do not get
+back to us"); the rec at the clock stays name first.
 
 **Research targets go a pick early.** When a name from the pre-draft sweep (a riser, a
 value gap, a planned stash) is on the board and DS's top live row is within about 10 3D
 points of him, take the target at THIS pick instead of betting he survives to the next.
 This is a tie-break inside a close band, not plan over engine; outside the band the
-situation at the pick decides (section 3). The odds column will say he survives; in a
-sharp room he will not, and once he is gone no later pick replaces him. The
+situation at the pick decides (section 3). Once he is gone no later pick replaces him. The
 one-round-earlier band of section 6 forecasts where the riser goes; this rule is the
 action at the board. They are one adjustment, not two.
 
@@ -328,26 +320,36 @@ agree beforehand which league gets full attention.
 
 ## 8. In-season weekly cadence (per league)
 
+- **Last priority makes every claim free.** Where the host runs a rolling priority list (a
+  successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
+  priority pays nothing: a win leaves it last, where it already was, and a loss changes
+  nothing. So while the user holds it, the play is a claim on every pool player who would
+  improve the roster, in preference order, a drop named for each where the roster is full;
+  the user files them. Order by value, since a claim on one who would clear unclaimed gains
+  nothing, and drop the roster's true last bodies. Who earns a bench slot stays the
+  replaceability and IR-stash tests' call; this rule settles only the cost. Read the rank
+  from the host's own team page, never the draft slot: other teams' claims move it. It holds
+  after a draft from the first slot (hosts seed priority in inverse draft order) and after
+  every claim the user wins; it ends when a team above the user wins one and the user's
+  priority regains value. Never in a FAAB league, where every claim spends budget.
 - **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent
   Finder, sorted by rest-of-season projection for breakouts and stashes, by next week for
   streamers (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against
-  the successor map, said beside the engine's projection, never instead of it: a
-  full-role replacement earns a claim, a committee member a maybe. Mind the DROP side.
-  Re-run after waivers clear.
+  the successor map: a full-role replacement earns a claim, a committee member a maybe.
+  Mind the DROP side. Re-run after waivers clear.
 - **Transaction watch**: on waiver eve and on demand, pull every league's transactions
   page since the last pull into the private folder, then copy and run
   `scripts/transactions.py` over that folder, per `references/transaction-watch.md`. Every
   player the report shows dropped is a candidate, and takes the full read (section 10) and
   then this section's replaceability and burn-the-claim tests, whose reading of the host's
   own row governs the real cost and clear date; the report's is arithmetic on the drop
-  date. A dropped player already picked up in that league is shown as such. A drop paired
-  with a same-position add in one transaction is a role or injury question, answered in
-  the knowledgebase before anything else; a dropped streaming defense or kicker is noise
-  unless the pool is thin. The names other managers added in two or more leagues are the
-  market's read: a data point, never a directive (section 3). The manager digest reads
-  each room's needs, since churn at a position says short there, and it feeds the bye-week
-  stretch's trade targets and the burn-the-claim test's contention input. Two lines per
-  name (section 10).
+  date. A drop paired with a same-position add in one transaction is a role or injury
+  question, answered in the knowledgebase before anything else; a dropped streaming
+  defense or kicker is noise unless the pool is thin. The names other managers added in
+  two or more leagues are the market's read: a data point, never a directive (section 3).
+  The manager digest reads each room's needs, since churn at a position says short there,
+  and it feeds the bye-week stretch's trade targets and the burn-the-claim test's
+  contention input. Two lines per name (section 10).
 - **The replaceability test, on every add-or-drop.** The add's cost is named in the same
   line as the recommendation, in one of two forms: free and instant, or a priority or FAAB
   cost with the clear date. It is read from the host's own row; the engine's Free Agent
@@ -411,18 +413,18 @@ agree beforehand which league gets full attention.
   the bench player he displaces. **Once the draft is over, on a direct-to-IR host, an
   open IR slot is filled, never held**: a RETURNS player who has cleared to free agency
   displaces nobody and costs nothing, the swap for a better RETURNS candidate later
-  costs nothing either, so the value test does not apply and "leave it empty" is never
-  the answer while such a player exists. A candidate still on waivers is not free: he
-  goes through the burn-the-claim test below before any claim is spent. At the draft the
-  pick is the cost, so this value test applies and section 7's dart forecast decides the
-  order. **Order the eligible pool by the knowledgebase read and state the projection for
-  each name, neither ahead of the other** (section 10's read), and the user decides. The
-  burn-the-claim test: default to the free window (the host's clear date, recorded once in
-  the private document) and never spend priority or FAAB on a stash unless RETURNS,
-  starter-level projection and real contention all hold, with the cost named in the same
-  line. Run it on demand any week, on waiver eve, and right after each draft, and lead
-  every answer with the next clear date. Sources, tags and the full procedure:
-  `references/ir-stash.md`.
+  costs nothing either, so the value test does not apply. A candidate still on waivers is
+  not free: he goes through the burn-the-claim test below before any claim is spent. At
+  the draft the pick is the cost, so this value test applies and section 7's dart forecast
+  decides the order. **Order the eligible pool by the knowledgebase read and state the
+  projection for each name, neither ahead of the other** (section 10's read), and the user
+  decides. The burn-the-claim test, which governs only while the user's priority has value
+  (the free-claim bullet above): default to the free window (the host's clear date,
+  recorded once in the private document) and never spend priority or FAAB on a stash
+  unless RETURNS, starter-level projection and real contention all hold, with the cost
+  named in the same line. Run it on demand any week, on waiver eve, and right after each
+  draft, and lead every answer with the next clear date. Sources, tags and the full
+  procedure: `references/ir-stash.md`.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
@@ -438,52 +440,49 @@ Sharks subscriber.
 
 ## 10. The knowledgebase: the state of the NFL, kept current
 
-Draft Sharks carries the numbers. It does not carry who the coach named, whether an
-injured starter's replacement is one man or a committee, how old the veteran ahead of a
-rookie is, or who was rested in the preseason finale. Those facts decide bench rounds,
-stashes and waiver claims, and nobody can look them up on a live clock unless they are
-already written down. So the copilot keeps a knowledgebase beside the private document: a
-dossier per team (rooms, absence plans, rookies behind veterans, the media read); a
-play-caller, a defensive-coordinator and an offensive-line profile per team; the schedule
-with every defense rated by position per week, adjusted for injured key defenders; and the
-NFL-wide cross-cuts a script joins from them (availability, successor map, rookies,
+Draft Sharks carries the numbers. It does not carry who the coach named, whether an injured
+starter's replacement is one man or a committee, how old the veteran ahead of a rookie is,
+or who was rested in the preseason finale. Nobody can look those up on a live clock unless
+they are already written down, so the copilot keeps a knowledgebase beside the private
+document: a dossier per team (rooms, absence plans, rookies behind veterans, the media
+read); a play-caller, a defensive-coordinator and an offensive-line profile per team; the
+schedule with every defense rated by position per week, adjusted for injured key defenders;
+and the NFL-wide cross-cuts a script joins from them (availability, successor map, rookies,
 reporting and hype, suspensions, play callers and scheme). All of it is said beside the
 engine's projection, never instead of it. The template, the build, the refresh and the
 search commands are in `references/knowledgebase.md`; read it when building or refreshing,
-not at the clock. Judgment work in a build or refresh runs on the strongest model
-available; extraction from league-wide pages runs on a lower tier; anything derivable from
-two existing files is a script (the schedule tables are `scripts/schedule-tables.py`),
-never an agent. The reference says which is which. Every profile is a set of tables in a
-fixed shape (the reference's templates), so the NFL-wide files are joins a script writes
-(`scripts/rollups.py`) and a refresh writes cells, not prose; `scripts/kb-lint.py`
-enforces the shape and the build and every refresh stop on it. The numbers a profile needs
-are pulled once, as trimmed tables, into the knowledgebase's `data/` folder before any
-profile pass runs (`scripts/pull-list.py` names the twenty-one kept tables, their cadence
-and the columns kept; `--check` refuses a run until they are present), Draft Sharks' own
-tools first and then the free public pages the browser can read; `scripts/check-fills.py`
-holds every filled number to the rows of the table it cites. There are no gap rounds: a
-cell the judgment agent could not fill holds `-`, the next refresh's role collector is
-seeded from the starters whose absence plan is still open (`scripts/refresh-seed.py`), and
-a fact nobody will ever publish, or that no decision in this skill reads, is never a cell
-at all (the reference's never-collected list: paywalled charting, camp rep counts,
-contract dollars, box-score lines the engine already prices, source lists, method notes).
-A page the fetch tool cannot reach is read in the browser and saved as a table. The build
-writes dozens of files and runs many searches: confirm the location with the user and get
-an explicit go-ahead before the first build, and offer the NFL-wide cross-cuts alone as
-the starter set when the full build is more than the user wants.
+not at the clock. Judgment work in a build or refresh runs on the strongest model available;
+extraction from league-wide pages runs on a lower tier; anything derivable from two existing
+files is a script (the schedule tables are `scripts/schedule-tables.py`), never an agent.
+The reference says which is which. Every profile is a set of tables in a fixed shape (the
+reference's templates), so the NFL-wide files are joins a script writes
+(`scripts/rollups.py`) and a refresh writes cells, not prose; `scripts/kb-lint.py` enforces
+the shape and the build and every refresh stop on it. The numbers a profile needs are pulled
+once, as trimmed tables, into the knowledgebase's `data/` folder before any profile pass
+runs (`scripts/pull-list.py` names the twenty-one kept tables, their cadence and the columns
+kept; `--check` refuses a run until they are present), Draft Sharks' own tools first and
+then the free public pages the browser can read; `scripts/check-fills.py` holds every filled
+number to the rows of the table it cites. There are no gap rounds: a cell the judgment agent
+could not fill holds `-`, the next refresh's role collector is seeded from the starters
+whose absence plan is still open (`scripts/refresh-seed.py`), and a fact nobody will ever
+publish, or that no decision in this skill reads, is never a cell at all (the reference's
+never-collected list). A page the fetch tool cannot reach is read in the browser and saved
+as a table. The build writes dozens of files and runs many searches: confirm the location
+with the user and get an explicit go-ahead before the first build, and offer the NFL-wide
+cross-cuts alone as the starter set when the full build is more than the user wants.
 
 Two rules hold at all times. **For roles and usage the hierarchy is: coach and general
 manager statements, then preseason snap and touch counts and who was rested, then beat
-reporting, then themed article sweeps, then depth charts last, because a depth chart is
-a list, not a plan.** This ranks role and usage facts only; for value, projections and
-injury timelines DS stays primary (section 6, step 9), and the knowledgebase records
-the gap between a changed role and the engine's number rather than adjusting either.
-**Refresh before every decision** (weekly, and before a draft, a lineup lock, a trade,
-a waiver or roster move), as a delta since the last refresh, then search the files
-rather than browsing them: the successor map answers who eats if a starter is out, the
-rookies file whether a young player is taking the job, the availability list whether a
-designation allows an IR slot. When a file and the live host page disagree, the host
-page wins and the file gets a refresh line.
+reporting, then themed article sweeps, then depth charts last, because a depth chart is a
+list, not a plan.** This ranks role and usage facts only; for value, projections and injury
+timelines DS stays primary (section 6, step 9), and the knowledgebase records the gap
+between a changed role and the engine's number rather than adjusting either. **Refresh
+before every decision** (weekly, and before a draft, a lineup lock, a trade, a waiver or
+roster move), as a delta since the last refresh, then search the files rather than browsing
+them: the successor map answers who eats if a starter is out, the rookies file whether a
+young player is taking the job, the availability list whether a designation allows an IR
+slot. When a file and the live host page disagree, the host page wins and the file gets a
+refresh line.
 
 **Every name in a decision gets the full read before the number is looked up; the case and
 the number are then said together, neither ahead of the other.** Off the clock the read is

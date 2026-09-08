@@ -5,6 +5,59 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.36.0] - 2026-09-08
+
+**Where a league's waiver priority is a rolling list rather than a budget, the team
+holding LAST priority pays nothing for a claim: a win leaves it last, which is where it
+already was, and a loss changes nothing. So while the user holds last priority every
+claim on an upgrade is free, and the play is a claim on every player in the pool who
+would improve the roster, not a claim on the single best one.**
+
+### Changed
+
+- Section 8 gains a "Last priority makes every claim free" bullet, placed ahead of waiver
+  eve because it governs every claim and not only stashes. Where a successful claim sends
+  the claimant to the back of a rolling priority list and no budget is spent, the team
+  holding last priority pays nothing: a win leaves it where it already was and a loss
+  changes nothing. While the user holds it, the play is a claim on every pool player who
+  would improve the roster, in preference order, a drop named for each where the roster is
+  full, and the user files them.
+- The same bullet carries the two guards that keep the rule honest. The priority rank is
+  read from the host's own team page and never inferred from the draft slot, because other
+  teams' claims move it. A claim on a player who would clear to free agency unclaimed
+  costs the same nothing but gains nothing either, so the list is ordered by value and the
+  drops named are the roster's true last bodies; who earns a bench slot stays the
+  replaceability and IR-stash tests' call, and this rule settles only the cost. The window
+  opens after a draft from the first slot, initial priority being inverse draft order, and
+  after every claim the user wins; it closes when a team above the user wins one and the
+  user's priority regains value. It never applies in a budget league, where every claim
+  spends.
+- The burn-the-claim test in section 8's IR-stash bullet now states that it governs only
+  while the user's priority has value, and points at the new bullet.
+- Paid for inside the 500-line body by cutting restatements, no rule removed: section 4's
+  host-subscription paragraph drops a clause naming the two rules that already claim the
+  sharp ADP for themselves and compresses a sentence that restated its own opening;
+  section 5's reload bullet drops a verification sentence section 7 states in full while
+  citing section 5; section 6's import audit drops the inverse restatement of its own
+  first half, and its sweep step drops a partial file list that section 10 requires in
+  full for every name; section 7's snipe forecast drops a repeat of the inputs named one
+  sentence earlier and keeps its never-a-directive guard, and its research-target rule drops
+  a restatement of section 4's reading of the odds column; section 8's waiver-eve bullet
+  drops "said beside the engine's projection, never instead of it", a standing rule of
+  section 10, its transaction-watch bullet drops a sentence describing report output the
+  cited reference documents, and its IR-stash bullet drops a restatement of its own bolded
+  "filled, never held"; section 10's opening drops a sentence of scene-setting and
+  shortens the never-collected parenthetical to the pointer at the reference that holds
+  that list. Three paragraphs in section 10 were reflowed to the file's wrap width with no
+  words changed.
+
+Why: the copilot had one cost model for a claim, the burn-the-claim test, and it assumed
+priority was worth something. In a rolling-list league the team at the bottom is the one
+case where it is not, and treating a free claim as if it cost something leaves upgrades on
+the wire for nothing gained. The window is narrow and it closes without announcement, so
+the rule carries its own end condition and reads the rank from the host rather than
+assuming it from where the user drafted.
+
 ## [1.35.0] - 2026-09-07
 
 **An incoming trade offer is now read for what it fixes on the OTHER roster before any
