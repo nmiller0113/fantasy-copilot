@@ -5,6 +5,58 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.37.0] - 2026-09-08
+
+**A drafted IR stash does not really cost a bench body for the season. On a host that
+allows an injured player straight to the IR slot, the user moves the stash to IR after the
+draft, its bench slot empties, and the roster goes one body short of full at that move.
+That empty slot is filled for free when the undrafted pool clears, so the last kicker or
+defense pick is better spent on a bench dart: skip one position per drafted stash, take the
+position the pool holds fewer of, and add the skipped one free at the clear.**
+
+### Changed
+
+- Section 7 gains a paragraph after the injured-reserve one, since it is the same fact read
+  forward: where the designation costs no bench slot, the roster the draft ends with is one
+  body light, and the pool fills that slot at the clear. So one position is skipped and the
+  pick becomes a bench dart. One position per drafted stash, never more, since each further
+  add would need a drop.
+- Which position is skipped is decided, not left open. Take the one the pool holds fewer of,
+  and add the skipped one free when the undrafted players clear.
+- The risk is stated as a number the copilot can compute in any room, not as a rule of thumb
+  about kickers and defenses: thirty-two minus the number of teams, less one for every roster
+  that drafts a second at the position. Ten teams leaves 22 of each in the pool, at positions
+  half the room streams anyway, so the move is near free; a bigger room, or one that doubles
+  up at the position, is a different number, and the copilot says the number rather than the
+  slogan. The user decides, and the grade cost is named under section 7's existing grade-cost
+  rule.
+- Section 8's IR-stash bullet is reconciled with it: the value test still applies when the
+  stash costs a bench player, but on a direct-to-IR host a draft pick costs the pick, not a
+  season-long bench body.
+- Paid for inside the 500-line body by cutting restatements, no rule removed: section 2's
+  posture paragraph drops the sentence restating section 7's snipe forecast; section 3's bye
+  paragraph drops the superflex example and the slot-by-slot list that section 7's bye check
+  states in full, keeping the disclosure-not-veto rule and pointing at it; section 4's
+  Personalized Advice bullet drops the never-a-directive clause that section 3 already
+  carries, and its host-subscription paragraph drops two clauses its own opening sentence and
+  section 5 already state; section 6's import audit shortens the snapshot sentence stated
+  twice above it and drops a pointer to a reference section 4 already routes to for this
+  exact task, its sweep drops a sentence the recency-window bullet above it already says, and
+  its post-draft IR sweep drops a clause restating section 8's filled-never-held rule;
+  section 7's tie-break paragraph drops a restatement of the one-name rule and its
+  sweep-names paragraph drops a rationale clause its own opening paragraph states as a rule;
+  section 8's transaction watch drops a two-lines-per-name pointer belonging to section 10;
+  section 10's opening drops a pointer sentence after the rule it points at, and its refresh
+  rule drops the list of decisions that "every decision" already covers. Twelve paragraphs were rewrapped to
+  the file's wrap width, the nine cut paragraphs and three with no word changed.
+
+Why: the copilot priced a drafted stash as if it took a bench body all season, and on a
+direct-to-IR host it does not. It takes the pick and then gives the slot back, which means
+every draft on such a host ends with a free roster spot the user has already paid for and a
+last pick spent on the most replaceable position on the board. The fix is not "skip the
+kicker": it is to compute the room's own pool count first, skip only one position per stash,
+and say what the empty slot costs on the grade before the user decides.
+
 ## [1.36.0] - 2026-09-08
 
 **Where a league's waiver priority is a rolling list rather than a budget, the team
