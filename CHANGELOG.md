@@ -5,6 +5,50 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.35.0] - 2026-09-07
+
+**An incoming trade offer is now read for what it fixes on the OTHER roster before any
+number is compared: his bye map, his quarterback situation, his thin position, and the
+schedule between now and the next time the two rosters meet. The math comes second and
+all of it sits beside the engine, and a one-for-one at the same market price that the
+engine grades even is the shape to distrust rather than the shape to accept.**
+
+### Changed
+
+- Section 8 gains a "Trade offers: motive before math" bullet, placed before the
+  bye-week stretch. Every incoming offer is read first for what it fixes on the offering
+  roster: which of his starters sit the weeks the offer's players are off, his
+  quarterback situation and the day's news on both teams, the position he is thin at,
+  and the schedule between now and the next meeting of the two rosters. An offer from a
+  team above the user in the projected standings is read hardest, because an even swap
+  that closes his hole is a gift to the team the user is chasing, and a bye week he has
+  open is kept open.
+- The same bullet then names the math, all of it beside the engine and none of it
+  instead: the Trade Analyzer grade and rest-of-season number per side scored to the
+  synced league, the host evaluator's week-by-week differential as a data point (the
+  season total hides the bye swing it shows), the Injury Predictor row per player,
+  section 7's bye check run on the incoming player against the user's starters at his
+  position, the first bench body there and the flex, and section 10's full read on both
+  players. When the engines tie, section 3's judgment layer decides, one line per input.
+  The answer leads with accept, reject or counter, gives the reason in two lines and
+  names a counter in one line with what it prices in; the user decides and clicks, and
+  the copilot never touches an accept, reject or counter control.
+- Paid for inside the 500-line body by tightening restatements, no rule removed:
+  section 8's transaction-watch, replaceability and IR-stash bullets drop wording that
+  repeated a rule already stated in the same bullet or in the file it cites; section
+  10's full-read paragraph drops two sentences that restated its own bolded rule and one
+  duplicate of "neither ahead of the other"; section 10's opening drops a clause of
+  scene-setting; section 6's advice-question step drops a parenthetical that repeats
+  section 4's "the copilot drafts, the user sends"; section 5's reference pointer and
+  section 7's snipe forecast lose descriptions of what they had already said. Six
+  paragraphs elsewhere were reflowed to the file's wrap width with no words changed.
+
+Why: a swap can be even on both engines and still be a losing trade, because the value
+that moves is not only the player's. A manager above the user in the standings has a bye
+hole and a schedule of his own, and the offer that closes his hole opens the user's,
+which no season-total grade shows. Reading the offer for its motive first puts that on
+the table before the numbers agree with each other.
+
 ## [1.34.0] - 2026-09-06
 
 **The name spoken at the clock is now a row the copilot can see on the engine's board at
