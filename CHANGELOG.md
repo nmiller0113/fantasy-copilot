@@ -5,6 +5,70 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.38.0] - 2026-09-08
+
+**The host setting that 1.37.0 made the condition of the dart rule does not govern the
+move the rule depends on. "Allow injured players from waivers or free agents to be added
+directly to injury slot" governs POOL PICKUPS only: with it on, a tagged player goes from
+the pool into an IR slot on a full bench; with it off, that add needs an open bench slot
+first and then the move. It never governs a player already on the roster, who can be moved
+from bench to IR in every league. So a drafted stash frees its bench slot after the draft
+everywhere, and the dart rule applies in every league, not only on a direct-to-IR host.**
+
+### Fixed
+
+- Section 7's injured-reserve paragraph no longer opens on the host setting. The
+  designation costs no bench slot because a rostered player carrying it moves to the IR
+  slot after the draft, which every host with an IR slot allows; the add-directly-to-IR
+  setting governs pool adds, not this.
+- Section 7's dart paragraph loses the same opening condition. The user moves the stash to
+  IR after the draft in every league, so the last kicker or defense pick is a dart in every
+  league. As written, 1.37.0 excluded the leagues the rule applies to.
+- Section 8's IR-stash bullet is rebuilt on the real distinction, drafted versus pool. A
+  drafted stash costs the pick alone, since the bench slot comes back at the IR move. A pool
+  stash costs a bench player only where the setting is off, where the add needs an open
+  bench slot first and the move follows; with the setting on it goes straight to IR on a
+  full bench. "An open IR slot is filled, never held" is now host-independent, with the
+  open-bench-slot precondition stated for the pool case. The burn-the-claim test is
+  unchanged.
+- `references/ir-stash.md` gains a "What the host setting governs" section stating the
+  mechanism in full once: the setting's own wording, that it governs pool pickups only,
+  what changes when it is off, and that it never governs a rostered player. The value test,
+  the filled-never-held section and the settings-to-record list are corrected to match.
+
+### Changed
+
+- The dart rule gains its timing: the skipped position is added at the clear, never on a
+  claim while the user's priority has value. Contention on kickers and defenses is low, and
+  a claim that costs priority buys nothing the clear does not. Scoped to section 8's
+  free-claim bullet as well as its burn-the-claim test, since a claim from last priority
+  costs nothing and the post-draft state after drafting from the first slot is exactly
+  that.
+- Paid for inside the 500-line body by cutting restatement, no rule removed or weakened:
+  section 8's transaction-watch bullet also shortens "whose reading of the host's own row
+  governs the real cost and clear date" to a pointer, since the replaceability bullet below
+  it states that the cost and the clear date are read from the host's own row;
+  section 3's bye paragraph drops the clause restating section 7's bye check and a pointer
+  to the paragraph directly below it; section 4's host-subscription paragraph drops the
+  settings-panel test section 5's first bullet states in full and the half of its snapshot
+  sentence the tier-gates paragraph it cites already carries; section 6's import audit drops
+  a restatement of section 4's Adjust Projections rule and the live-editor-wins half of its
+  snapshot sentence; section 6's post-draft IR sweep drops the clear-date instruction
+  section 8's own bullet ends on; section 7's dart paragraph drops "the risk is the room's,
+  not the position's", which the pool-count sentence after it states as a number; section
+  8's IR-stash bullet drops a sentence restating section 7's board test, keeping the
+  pointer; section 10's opening drops a sentence saying the knowledgebase is read beside
+  the engine, which the same section states twice more and section 8's trade bullet a third
+  time. Six paragraphs were rewrapped to the file's wrap width, and the section 7 and
+  section 8 paragraphs that changed.
+
+Why: 1.37.0 read the host's help text for the pool-pickup case and wrote it in as the
+condition for the roster-move case. They are different mechanisms. The roster move has no
+setting behind it at all, so the rule that turns a drafted stash into a free roster spot,
+and the last kicker or defense pick into a dart, holds in every league with an IR slot. A
+condition that excludes the leagues a rule applies to is worse than no condition: it reads
+as a check the copilot must pass, and it fails it in rooms where the play is available.
+
 ## [1.37.0] - 2026-09-08
 
 **A drafted IR stash does not really cost a bench body for the season. On a host that

@@ -29,25 +29,46 @@ most-rostered IR players are often season-enders nobody has cut yet. Verify time
 against current reporting and current-year depth charts, never preseason memory; team
 and role can have changed since the last data you saw.
 
+## What the host setting governs
+
+The league setting worded "allow injured players from waivers or free agents to be added
+directly to injury slot" governs POOL PICKUPS ONLY. With it on, a player carrying an
+IR-eligible designation is added from the pool straight into an open IR slot even when
+the bench is full. With it off, the same add needs an open bench slot first; he lands on
+the bench and is then moved to the IR slot.
+
+The setting never governs a player already on the roster. Any rostered player carrying
+an IR-eligible designation (the tags above) is moved from bench to IR slot in every
+league that has one. So a DRAFTED stash frees its bench slot after the draft everywhere,
+and its cost is the pick, not a season-long bench body. Read the setting once per league
+(the When section below) and record it; read the designation from the host's own row.
+
 ## Value test
 
-The value test applies only when the stash costs a bench player: a draft pick, or a
-host that does not allow adding an injured player straight to IR (there the stash
-occupies a bench spot until he is eligible, so the bar is higher). Then the returning
-player's DS rest-of-season projection must beat both the best healthy free agent for
-that slot and the bench player he would displace.
+The value test applies only when the stash costs a bench player: a POOL add on a host
+whose setting is off, where a full bench means a drop to make the add, so the bar is
+higher. Then the returning player's DS rest-of-season projection must beat both the best
+healthy free agent for that slot and the bench player he would displace.
+
+A drafted stash costs the pick alone. At the draft the projection is read against the
+board instead (skill section 7): it must beat both the best healthy player left for the
+slot and the healthy player the pick would otherwise take.
 
 ## Once the draft is over, an open IR slot is filled, never held
 
-Once the draft is over (the post-draft clear date included), on a direct-to-IR host, an
-open IR slot is filled with the best eligible RETURNS player who has cleared to free
-agency, whenever one exists. That add displaces nobody and costs nothing; swapping him
-out for a better RETURNS candidate later costs nothing either. Holding the slot empty
-"for a better name after the next injury week" gives up a free lottery ticket for no
-gain, because the swap is free when that name appears. A candidate still on waivers is
-not free: he goes through the burn-the-claim flag below before any claim is spent. At
-the draft the pick is the cost, so the value test above and skill section 7's dart
-forecast govern.
+Once the draft is over (the post-draft clear date included), an open IR slot is filled
+with the best eligible RETURNS player who has cleared to free agency, whenever one
+exists. That add displaces nobody and costs nothing; swapping him out for a better
+RETURNS candidate later costs nothing either. Holding the slot empty "for a better name
+after the next injury week" gives up a free lottery ticket for no gain, because the swap
+is free when that name appears.
+
+Two preconditions on the add itself. Where the setting is off, the pool add needs an
+open bench slot first, so it is free only while the bench holds one; with the bench full
+the value test above decides the drop. And a candidate still on waivers is not free
+either: he goes through the burn-the-claim flag below before any claim is spent. At the
+draft the pick is the cost, so the board test above (skill section 7) and its dart forecast
+govern.
 
 ## Order by ceiling, read from the knowledgebase
 
@@ -84,13 +105,13 @@ and the number together, two lines per name, and the user decides.
 
 Read the host's waiver settings once and record them in the private document (skill
 section 9): waiver period length, the weekly clear day, whether undrafted players sit on
-waivers after the draft and for how long, whether injured adds can go straight to IR,
-and the priority mechanism (rolling list or FAAB). A player who has cleared to free
-agency is instant and free. Default: wait for the clear date and take him free; never
-spend rolling priority or FAAB on a stash by default. State the clear date next to every
-candidate. The recorded settings give the cadence; the player's own host row gives his
-current status, because a player another team just dropped sits on a fresh waiver
-period no recorded setting predicts.
+waivers after the draft and for how long, whether the setting for adding injured players
+from the pool straight to the IR slot is on, and the priority mechanism (rolling list or
+FAAB). A player who has cleared to free agency is instant and free. Default: wait for
+the clear date and take him free; never spend rolling priority or FAAB on a stash by
+default. State the clear date next to every candidate. The recorded settings give the
+cadence; the player's own host row gives his current status, because a player another
+team just dropped sits on a fresh waiver period no recorded setting predicts.
 
 ## Burn-the-claim flag
 
