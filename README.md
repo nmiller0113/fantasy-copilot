@@ -114,10 +114,13 @@ figures are right, since one correct figure carries the cell past every wrong on
 it. The eleventh, `scripts/transactions.py`, is the one that reads no knowledgebase: it
 reads a private folder of transaction rows pulled from each of your leagues' host pages
 and prints what every manager added, dropped and swapped, every player dropped in the
-window with an estimated clear date (his drop date plus that league's waiver period, so
-your host's own row still governs the real cost and date), the names managers other than
-you added in more than one league, and your own adds and drops. It counts and lists what
-the rooms did; it does not rate or recommend. The release validator, `scripts/check.sh`, is a
+window with the date he arrives (his drop date plus that league's waiver days plus one,
+since the waiver period starts the day after the drop and the host's overnight run the
+morning after it ends delivers him, so your host's own row still governs the real cost and
+date), the names managers other than you added in more than one league, and your own adds
+and drops, every date carrying its weekday. Its `--drop <date> --days <N>` mode reads no
+files and prints that one waiver window: today, the drop, the days on waivers, the arrival.
+It counts and lists what the rooms did; it does not rate or recommend. The release validator, `scripts/check.sh`, is a
 maintainer tool run by hand before publishing and needs bash and git; on Windows, Git
 for Windows provides both. Users never run it, and Claude never runs it inside the skill.
 

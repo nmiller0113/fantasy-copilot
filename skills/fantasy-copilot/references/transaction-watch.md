@@ -81,7 +81,9 @@ two entries would print a swap nobody made.
 
 ## What the report prints
 
-Four sections, markdown to standard output, and nothing else:
+Four sections, markdown to standard output, and nothing else. Every date in every section
+is printed as its weekday and ISO date, `Sat YYYY-MM-DD`, so a date is never read off by a
+day or paired with the wrong weekday; quote it that way when saying it.
 
 - `## Managers`, one table per league in scope: manager, adds by position, drops by
   position, swaps, last move date. Counts only. The adds and drops columns count `ADD`
@@ -93,10 +95,18 @@ Four sections, markdown to standard output, and nothing else:
 - `## Dropped (all leagues)`, one row per player dropped in the window: player, pos,
   team, designation, the count of leagues he was dropped in, and one entry per drop
   giving the slug, the date, the manager (with `(you)` when it was the user), the player
-  added in the same transaction (`-` when the drop was bare) and an estimated clear
-  date, which is the drop date plus that league's waiver days and nothing else: it is
-  arithmetic, not the host's own processing, so the host's row governs the real cost and
-  date (skill section 8's replaceability test). When a later add of the same player
+  added in the same transaction (`-` when the drop was bare) and the date he arrives,
+  `arrives <Wkd date>`, which is the drop date plus that league's waiver days plus one.
+  The plus one is the host's rule, verified on one host; a league on another host compares
+  that host's label on one waived player to the computed arrival once before the estimate
+  is trusted there. The waiver period does not start at the drop: it starts the following
+  calendar day in the host's time zone, runs the league's waiver days, and the host's
+  overnight run the MORNING AFTER it ends makes him a free agent or hands him to the
+  winning claim. So with two waiver days the arrival is the drop date
+  plus three days whatever the clock time of the drop, and the host's own status label on
+  a player still on waivers shows this same arrival date. It is still arithmetic on the
+  waiver-days cell, not the host's processing, so the host's row governs the real cost
+  and date (skill section 8's replaceability test). When a later add of the same player
   appears in that league, the entry ends "(since added by <manager> on <date>)", naming
   the first add after that drop, so a name already off the wire reads as one. The pos,
   team and designation shown are the ones on his most recent drop row. Sorted by that
@@ -122,6 +132,16 @@ engine's number (skill sections 8 and 10).
     python3 transactions.py --dir <the private folder>
     python3 transactions.py --dir <the private folder> --since YYYY-MM-DD
     python3 transactions.py --dir <the private folder> --league <slug>
+    python3 transactions.py --drop YYYY-MM-DD --days N
+
+The last is the one-date mode: no files, no `--dir`, one drop date and that league's
+waiver days in, four lines out, `today`, `dropped`, `on waivers <first> through <last>`
+(`on waivers: none` when the days are 0) and `arrives <date> at the host's overnight
+run`, each date with its weekday. Use it for every date said about a waiver window,
+instead of counting days in prose. `--days` is a whole number 0 to 7 and is required with
+`--drop`; `--since` and `--league` belong to the report and are refused with it, as
+`--days` is refused without it, since the report reads each league's waiver days from
+`leagues.md`.
 
 Python 3.8 or later and nothing else. The script ships in the plugin's `scripts/`
 folder; copy it beside the private files, as the knowledgebase's scripts are copied into

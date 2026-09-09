@@ -1,17 +1,36 @@
 #!/usr/bin/env python3
 """Read the user's private transaction files, one per fantasy league, and print one
 report of what every room did: a per-league manager digest, every player dropped in the
-window with an estimated clear date (his drop date plus that league's waiver period),
-the names other managers added in more than one league, and the user's own adds and
-drops.
+window with the date he arrives in the pool, the names other managers added in more than
+one league, and the user's own adds and drops.
+
+Every date the report prints carries its weekday abbreviation, so a date is never read
+off by a day or matched to the wrong weekday: Sat YYYY-MM-DD, not YYYY-MM-DD.
+
+The arrival date is the drop date plus that league's waiver days plus one, because the
+host's waiver period does NOT start at the drop: it starts the following calendar day in
+the host's time zone, runs the league's waiver days, and the host's overnight processing
+run the MORNING AFTER it ends is what makes the player a free agent or hands him to the
+winning claim. So with two waiver days a player dropped on a Wednesday, at any clock
+time, arrives on the Saturday. This is arithmetic on the league's waiver-days setting,
+not the host's own processing: the host's row governs the real cost, and its status label
+on a player still on waivers shows this same arrival date. The plus one is verified on one
+host; a league on another host compares that host's label on one waived player to the
+computed arrival once before the estimate is trusted there.
 
     python3 scripts/transactions.py --dir <folder> [--since YYYY-MM-DD] [--league <slug>]
+    python3 scripts/transactions.py --drop YYYY-MM-DD --days N
 
   --dir     the folder holding leagues.md and one file per league. It is the user's own
             private folder, beside the private document, never inside this plugin.
+            Required except with --drop.
   --since   first day of the window, inclusive. Default: seven days before the newest
             row read.
   --league  limit the run to one league slug from leagues.md.
+  --drop    one date, no files: print today, that drop date, the days the player spends
+            on waivers, and the day he arrives. --days is required with it, --dir is
+            not used, and --since and --league are refused.
+  --days    the league's waiver days, a whole number 0 to 7. Only with --drop.
 
 Reads  <dir>/leagues.md   one pipe row per league:
                             slug | the user's manager name | waiver days | host
@@ -50,6 +69,15 @@ TS = re.compile(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$')
 DAY = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 FIELDS = ('timestamp', 'manager', 'movement', 'player', 'pos', 'team',
           'designation', 'source', 'txn')
+WEEKDAYS = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
+
+
+def day(d):
+    """A date as its weekday and ISO date: Sat YYYY-MM-DD. Every date printed by this
+    script goes through here, so a date is never said without the weekday that proves
+    it. The names are spelled out rather than taken from strftime, which follows the
+    machine's locale and would print another language's weekday on some hosts."""
+    return f'{WEEKDAYS[d.weekday()]} {d.isoformat()}'
 
 
 def rows(path):
@@ -215,7 +243,7 @@ def managers_section(leagues):
         for m in order:
             swaps = len(txn_add[m] & txn_drop[m])
             name = f'{m} (you)' if m == lg['you'] else m
-            body.append([name, by_pos(adds[m]), by_pos(drops[m]), str(swaps), str(last[m])])
+            body.append([name, by_pos(adds[m]), by_pos(drops[m]), str(swaps), day(last[m])])
         out += table(['Manager', 'Adds', 'Drops', 'Swaps', 'Last move'], body) + ['']
     return out
 
@@ -230,12 +258,15 @@ def dropped_section(leagues):
             p = players.setdefault(r['player'], {'rows': [], 'entries': []})
             p['rows'].append(r)
             you = ' (you)' if r['manager'] == lg['you'] else ''
-            clear = r['day'] + datetime.timedelta(days=lg['days'])
+            # Plus one: the waiver period opens the day AFTER the drop and the host's
+            # overnight run the morning after it ends is what delivers the player.
+            arrives = r['day'] + datetime.timedelta(days=lg['days'] + 1)
             back = picked_up(lg, r)
-            gone = f' (since added by {back["manager"]} on {back["day"]})' if back else ''
+            gone = (f' (since added by {back["manager"]} on {day(back["day"])})'
+                    if back else '')
             p['entries'].append((r['when'], lg['slug'],
-                                 f'{lg["slug"]} {r["day"]} by {r["manager"]}{you}, '
-                                 f'for {swapped_for(lg, r)}, clears {clear}{gone}'))
+                                 f'{lg["slug"]} {day(r["day"])} by {r["manager"]}{you}, '
+                                 f'for {swapped_for(lg, r)}, arrives {day(arrives)}{gone}'))
     if not players:
         return out + ['No rows in the window.', '']
     body = []
@@ -266,7 +297,7 @@ def added_section(leagues):
         if len(slugs) < 2:
             continue
         newest = max(rs, key=lambda r: r['when'])
-        entries = [f'{r["slug"]} {r["day"]} {r["manager"]} {r["src"]}'
+        entries = [f'{r["slug"]} {day(r["day"])} {r["manager"]} {r["src"]}'
                    for r in sorted(rs, key=lambda r: (r['when'], r['slug']))]
         body.append((len(slugs), newest['when'], name,
                      [name, newest['pos'], newest['team'], '; '.join(entries)]))
@@ -287,7 +318,7 @@ def yours_section(leagues):
             continue
         any_rows = True
         out += [f'### {lg["slug"]}', '']
-        body = [[str(r['day']), r['move'], r['player'], r['pos'], r['team'],
+        body = [[day(r['day']), r['move'], r['player'], r['pos'], r['team'],
                  r['desig'], r['src']]
                 for r in sorted(mine, key=lambda r: (r['when'], r['player']), reverse=True)]
         out += table(['Date', 'Movement', 'Player', 'Pos', 'Team', 'Designation', 'Source'],
@@ -297,13 +328,65 @@ def yours_section(leagues):
     return out
 
 
+def read_day(flag, text):
+    """One YYYY-MM-DD argument as a date, or a message naming the flag and stopping."""
+    if not DAY.match(text):
+        raise SystemExit(f'{flag} must be YYYY-MM-DD')
+    try:
+        return datetime.datetime.strptime(text, '%Y-%m-%d').date()
+    except ValueError:
+        raise SystemExit(f'{flag} "{text}" is not a real date')
+
+
+def drop_report(dropped, days):
+    """The four lines of --drop mode: today, the drop, the waiver days, the arrival.
+
+    The waiver period opens the day after the drop in the host's time zone and runs the
+    league's waiver days, so the last waiver day is the drop plus that many days and the
+    host's overnight run the morning after it delivers the player: the drop plus the
+    waiver days plus one, whatever the clock time of the drop. With zero waiver days
+    there is no waiver period and the next run delivers him.
+    """
+    arrives = dropped + datetime.timedelta(days=days + 1)
+    out = [f'today {day(datetime.date.today())}', f'dropped {day(dropped)}']
+    if days == 0:
+        out.append('on waivers: none')
+    else:
+        out.append(f'on waivers {day(dropped + datetime.timedelta(days=1))} '
+                   f'through {day(dropped + datetime.timedelta(days=days))}')
+    out.append(f'arrives {day(arrives)} at the host\'s overnight run')
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--dir', required=True)
+    ap.add_argument('--dir')
     ap.add_argument('--since')
     ap.add_argument('--league')
+    ap.add_argument('--drop')
+    ap.add_argument('--days')
     a = ap.parse_args()
+    if a.drop:
+        # One date in, four dates out. No files are read, so --dir is not wanted and the
+        # two window flags have nothing to narrow: refusing them beats printing a report
+        # the caller did not ask for.
+        if a.since or a.league:
+            raise SystemExit('--since and --league belong to the --dir report; --drop '
+                             'reads no files and takes only --days')
+        if a.days is None:
+            raise SystemExit('--drop needs --days N, the league\'s waiver days '
+                             '(a whole number 0 to 7)')
+        if not re.fullmatch(r'[0-7]', a.days):
+            raise SystemExit(f'--days "{a.days}" must be a whole number of waiver days, '
+                             '0 to 7')
+        print('\n'.join(drop_report(read_day('--drop', a.drop), int(a.days))))
+        return
+    if a.days is not None:
+        raise SystemExit('--days is only for --drop; the --dir report reads each '
+                         'league\'s waiver days from leagues.md')
+    if not a.dir:
+        raise SystemExit('--dir <folder> is required (or --drop YYYY-MM-DD --days N)')
     if not os.path.isdir(a.dir):
         raise SystemExit(f'no folder {a.dir}')
     leagues = read_leagues(a.dir)
@@ -319,12 +402,7 @@ def main():
         every.extend(lg['all'])
     since = None
     if a.since:
-        if not DAY.match(a.since):
-            raise SystemExit('--since must be YYYY-MM-DD')
-        try:
-            since = datetime.datetime.strptime(a.since, '%Y-%m-%d').date()
-        except ValueError:
-            raise SystemExit(f'--since "{a.since}" is not a real date')
+        since = read_day('--since', a.since)
     elif every:
         since = max(r['when'] for r in every).date() - datetime.timedelta(days=7)
     for lg in leagues:

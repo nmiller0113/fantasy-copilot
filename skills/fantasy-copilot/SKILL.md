@@ -163,12 +163,11 @@ above, this feature list is a snapshot.
 4. Build a slot-specific plan: round-band targets, tier-cliff triggers, pivot trees ("if X
    is gone by pick N, then Y"), late upside list, K and DEF timing, cross-slot bye check.
    In a public or money room, place every riser from the sweep one round EARLIER than host
-   ADP implies: those rooms draft off the news feed, and ADP lags the feed by days. Where
-   the host publishes a sharp-user ADP (section 4), a name it prices earlier than the
-   basic ADP is banded at the earlier of the sharp price and one round before the basic
-   ADP. That is one adjustment, not two.
-   The plan carries a bye map: the bye week next to every target in the round bands, so a
-   stack with an earlier pick is visible before the clock, not discovered after.
+   ADP implies, since those rooms draft off a news feed ADP lags by days. Where the host
+   publishes a sharp-user ADP (section 4), a name it prices earlier than the basic ADP is
+   banded at the earlier of the sharp price and one round before the basic ADP. That is one
+   adjustment, not two. The plan carries a bye map: the bye week next to every target in
+   the round bands.
 5. Clean junk and clone leagues out of DS My Leagues.
 6. Top tier: submit Personalized Advice questions, ideally 48h out.
 7. Where your read disagrees with DS's board, write the disagreement into the plan and
@@ -182,14 +181,14 @@ above, this feature list is a snapshot.
      supplement.** Start from DS's own Injury Predictor (games-missed already baked into
      projections), Shark Bites news, depth charts (for the roster, not the share), Free
      Agent Finder, and rest-of-season projections. Use web search only to catch developments
-     DS has not reflected YET, never as a replacement for the paid engine.
+     DS has not reflected YET.
    - **Recency window: last ~7-10 days only.** Preseason/game-week news turns over daily;
-     older news is already in DS's number and the room's ADP. Ignore old news as an edge.
-   - **Tag every finding fresh vs already-priced.** A development is actionable ONLY if DS's
-     value (or market ADP) has not caught up.
-   - **Cross-check every riser/faller against the DS 3D value BEFORE it earns the label.**
-     The edge is the GAP between fresh reality and a lagging DS/market price. If DS already
-     ranks the player where the news implies, say "already priced," not "riser."
+     older news is already in DS's number and the room's ADP.
+   - **Tag every finding fresh vs already-priced, cross-checked against the DS 3D value
+     BEFORE it earns the label.** The edge is the GAP between fresh reality and a lagging
+     DS/market price, so a development is actionable ONLY if DS's value (or market ADP) has
+     not caught up. If DS already ranks the player where the news implies, say "already
+     priced," not "riser."
    Re-verify the whole list day-of, close to lineup lock; statuses flip on practice reports.
 10. **Post-draft IR sweep.** When the draft ends, run the IR stash procedure (section 8) at
     once to name the candidates, and again when the undrafted pool clears.
@@ -301,8 +300,7 @@ burn-the-claim test): a claim that costs priority buys nothing the clear does no
 number is thirty-two minus the teams, less one for every roster that drafts a second at the
 position: ten teams leaves 22 of each in the pool, positions half the room streams anyway,
 so the move is near free; a bigger room, or one that doubles up at the position, is a
-different number, and the copilot says it. The user decides, and the grade cost is said (the
-grade-cost rule below).
+different number, and the copilot says it. The user decides.
 
 **Bench rounds read the room, not only the board.** Once starters are filled, the
 between-pick read adds two lines: which positions the room has hoarded (a second QB or TE
@@ -326,14 +324,13 @@ agree beforehand which league gets full attention.
   successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
   priority pays nothing: a win leaves it last, where it already was, and a loss changes
   nothing. So while the user holds it, the play is a claim on every pool player who would
-  improve the roster, in preference order, a drop named for each where the roster is full;
-  the user files them. Order by value, since a claim on one who would clear unclaimed gains
-  nothing, and drop the roster's true last bodies. Who earns a bench slot stays the
-  replaceability and IR-stash tests' call; this rule settles only the cost. Read the rank
-  from the host's own team page, never the draft slot: other teams' claims move it. It holds
-  after a draft from the first slot (hosts seed priority in inverse draft order) and after
-  every claim the user wins; it ends when a team above the user wins one and the user's
-  priority regains value. Never in a FAAB league, where every claim spends budget.
+  improve the roster, ordered by value since a claim on one who would arrive unclaimed gains
+  nothing, a drop named for each where the roster is full, the roster's true last bodies
+  dropped. Who earns a bench slot stays the replaceability and IR-stash tests' call; this
+  rule settles only the cost. Read the rank from the host's own team page, never the draft
+  slot: other teams' claims move it. It holds after a draft from the first slot (hosts seed
+  priority in inverse draft order) and after every claim the user wins; it ends when a team
+  above the user wins one and the user's priority regains value.
 - **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent
   Finder, sorted by rest-of-season projection for breakouts and stashes, by next week for
   streamers (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against
@@ -343,32 +340,39 @@ agree beforehand which league gets full attention.
   since the last pull into the private folder, then copy and run `scripts/transactions.py`
   over that folder, per `references/transaction-watch.md`. Every player the report shows
   dropped is a candidate, and takes the full read (section 10) and then this section's
-  replaceability and burn-the-claim tests; the report's clear date is arithmetic on the drop
-  date, not the host's row. A drop paired with a same-position add in one transaction is a
-  role or injury question, answered in the knowledgebase before anything else; a dropped
-  streaming defense or kicker is noise unless the pool is thin. The names other managers
-  added in two or more leagues are the market's read: a data point, never a directive
-  (section 3). The manager digest reads each room's needs, since churn at a position says
-  short there, and it feeds the bye-week stretch's trade targets and the burn-the-claim
-  test's contention input.
+  replaceability and burn-the-claim tests; the report's arrival date follows the host's rule
+  (the period starts the day AFTER the drop, runs the league's waiver days, and he arrives at
+  the run the morning after it ends), and his row on the host is re-read before a claim is
+  filed. A drop paired with a same-position add in one transaction is a role or injury
+  question, answered in the knowledgebase before anything else; a dropped streaming defense
+  or kicker is noise unless the pool is thin. The names other managers added in two or more
+  leagues are the market's read: a data point, never a directive (section 3). The manager
+  digest reads each room's needs, since churn at a position says short there, and it feeds
+  the bye-week stretch's trade targets and the burn-the-claim test's contention input.
+- **Every date said carries its weekday and comes from the script or the host's row**, never
+  from arithmetic in prose: `scripts/transactions.py --drop <date> --days <waiver days>`
+  prints the day the player arrives. The host's status label on a waived player IS that
+  arrival day, and the team page's pending block carries the same date for a filed claim.
+  Where the host's weekly-waiver setting puts unclaimed players on waivers at their game's
+  kickoff, a free agent whose game has started is a claim until that weekly run, not an add;
+  which setting the league runs is read once from its settings page into the private
+  document.
 - **The replaceability test, on every add-or-drop.** The add's cost is named in the same
   line as the recommendation, in one of two forms: free and instant, or a priority or FAAB
-  cost with the clear date. It is read from the host's own row; the engine's Free Agent
-  Finder does not distinguish a free agent from a player on waivers and carries neither
-  the cost nor the clear date. Then, after the full read (section 10) and beside the
-  engine's number, say for each side whether he can be re-acquired from this league's pool
-  later: a player at a position the pool still holds several of at the same tier (a second
-  quarterback in a one-quarterback league where the pool holds starters, a streaming
-  defense or kicker) can, and a player whose value is contingent on an injury or a role
-  change cannot, because he is claimed the day it happens. The test argues the bench slot
-  for the one who cannot be replaced and says how the replaceable need is met from the
-  pool the week it arises. A projection gap alone does not settle such a call; the gap is
-  said, the test is said, and the user decides. When both sides carry the same tag the
-  test is silent and the projection and the read decide; how many contingent stashes a
-  bench carries is the user's call, said with the test. The knowledgebase's successor rows
-  name the contingent players: a back or receiver listed under COMMITTEE, or as PRIMARY if
-  the starter is out, holds that value on the user's bench whether or not the user owns
-  the starter.
+  cost with the arrival date. It is read from the host's own row; the engine's Free Agent
+  Finder does not distinguish a free agent from a player on waivers and carries neither the
+  cost nor the arrival date. Then, after the full read (section 10) and beside the engine's
+  number, say for each side whether he can be re-acquired from this league's pool later: a
+  player at a position the pool still holds several of at the same tier can, and a player
+  whose value is contingent on an injury or a role change cannot, because he is claimed the
+  day it happens. The test argues the bench slot for the one who cannot be replaced and says
+  how the replaceable need is met from the pool the week it arises. A projection gap alone
+  does not settle such a call; the gap is said, the test is said, and the user decides. When
+  both sides carry the same tag the test is silent and the projection and the read decide;
+  how many contingent stashes a bench carries is the user's call, said with the test. The
+  knowledgebase's successor rows name the contingent players: a back or receiver listed
+  under COMMITTEE, or as PRIMARY if the starter is out, holds that value on the user's bench
+  whether or not the user owns the starter.
 - **Post-waivers**: Team Dashboard check for the recommended lineup and injury flags.
   Its roster membership and IR occupancy are the synced truth, but its Starters and
   Bench blocks have been seen disagreeing with the lineup set on the host for the same
@@ -386,23 +390,21 @@ agree beforehand which league gets full attention.
   rosters meet. An offer from a team above the user in the projected standings is read
   hardest: an even swap that closes his hole is a gift to the team the user is chasing, and
   a bye week he has open is kept open. Then the math, all of it beside the engine and none
-  of it instead: the Trade Analyzer grade and rest-of-season number per side, scored to the
-  synced league; the host evaluator's week-by-week differential as a data point, since it
-  shows the bye swing the season total hides; the Injury Predictor row per player (risk tier
-  and projected games missed); section 7's bye check run on the incoming player against the
-  user's starters at his position, the first bench body there and the flex; and section 10's
-  full read on both players, the quarterback and the playoff-week schedule said with it. A
-  one-for-one at the same market price the engine grades even is the shape to distrust, not
-  to accept: when the engines tie, the judgment layer (section 3's criteria 5a, 6, 7 and 8,
-  plus byes) decides, one line per input. Lead with accept, reject or counter, then the
-  reason in two lines, then the counter, where one exists, in one line with what it prices
-  in. The user decides and clicks; the copilot never touches an accept, reject or counter
-  control.
+  of it instead: the Trade Analyzer grade and rest-of-season number per side; the host
+  evaluator's week-by-week differential as a data point, since it shows the bye swing the
+  season total hides; the Injury Predictor row per player (risk tier and projected games
+  missed); section 7's bye check run on the incoming player against the user's starters at
+  his position, the first bench body there and the flex; and section 10's full read on both
+  players, the quarterback and the playoff-week schedule said with it. A one-for-one at the
+  same market price the engine grades even is the shape to distrust, not to accept: when the
+  engines tie, the judgment layer (section 3's criteria 5a, 6, 7 and 8, plus byes) decides,
+  one line per input. Lead with accept, reject or counter, then the reason in two lines, then
+  the counter, where one exists, in one line with what it prices in. The user decides and
+  clicks; the copilot never touches an accept, reject or counter control.
 - **Bye-week stretch**: League Analyzer (opposition map) plus Trade Partner Finder every 2-3
   weeks; value trades in rest-of-season projections, never season-to-date points. The
-  managers who overpaid for a name on draft day overpay for a name after one big week:
-  trade into their overreactions, buying the player the room undervalues and selling the
-  one it is chasing.
+  managers who overpaid for a name on draft day overpay for a name after one big week: trade
+  into their overreactions.
 - **Before the trade deadline**: SOS filtered to the fantasy playoff weeks; buy soft playoff
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.
@@ -415,19 +417,17 @@ agree beforehand which league gets full attention.
   it needs an open bench slot first and the move follows, so his rest-of-season projection
   must beat both the best healthy free agent for the slot and the bench player he displaces.
   **Once the draft is over, an open IR slot is filled, never held**: a RETURNS player who
-  has cleared to free agency displaces nobody and costs nothing, the swap for a better
-  RETURNS candidate later costs nothing either, so the value test does not apply; where the
-  setting is off, that add needs an open bench slot first. A candidate still on waivers is
-  not free: he goes through the burn-the-claim test below before any claim is spent. At the
-  draft section 7's board test and dart forecast decide the order. **Order the eligible pool
-  by the knowledgebase read, the projection said beside each name** (section 10's read). The
-  burn-the-claim test, which governs only while the user's priority has value (the
-  free-claim bullet above): default to the free window (the host's clear date, recorded once
-  in the private document) and never spend priority or FAAB on a stash unless RETURNS,
-  starter-level projection and real contention all hold, with the cost named in the same
-  line. Run it on demand any week, on waiver eve, and right after each draft, and lead every
-  answer with the next clear date. Sources, tags and the full procedure:
-  `references/ir-stash.md`.
+  has reached free agency displaces nobody and costs nothing, and the swap for a better
+  RETURNS candidate later costs nothing either, so the value test does not apply. A
+  candidate still on waivers is not free: he goes through the burn-the-claim test below
+  before any claim is spent. **Order the eligible pool by the knowledgebase read, the
+  projection said beside each name** (section 10's read). The burn-the-claim test, which
+  governs only while the user's priority has value (the free-claim bullet above): default to
+  the free window (the host's arrival date, recorded once in the private document) and never
+  spend priority or FAAB on a stash unless RETURNS, starter-level projection and real
+  contention all hold, with the cost named in the same line. Run it on demand any week, on
+  waiver eve, and right after each draft, and lead every answer with the next arrival date.
+  Sources, tags and the full procedure: `references/ir-stash.md`.
 - **High-stakes calls** (top tier): draft a Personalized Advice question. It is
   unlimited, and same-day turnarounds have been observed twice, so a day-before draft
   question is still worth sending (48h remains the safe margin).
@@ -445,8 +445,8 @@ Sharks subscriber.
 
 Draft Sharks carries the numbers. It does not carry who the coach named, whether an injured
 starter's replacement is one man or a committee, how old the veteran ahead of a rookie is,
-or who was rested in the preseason finale. Nobody can look those up on a live clock unless
-they are already written down, so the copilot keeps a knowledgebase beside the private
+or who was rested in the preseason finale, and none of it can be looked up on a live clock
+unless it is already written down. So the copilot keeps a knowledgebase beside the private
 document: a dossier per team (rooms, absence plans, rookies behind veterans, the media
 read); a play-caller, a defensive-coordinator and an offensive-line profile per team; the
 schedule with every defense rated by position per week, adjusted for injured key defenders;
@@ -500,6 +500,6 @@ labeled as hype). A row the knowledgebase does not hold is named as not held, in
 clause, and the read moves on; it is never inferred. The case comes from those rows and is
 said in two lines per name, the projection quoted with it as the engine's independent
 number over its own inputs. Where the read and the number disagree, both are said and the
-user decides. On a live clock the name still comes first and the two-line limit stands:
-the full read is done in the pre-draft plan and refreshed between picks only for the names
-still live, and the pick's one line of reason is drawn from it.
+user decides. On a live clock (section 7) the full read is done in the pre-draft plan and
+refreshed between picks only for the names still live, and the pick's one line of reason is
+drawn from it.

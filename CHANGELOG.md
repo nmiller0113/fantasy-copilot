@@ -5,6 +5,93 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.40.0] - 2026-09-09
+
+**The report's clear date was a day early, and the host's own label was being read as a day
+late. A host's waiver period does not start when the player is dropped: it starts the
+following calendar day in the host's time zone, runs the league's waiver days, and the host's
+overnight processing run the MORNING AFTER it ends is what makes him a free agent or hands
+him to the winning claim. With two waiver days that is the drop date plus three, whatever the
+clock time of the drop, and it is the date the host prints on a waived player's status label
+and in the pending block of the user's team page. The script printed the drop date plus the
+waiver days and called it the clear date, which is the LAST waiver day, one day before anyone
+can have him, so the copilot advised acting a day early and read the host's label as meaning
+a day later than it did. Dates worked out in prose were wrong too, a weekday misnamed and a
+date off by one. Now every date the report prints carries its weekday, the dropped section
+says `arrives <Wkd date>`, and the script answers a waiver window on its own from one date.**
+
+### Changed
+
+- `scripts/transactions.py` prints every date as its weekday and ISO date, `Sat YYYY-MM-DD`:
+  the dropped section's drop date, its "since added by ... on" date and its arrival date, the
+  managers table's last-move column, the added-in-two-leagues entries and the Yours table's
+  date column. The columns, the section names and everything else printed are unchanged.
+- The script gains a one-date mode, `--drop YYYY-MM-DD --days N`, that reads no files and
+  prints four lines: `today`, `dropped`, `on waivers <first> through <last>` (`on waivers:
+  none` when the days are 0) and `arrives <date> at the host's overnight run`. `--days` is a
+  whole number 0 to 7 and is required with `--drop`; `--dir` is not needed, `--since` and
+  `--league` are refused with a message saying they belong to the report, and `--days` is
+  refused without `--drop`. A date that is not real stops the run, as bad input does
+  everywhere else in the script.
+- Section 8's transaction watch bullet: the report's arrival date follows the host's rule
+  (the period starts the day after the drop, runs the league's waiver days, and he arrives at
+  the run the morning after it ends), and his row on the host is re-read before a claim is
+  filed. It no longer says the date is arithmetic that the host's row overrides, which read as
+  permission to guess the real one.
+- Section 8 gains a date rule: every date the copilot says carries its weekday and comes from
+  the script's `--drop` mode or from the host's row, never from arithmetic in prose. The
+  host's status label on a waived player IS the day he arrives, and the team page's pending
+  block carries the same date for a filed claim. Where the host's weekly-waiver setting puts
+  unclaimed players on waivers at their game's kickoff, a free agent whose game has started is
+  a claim until that weekly run, not an add, and which setting the league runs is read once
+  from its settings page into the private document.
+- "Clear date" is now "arrival date" in section 8's replaceability test and IR stash bullet:
+  one name for the one date, the day the player can actually be had.
+- `references/transaction-watch.md` documents the arrival date and the host rule behind it,
+  the weekday format every date is printed in, and the `--drop` mode with what it refuses.
+- Paid for inside the 500-line body by cutting restatement and illustration only, with no
+  rule, exception, condition or number removed. Section 6's step 4 drops the reason clause
+  "those rooms draft off the news feed, and ADP lags the feed by days" into a shorter form of
+  the same sentence, and drops "so a stack with an earlier pick is visible before the clock,
+  not discovered after", the reason for a bye map the sentence still requires and section 7's
+  bye check still calls the input. Step 9's two sub-bullets on fresh-versus-priced are merged
+  into one, every clause kept: tag it, cross-check it against the engine's value before it
+  earns the label, actionable only if the value has not caught up, say "already priced" not
+  "riser." That step also drops "never as a replacement for the paid engine" and "Ignore old
+  news as an edge", both stated by their own bullets (the engine is PRIMARY and web news the
+  supplement; older news is already in the number and the room's ADP). Section 7's dart
+  paragraph drops "and the grade cost is said (the grade-cost rule below)", which the
+  grade-cost paragraph states for any pick over the top live row. Section 8's free-claim
+  bullet merges "in preference order" with "Order by value" into one clause and drops "the
+  user files them" (prime directive 1: the user clicks every roster move) and "Never in a
+  FAAB league, where every claim spends budget", which is the bullet's own opening condition,
+  a rolling priority list with no FAAB. Its trade bullet drops one "scored to the synced
+  league" (section 5's settings test) and its bye-week bullet drops "buying the player the
+  room undervalues and selling the one it is chasing", which is what trading into their
+  overreactions is, and what section 7's room-trends paragraph says of value the room leaves.
+  The replaceability test drops its two examples of a replaceable position, a class the same
+  sentence defines and the knowledgebase rows at the end of the bullet name. The IR bullet
+  drops "where the setting is off, that add needs an open bench slot first", stated three
+  sentences earlier in the same bullet, and "At the draft section 7's board test and dart
+  forecast decide the order", which is section 7's IR paragraph in full. Section 10 drops the
+  restatement of name-first and the two-line limit on a live clock, keeping the pointer to
+  section 7, which is where both live. Several paragraphs were rewrapped; no heading, bullet
+  or numbered item was added, removed or reordered except the one new bullet in section 8
+  and step 9's two sub-bullets merged into one.
+
+### Fixed
+
+- The dropped section's estimated date was the drop date plus the league's waiver days,
+  labelled "clears". That is the last waiver day, one day BEFORE the player can be had. It is
+  now the drop date plus the waiver days plus one, labelled `arrives`, and the script's
+  docstring states the rule it comes from: the period starts the day after the drop in the
+  host's time zone, runs the league's waiver days, and the host's overnight run the morning
+  after it ends delivers the player. Every undrafted player follows the same rule where the
+  post-draft setting sends undrafted players to waivers, so the pool clears on that date too.
+- Dates the copilot worked out in its head, and said without a weekday, have been wrong in
+  both directions. Every date now comes from the script or the host's row and carries the
+  weekday that proves it.
+
 ## [1.39.0] - 2026-09-08
 
 **One rule the copilot had in the file and did not run, and one it did not have, both on a live
