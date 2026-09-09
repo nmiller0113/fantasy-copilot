@@ -5,6 +5,69 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.39.0] - 2026-09-08
+
+**One rule the copilot had in the file and did not run, and one it did not have, both on a live
+clock. A turn is two picks with a long gap behind the second one, and the pair has to be
+planned against that gap: taking the engine's top row at the first pick spent it on a need that
+survives the gap, while two starting slots whose tiers were ending did not get filled and one
+of them was gone two picks later. And the tie-break layer lists age and depth-chart role but
+not the injury flag the engine puts on the row, and it said when to SAY the tie-break without
+ever saying when to RUN it. Both are now written as what the copilot does. The wait cadence
+gains its missing number and the shape of the message at the clock: inside two picks it is one
+ten-second wait per read, and the clock confirmation goes out first, off a read taken the
+moment the host shows the clock live, with the name bold and alone on the first line.**
+
+### Changed
+
+- Section 7's tie-break paragraph adds the injury flag the engine shows on the row to the
+  judgment layer's inputs, beside age and depth-chart role, and fixes when the layer runs:
+  inside the band it is RUN before the name is said, never after. A flagged player in his
+  thirties is never named by default over a clean candidate inside the band; the layer
+  decides between them and the second line says why whenever the name is not the top row.
+- Section 7 gains a turn-pair rule, its own paragraph after the tie-break. Two of the user's
+  picks with up to two opponent picks between them are planned as a pair against the gap
+  behind the second pick, not row by row: the starting needs whose tier ends inside that gap
+  fill the pair, ordered by the snipe-first forecast (the one least likely to reach the
+  second pick goes first), and the top row at the first pick is taken only when the pair
+  holds no need, or one need that reaches the second pick by that forecast. Filling the first
+  pick this way comes before the research-target rule and the tie-break; when the pair rule
+  leaves the top row standing, both run as usual.
+- Section 5's wait-batch bullet fixes the length inside two picks at ONE ten-second wait per
+  read, and states the message at the clock: the confirmation is the first text sent, off a
+  read taken the moment the host shows the user's clock live, the name bold and alone on the
+  first line. It points at section 7 for name-first instead of restating it.
+- Paid for inside the 500-line body by cutting restatement only, with no rule, exception,
+  condition, cross-reference or number removed. The requirements' browser bullet drops the
+  positive half of a conditional ("real-time recommendations exist only if Claude can SEE the
+  draft room and the DS panel"), which the sentence after it states in the negative. Section
+  2's posture line drops the two clauses restating section 7's snipe-first and research-target
+  rules, keeping the posture and the pointer. Section 3's bye paragraph drops "a value that
+  already includes the bye is not a warning the user has heard", which restates "3D folds
+  byes into its number silently" in the same sentence. Section 6's injury sweep drops "five
+  rules, because skipping them dresses correctly-priced players as edges", which its own last
+  sub-bullet states as a rule. Section 7's opening drops "and the name is said as the plan's,
+  not the engine's", which is what the DS-lags rule it cites in the same clause says. Section
+  7's room-trends paragraph drops "at the clock the call is still one name" (its section's
+  opening: one name per call) and "changing the plan takes the discussion" (the same
+  paragraph, two sentences earlier: never changes the plan silently, the user decides before
+  the clock). Section 7's research-target paragraph drops "once he is gone no later pick
+  replaces him", which taking him at THIS pick instead of betting he survives to the next
+  already implies. Section 7's sweep-name paragraph drops "a reversal at the clock produces a
+  pick nobody chose", the consequence its own heading states. Section 7's dart paragraph
+  drops the sentence repeating the IR paragraph above it, now a pointer to it, and
+  "contention on kickers and defenses is low", which the pool-count sentence after it states
+  as a number. Section 7's room-trends paragraph also drops its three examples of value left
+  on the board, and the grade-cost paragraph drops its four examples of a pick over the top
+  row (the list 1.13.0 extended with the stash and the dart): "any pick over the top live
+  row" covers all of them. Section 7's opening drops "a name given early gets sniped into a
+  scramble", one of three reasons for a rule the sentence still states, and the tie-break
+  paragraph drops "and not after the user asks", which "before the clock" already says, and
+  the bench-rounds paragraph drops "a floor-only bench buys no ceiling", the reason for a rule
+  the sentence still states.
+  Several paragraphs were rewrapped; apart from the new paragraph and its blank line, no
+  heading, bullet or numbered item was added, removed or reordered.
+
 ## [1.38.0] - 2026-09-08
 
 **The host setting that 1.37.0 made the condition of the dart rule does not govern the
