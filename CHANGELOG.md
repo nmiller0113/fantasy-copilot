@@ -5,6 +5,153 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.41.0] - 2026-09-09
+
+**The skill knew how to choose a starter and nothing about when the roster stops being able
+to change one. Every rostered player, starter or bench, locks in place at the scheduled
+kickoff of his OWN game, and inactive lists come out about ninety minutes before each
+kickoff, so a questionable player in a late window resolves after the earlier windows have
+already locked. That makes the arrangement of the starters across the slots a free decision
+the copilot was not making: the projected total is the same whichever eligible slot a starter
+occupies, but the flex is the only slot a body of any eligible position can enter, and a
+body enters it only while it is unlocked. One ordered rule now arranges the week. The flex
+is filled from the position whose starters outnumber its fixed slots. When one of that
+position's starters is questionable, he sits in the flex and the healthy ones in the fixed
+slots, so a scratch is one move, any bench body of any flex-eligible position kicking off in
+his window or later into the flex, with no dependence on a healthy starter still being
+unlocked; that claim outranks the latest-kickoff rule and the earliest-game rule, and when
+two of them are questionable the flex goes to the one with the later kickoff, since his news
+lands last. Otherwise the flex holds the healthy one with the latest kickoff, and the week's
+earliest game never sits there. A questionable starter in a fixed slot is covered only by a
+bench body at his own position kicking off in his window or later, or, while the flex holder
+shares his position and is still unlocked when the news lands, by the chain, the flex holder
+into the fixed slot and an unlocked bench body into the flex; a starter neither covers takes
+the no-cover call, made before the EARLIER of his own kickoff and the safe alternative's
+kickoff, the free-agent pool checked first, because deferring past that lock chooses the
+questionable starter with no pivot. Every pivot is named with the window it is good until,
+the earlier of the pivot body's kickoff and the kickoff of the player leaving the slot,
+and a body named for two risks is said as such. The week is written down too, from the first
+practice report to the last inactive list, in a new reference the two weekly bullets point
+at.**
+
+### Added
+
+- `skills/fantasy-copilot/references/lineups.md`. What locks and when, as a table: a starter
+  whose game has kicked off cannot be benched, moved or dropped for the rest of the week; a
+  bench player whose game has started is never a substitute, though he is still droppable
+  where the host's setting for locking benched players is off; a free agent whose game has
+  not started is a free add, and one whose game has started is a claim until the weekly run
+  on a host whose weekly-waiver setting places players on waivers at kickoff. Both settings
+  are read once per league into the private document. Then the ordered flex rule in three
+  numbered clauses, the same sentences section 8 carries, read in order, with the kickoff
+  window an input to it and never a rule of its own, and why the first clause comes first: a
+  questionable starter at a position with no surplus stays in his fixed slot, since in the
+  flex he would leave that slot with nobody eligible to fill it, and the chain, run for the
+  earlier of two questionable starters at the surplus position, spends the later one's pivot.
+  The arrangement worked on three shapes, each table stating every slot, every player's
+  position and window, and every starter's pivot with the kickoff it is good until: a surplus
+  position with one questionable starter in the late-afternoon window, the healthy one in the
+  last game, where the questionable one takes the flex and a bench body of a third position
+  is his one-move pivot, good until his own late-afternoon kickoff; a questionable starter in
+  the week's earliest game at a position with no surplus and no same-position bench body,
+  where clause 3 finds no cover and the no-cover call is made before the earliest game locks,
+  the pool checked first; and the chain, a surplus position's fixed-slot starter scratched
+  with no earlier flag while the flex holder is still unlocked, covered in two moves good
+  until the scratched starter's own kickoff, with the reason clause 1 redoes that arrangement
+  the moment a flag lands while both are unlocked. Bench coverage by window (a pivot counts
+  only if his game kicks off no earlier than the moment the news arrives; a bench body in the
+  last game of the week is insurance for every earlier slot; the free-agent pool is a pivot
+  source until each pool player's own kickoff and is checked before any starter takes the
+  no-cover call; a bench body named as the pivot for two risks is said as such, since he
+  covers whichever is ruled out first); the no-cover deadline; the week as a table of what is
+  read on each day and what comes out of it, with the host's own projections and lineup
+  suggestions gated by section 5's settings test, its start and roster rates reading the
+  room, not the player, and surviving that test as section 4 says, and the day's inactives
+  and injury tags read off the host's roster page; and the common mistakes: starting on
+  reputation instead of projection and usage, overreacting to one week, ignoring the game
+  script, starting a questionable player with no pre-decided pivot, overweighting weather, a
+  healthy early-week starter parked in the flex, and comparing more than three players for
+  one slot.
+
+### Changed
+
+- Section 8's Post-waivers bullet carries the same ordered rule, clause for clause in the
+  same sentences, the two-risk naming rule and the same no-cover deadline. The league is
+  re-synced in the engine before the Team Dashboard is read, since a stale sync has been seen
+  omitting the newest adds and drops; the host's own team page prints each player's kickoff
+  and every player locks in place at his own; a bench player whose game has started is
+  nobody's substitute. The bullet points at the new reference, as the lock-morning bullet now
+  does.
+- Section 8's Lineup lock morning bullet: every swap is decided and said before the first
+  window locks, the pivot takes the VACATED slot and a body of another position covers a
+  fixed slot only through the chain, the inactives about ninety minutes before each kickoff
+  are the last read, and the host page is re-read before any lineup is called set. The bare
+  "inactives check" it replaces said neither when to read them nor what to have ready.
+- Prime directive 1 now reads "never touch a control on the host's pages that makes or
+  proposes a pick or a roster change: accept, reject and counter included; a filter, selector
+  or view that only changes what a page shows is a read." It named picks and roster moves
+  only, which covered no trade control at all, since a reject and a counter move no roster;
+  written wider it would have forbidden the all-teams selector and the filters the
+  transaction watch runs on (`references/transaction-watch.md`). The trade bullet ends "The
+  user decides."
+- Section 7's room-trends line carries the posture that was section 2's: "read them, never
+  follow them; exploit them, never chase them; play to beat the room, never keep pace with
+  it." It sits where the room is actually read; section 2 keeps the voice.
+- Section 6's step 6 says the USER submits the Personalized Advice questions, matching
+  section 8's high-stakes bullet, which now reads "draft a Personalized Advice question for
+  the user to send".
+- The frontmatter description is unchanged: it already opens on ANY fantasy football work and
+  names start/sit decisions, so a "set my lineup" request fires the skill without an edit.
+- Paid for inside the 500-line body, which ends where it began, at exactly 500. No rule,
+  exception, condition or number was removed; what went was restatement, pointers to rules
+  stated in full elsewhere, and illustrations of rules the same sentence defines. Section 3
+  drops "Starter bye protection is a disclosure default, not a veto", which is what section
+  7's bye check does in full (say the stack, name the best non-stacking candidate, give the
+  top row when every candidate stacks, and the user decides), and "Treat analyst advice and
+  pre-draft plans as priors to update, never as directives to execute", which is its own
+  paragraph's lead (every input is a data point, none is gospel; no single signal outweighs
+  another by default). Section 4 drops the one-line Personalized Advice bullet, whose two
+  halves are now the tier gate in the Subscription tier section, step 6 and the high-stakes
+  bullet; its host-subscription paragraph keeps the snapshot caveat in fewer words. Section
+  5's reload bullet keeps the rule (the live pick ticker and roster panel are trusted over
+  the rankings list) and drops the reason clause, which `references/field-behaviors.md`
+  holds. Section 6's step 0 is shortened to the same two confirmations; its step 9 merges the
+  refresh-first sub-bullet into the recency sub-bullet, every clause kept (refresh first,
+  sweep only what is newer than that refresh, inside the last seven to ten days); and its
+  step 10 goes, its two triggers folded into section 8's IR bullet, which already carried the
+  cadence and now reads "on demand any week, on waiver eve, right after each draft to name
+  the candidates, and again when the undrafted pool clears". Section 7's snipe paragraph
+  drops "A public room drafts straight off that list, so its next names weigh as one input,
+  never a directive" (the data-point rule is section 3's, the observation is in the
+  field-behaviors reference, and the paragraph still says the forecast is not a promise) and
+  the sample wording of the one-line call, the one-line rule itself unchanged; its bye check
+  keeps "the plan's bye map is the input" and drops "not a substitute", which the same
+  paragraph enforces by requiring the check at every starter-slot name; its bench-round read
+  drops the two illustrations of a hoarded and a short position, the two-line read unchanged;
+  and its sweep paragraph shortens the gone-claim rule to "one look at the engine's board or
+  the pick tape and nothing more", since the same paragraph already says the name stands
+  unless verification shows him drafted, and the at-the-clock paragraph says what counts as
+  that evidence. Section 8's waiver-eve bullet drops "Mind the DROP side", which the
+  replaceability test runs on every add-or-drop and states for each side; that test now says
+  the cost is read from the host's row "never the engine's Free Agent Finder, which does not
+  tell a free agent from a player on waivers and carries neither"; its IR bullet drops "A
+  drafted stash costs the pick alone: the bench slot comes back at the IR move", which
+  section 7's dart paragraph states in full and the IR reference repeats, and drops "Order
+  the pool by the knowledgebase read, the projection said beside each name", which is section
+  10's rule for every name in a decision, a stash named among them, and the IR reference's
+  own ordering section, and its closing pointer still reads "Sources, tags and the full
+  procedure"; its transaction bullet says "the market's read, a data point only (section 3)"
+  for the same rule; its bye-week bullet is unchanged. Section 9 keeps the user-agnostic rule
+  as one clause. Section 10 drops "and none of it can be looked up on a live clock unless it
+  is already written down", the reason for a knowledgebase the sentence goes on to require
+  and whose live-clock rule the section's closing paragraph states, and the three examples of
+  which file answers which question, which `references/knowledgebase.md` maps in its search
+  section; the rule to search the files rather than browse them is unchanged, and so is the
+  schedule-tables parenthetical. Three items left the body: section 4's Personalized Advice
+  bullet, section 6's step 10 and step 9's refresh sub-bullet, each folded into a bullet that
+  already carried its rule. Nothing else was added, removed or reordered; the paragraphs the
+  version touched were rewrapped at the file's width with their words unchanged.
+
 ## [1.40.0] - 2026-09-09
 
 **The report's clear date was a day early, and the host's own label was being read as a day
