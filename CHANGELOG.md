@@ -5,6 +5,92 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.42.0] - 2026-09-10
+
+**A game-day lineup pass read one dated web page, called three players unresolved that the
+host's roster rows and the engine's own tools had cleared a day earlier, and then let one
+engine number, the composite value, outvote the host's projection, the host's start rates,
+the engine's own raw projection, the posture rule and the fact that the alternative kept the
+slot unlocked for two more days. Both halves of that were a missing procedure, so the
+procedure is now written down. Every game-day pass, every practice-report day, lock
+morning, and any time the user asks about a lineup or a player's
+status, reads four sources in one fixed order for every league, and the answer names what it
+read: the engine first, its Team Dashboard re-synced, with the suggested lineup, the
+Suggested Moves box and the Injury Tracker's practice participation by day, then its news
+feed filtered to the rostered players with every timestamp, and the Injury Predictor and Who
+Should I Start for any call inside a close band; the host second, each roster row's status
+tag and kickoff, the host's projections and player notes, its game-day decision view where it
+exists with the projected maximum and minimum, the start rate and the sharp-user start rate,
+and the matchup's two projected totals for the posture; the knowledgebase third, the
+availability list, the successor rows for anyone in doubt and the week's schedule; and dated
+web news LAST, only for what none of the three has posted yet, every item carrying its date
+and an undated or stale item dropped. Four rules hold it together. One source is never a
+pass. A status is never called from an article when the host's row or the engine's tracker
+shows it, because those two are the current truth and an article can only add what they have
+not posted. The answer says in one line which sources it reached and which it could not. And
+one engine number never outvotes the rest: inside a close band the call is made by the raw
+projection, the host's projection and start rates, the posture rule and the lock order's
+optionality together, with the disagreement said out loud, because the composite is one data
+point and not the tie-breaker.**
+
+### Added
+
+- `skills/fantasy-copilot/references/lineups.md` gains a "## The game-day pass" section,
+  placed immediately before "## The week". It names when a pass is due, the four sources in
+  the order they are read, the engine first (the re-synced Team Dashboard, its suggested
+  lineup, its Suggested Moves box, its Injury Tracker with practice participation by day and
+  likelihood of playing, the day's practice report beside it, the news feed filtered to the
+  rostered players with every timestamp, and the Injury Predictor and Who Should I Start for
+  a close call), the host second (each roster row's status tag and kickoff, the host's
+  projections, its player notes, its game-day decision view with the projected maximum and
+  minimum, the start rate and the sharp-user start rate, and the matchup's two projected
+  totals for the posture), the knowledgebase third (the availability list, the successor rows
+  for anyone in doubt, the week's schedule table), and dated web news last (only what none of
+  the three has posted, every item with its date, undated or stale items dropped). Then the
+  four rules: one source is never a pass; a status is never called from an article when the
+  host's roster row or the engine's tracker shows it; the answer says in one line which
+  sources it reached and which it could not; and one engine number never outvotes the rest,
+  so when the composite value favors one player for a slot and the raw projection or the
+  host's projection favors the other, the raw projection, the host's projection and start
+  rates, the posture rule and the lock order's optionality decide together and the
+  disagreement is said out loud.
+- A row in the same file's "## Common mistakes": calling a player's status from an article
+  when the host's roster row or the engine's tracker already shows it, and letting one engine
+  number outvote the host's tool, the posture and the lock order.
+
+### Changed
+
+- `references/lineups.md`'s opening line. The page is read on EVERY practice-report day and
+  whenever the user asks about a player's status, not only on the first practice-report day
+  and lock morning, and it now names the game-day pass among what the page holds.
+- The same file's "## The week" table, first row. What it reads is now "the game-day pass
+  (above), then" only what the pass does not already cover: each dashboard player's floor,
+  projection, ceiling and 3D scored to the synced league, the host's own projections and
+  lineup suggestions as data points under section 5's settings test, and the matchup rating
+  per player. The re-sync, the status tags, the kickoff windows, the availability list, the
+  successor rows and the practice report are read by the pass, so the row no longer repeats
+  them.
+- Section 8's "Practice-report days" and "Lineup lock morning" bullets are merged into one
+  bullet, "Practice-report days and lock morning", that points every read at the pass in
+  `references/lineups.md`: every source in its order, named in the answer, one source never
+  a pass, a status never called from an article when the host's roster row or the engine's
+  tracker shows it, one engine number never outvoting the raw projection, the host's
+  projection and start rates, the posture and the lock order together, and a starter going
+  down still meaning an immediate handcuff run before league-mates react. The lock-morning
+  rules are kept whole in the same bullet: the knowledgebase refresh, the availability list
+  first, Who Should I Start for the last flex call scored to the synced league, floor when
+  favored and ceiling when underdog, every swap decided and said before the first window
+  locks, the pivot into the vacated slot, another position into a fixed slot only through the
+  chain, the inactives about ninety minutes before each kickoff as the last read, and the
+  host page re-read before any lineup is called set.
+- Every other section 8 bullet is reworded and re-wrapped to pay for the merged bullet inside
+  the 500-line body: the free-claim bullet, waiver eve, transaction watch, the date rule, the
+  replaceability test, post-waivers, trade offers, the bye-week stretch, the IR stash bullet
+  and high-stakes calls. Phrasing only. No rule, exception, condition, threshold or number is
+  removed, weakened or added in any of them, and the transaction watch bullet keeps the
+  waiver-period sentence exactly as 1.40.0 wrote it.
+- `.claude-plugin/plugin.json` version.
+
 ## [1.41.0] - 2026-09-09
 
 **The skill knew how to choose a starter and nothing about when the roster stops being able

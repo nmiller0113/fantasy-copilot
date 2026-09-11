@@ -1,8 +1,8 @@
 # Weekly lineup setting
 
-Read this when the user asks to set a lineup, on the first practice-report day of a week,
-and on lock morning. Skill section 8 holds the rules; this page holds the lock mechanics,
-the arrangement and the week.
+Read this when the user asks to set a lineup or about a player's status, on every
+practice-report day of a week, and on lock morning. Skill section 8 holds the rules; this
+page holds the lock mechanics, the arrangement, the game-day pass and the week.
 
 Two things decide a week. The projections decide WHO starts. The ARRANGEMENT of those
 starters across the slots decides whether the roster can still react to news that breaks
@@ -161,11 +161,53 @@ fixed slot.
   that costs a drop (skill section 8's replaceability test), and where the host runs weekly
   waivers a pool player whose game has started is a claim, not an add.
 
+## The game-day pass
+
+A game-day pass is due on every practice-report day, on lock morning, and any time the user
+asks about a lineup or about a player's status. It reads ALL four sources below, in this
+order, for every league, and the answer NAMES what it read.
+
+1. **The engine.** The Team Dashboard, re-synced first: its suggested lineup, its Suggested
+   Moves box, and its Injury Tracker, with each flagged player's practice participation by
+   day and his likelihood of playing. The day's practice report itself is read beside the
+   tracker, since the tracker's column is a summary of it. Then the engine's news feed
+   (Shark Bites) filtered to the user's rostered players, every item read with its
+   timestamp. For any call inside a close band, the Injury Predictor row and Who Should I
+   Start.
+2. **The host.** Each roster row's status tag and its kickoff day and time; the host's
+   projections on the roster page; the host's player notes; the host's game-day decision
+   view where it exists, which carries the projected maximum and minimum, the start rate,
+   and the sharp-user start rate where the host publishes one; and the matchup's two
+   projected totals, which set the posture, floor when favored and ceiling when the
+   underdog.
+3. **The knowledgebase** (skill section 10): the availability list, the successor rows, and
+   the week's schedule table.
+4. **Dated web news, LAST**, and only for what none of the three above has posted yet. Every
+   item carries its date. An undated item is dropped, and so is one older than what the
+   tools already show.
+
+Four rules hold the pass together.
+
+- **One source is never a pass.** No status, no start and no sit is ever called from a single
+  source.
+- **A status is never called from an article when the host's roster row or the engine's
+  tracker shows it.** Those two are read first and they are the current truth; an article can
+  only add what they have not posted.
+- **The answer says what it read**, in one line: the sources it reached and the ones it could
+  not, so the user can see the pass was complete.
+- **One engine number never outvotes the rest.** When the engine's composite value (3D)
+  favors one player for a slot and the engine's raw projection, or the host's projection,
+  favors the other, the call is made by four things together, the engine's raw projection,
+  the host's projection and start rates, the posture rule, and the lock order's optionality,
+  a player who locks later keeping the slot changeable while a player who locks now takes the
+  option with him; and the disagreement is said to the user in one line. The engine's
+  composite is one data point (skill section 3), never the tie-breaker.
+
 ## The week
 
 | When | What is read | What comes out of it |
 | --- | --- | --- |
-| First practice-report day | after a re-sync of the league in the engine, since a stale sync has been seen omitting the newest adds and drops: the Team Dashboard's suggested lineup with each player's floor, projection, ceiling and 3D, scored to the synced league; the host's own projections and lineup suggestions as data points, and only where the tool's own settings panel shows them scored to this league (skill section 5's settings test), while its start and roster rates read the room, not the player, and survive that test (skill section 4); the injury tag on each player's host row; the matchup rating per player; the knowledgebase's availability list and successor rows (skill section 10); the day's practice report; and every starter's kickoff window from the host's roster page, which prints the day and time on each row | the week's draft lineup, its slots arranged by the lock order, and the questionable list opened |
+| First practice-report day | the game-day pass (above), then: each dashboard player's floor, projection, ceiling and 3D, scored to the synced league; the host's own projections and lineup suggestions as data points, and only where the tool's own settings panel shows them scored to this league (skill section 5's settings test), while its start and roster rates read the room, not the player, and survive that test (skill section 4); and the matchup rating per player | the week's draft lineup, its slots arranged by the lock order, and the questionable list opened |
 | The middle practice days | the practice trend for each questionable starter, no participation to limited to full, plus the day's news | the pivot per risk, named with the window it is good until |
 | The last practice-report day | the week's designations, which are the headline: out is out, doubtful is treated as out, questionable plays at variable rates and needs a pivot | starters confirmed or swapped, the arrangement re-checked against the windows |
 | Waiver eve and the claim run | skill section 8's waiver cadence, read here for bodies that cover the open windows | the bench the pivots come from |
@@ -184,6 +226,9 @@ fixed slot.
 - A healthy early-week starter parked in the flex.
 - Comparing more than three players for one slot. Past three, take the dashboard's ordering
   and stop.
+- Calling a player's status from an article when the host's roster row or the engine's
+  tracker already shows it, and letting one engine number outvote the host's tool, the
+  posture and the lock order.
 
 ## Who clicks
 
