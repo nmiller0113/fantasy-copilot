@@ -5,6 +5,170 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.43.0] - 2026-09-20
+
+**A game-day pass deferred a flex call on a condition and named the move if the condition
+held, then threw that call away when the condition was confirmed hours later: the next pass
+opened by re-running the same two-player comparison from scratch instead of by its own open
+conditional, saw that the engine's projection for the beneficiary had not moved, read "the
+number did not change" as "nothing changed", and kept the other body. The engine had already
+projected the absent starter near zero that morning, so the beneficiary's number was the
+with-absence number all along and its not moving was evidence of nothing; the user had to
+argue the copilot back into a call the copilot had made itself, with minutes left before the
+lock. In that same close call, two backs inside a point on both services with each service
+preferring a different one, the pass never read the betting line, which had the lead back on
+a favored team with the higher implied team total against a committee back on an underdog
+with a low total and a low posted rushing prop: game script and touchdown chance settled the
+tie, and they reversed the pass's own underdog-means-take-the-ceiling argument, because a
+back's ceiling comes from touchdown chances. And the pass set every running back, receiver,
+tight end and flex slot in every league without ever looking at kicker or team defense, where
+free pool upgrades both services rated higher sat unclaimed until the user asked, found with
+minutes to the rostered units' kickoff, while the engine's matchup column had been dropped
+from the dashboard read, so a question about a player's matchup could not be answered from
+what the pass had already read. The rules are now written down. Every pass after the first
+one on a game day opens with the conditionals set earlier, and so does every pass on a later
+day than the one that set them, the first pass of a game day included: each is marked met,
+not met or still open, from the host's roster row or the engine's tracker where either shows
+the status and from the dated report itself where neither does, and the met ones are acted on
+first, before any other read; the move of a met conditional is reversed only on evidence that
+did not exist, or had not been read, when the conditional was set, the evidence named and the
+reversal said to be a reversal, in the same message and before the deadline, and re-running
+the comparison the conditional was set on is not new evidence. A projection that already
+priced the news cannot be used to argue the news does not matter, and the test is the absent
+player's own projection as it stood when the conditional was set, which is why those set-time
+numbers are now written down when the conditional is. Every close call with a running back or
+a receiver on either side reads the point spread and the total for BOTH players' games and
+states each team's implied total beside the projections, the spread taken as a positive
+number of points, before the posture rule's ceiling-or-floor argument is made. And every
+pass covers every starting slot, kicker and team defense included, comparing the pool's top
+unlocked names to the rostered unit on both the host's
+number and the engine's, before the EARLIER of the two kickoffs.**
+
+### Added
+
+- `skills/fantasy-copilot/references/lineups.md` gains a "## Carried conditionals" section,
+  placed immediately after "## The game-day pass" and before "## The week". How one is SET: a
+  pass that defers a call on a named future event (a window's inactive list, a designation, a
+  practice report, a report on a workload) states the condition, the move if it is met, the
+  move if it is not, the deadline, which is the window that move is good until under this
+  page's pivot-window rule, the earlier of the incoming player's kickoff and the kickoff of
+  the player leaving the slot, and the projections the call was made on as they read at that
+  moment, the beneficiary's and the absent or doubtful player's, the engine's number and the
+  host's for each; a pivot named for a questionable starter IS a carried conditional, so
+  every pivot the lock order names for a flagged starter is one; it is stated in full to the
+  user and written to the private document (skill section 9), and one held only in the
+  copilot's head is not set. How every pass that FOLLOWS one which set a conditional opens,
+  which is every pass after the first one on a game day and every pass on a later day too,
+  the first pass of a game day included: before any other read, the status each conditional
+  set earlier turns on is read and each one is marked met, not met or still open, that status
+  taken from the host's roster row or the engine's tracker when either shows it and never
+  from an article in that case, while a condition neither of them shows, a practice report or
+  a report on a workload, is marked from the dated report itself under source 4's rule; with
+  the three cases walked, met (the stated move IS the call, said first, ahead of any new
+  number, and the comparison that produced it is not re-run), not met (the stated alternative
+  is the call, the alternative move made or the lineup left as it is where the alternative was
+  to leave it alone, said in the same shape) and still open (carried forward with its deadline
+  restated and what will resolve it; a conditional still open when its deadline arrives leaves
+  the slot as it is locked, which resolves it to the stated alternative only where that
+  alternative was to leave the lineup alone, and is why a conditional whose resolving event
+  lands after its deadline cannot be carried at all and is instead the no-cover call of this
+  page's bench-coverage section, made by the user before the deadline). Reversal: only on
+  evidence that did not exist or had not been read when the conditional was set, such as a
+  later report of a snap cap or a workload limit on the incoming player, a new designation or
+  a weather turn at that scale; the evidence is named, the user is told it is a reversal of
+  the call already given, in the same message and before the deadline; re-running the
+  comparison is not new evidence
+  and neither is a preference. Already priced: when the condition is confirmed, the
+  beneficiary's projection is read against the absent player's own projection as it stood
+  when the conditional was set, in three cases, (a) the beneficiary's projection moved after
+  the confirmation, a move in either direction being new information worth the size of the
+  move and a move DOWN being evidence the reversal rule can use, named as such, (b) it
+  did not move and the absent player was already projected near zero, so the absence was
+  priced before the confirmation and there is no ground for reversal, and (c) it did not move
+  and the absent player still carries a full projection, so the engine has not updated, which
+  is said out loud as stale and is no ground for reversal either; where those set-time
+  numbers were not kept the test cannot be run, the pass says so and the met move stands,
+  which is the default anyway since a met move is reversed only on new evidence; in all three
+  the projection stays a data point in the comparison (skill section 3), and what it cannot
+  do is stand as evidence that the confirmed news changed nothing.
+- A paragraph in the same file's "## The game-day pass", placed after the four sources and
+  before the four rules, on the betting line for every close call where either player is a
+  running back or a receiver: the point spread and the total read for BOTH players' games
+  from a same-day dated odds page under source 4's rule, each team's implied total stated
+  beside the projections with the spread taken as a positive number of points, since an odds
+  page prints the favorite's as a negative number (half the
+  game's total plus half the spread for the favorite, half the total minus half the spread
+  for the underdog, so the favorite's implied total is always the higher of the two), the
+  player's own yardage and touchdown props read where a book posts
+  them, a prop that cannot be found said as not found and never inferred, and a game with no
+  posted line found said the same way with the implied-total input silent on that side. It is
+  read before the posture rule's ceiling-or-floor argument, because game script and touchdown
+  chance are where a back's or a receiver's ceiling comes from, so a lead back on a favored
+  team with the higher implied total holds the ceiling case over a committee back on an
+  underdog with a low total whatever the ceiling column says. Two players on the SAME TEAM
+  have identical implied totals, so that input is silent while the game's total still says
+  how much scoring there is to share and the props and roles still separate them; two players
+  on opposing teams of one game need nothing special, since the formula gives them different
+  implied totals. The line is a data point (skill section 3), never a tie-breaker on its own.
+  Required whenever either player in the close call is a running back or a receiver,
+  permitted at tight end, at quarterback and in any other close call where game
+  script moves the number, never required there.
+- A paragraph and four bullets in the same section: every pass covers every starting slot in
+  every league, kicker and team defense included, pulling the host's free-agent pool at the
+  position sorted by the week's projection and comparing the top unlocked pool players to the
+  rostered starter on both the host's projection and the engine's, which is the Free Agent
+  Finder's projection for the week being played: the Finder carries a column for the current
+  week and a separate one for the following week, and on a game day the following week's
+  column is never the number read, while on waiver eve that same week is the next week skill
+  section 8's waiver-eve bullet already names for streamers.
+  Both numbers higher: the swap is the call, its cost read from the host's own row
+  (skill section 8's cost rule), a free agent free and instant while a pool player on waivers
+  is a claim, its cost and arrival date named, which is rarely worth it at these positions,
+  and the rostered unit usually replaceable under that section's test, the pool's depth at
+  that tier checked first, so the drop usually costs little. One service higher only: a lean,
+  said as one source, since one source is never a pass. The deadline is the earlier of the
+  two kickoffs, the pool player's and the rostered unit's, exactly as any other pivot window;
+  usually that is the rostered unit's own kickoff, since that is when it locks, and when the
+  pool player's game starts first his kickoff is the deadline and, where the host's
+  weekly-waiver setting puts unclaimed players on waivers at kickoff, he is a claim after it
+  and not an add (the page's lock table). A rostered kicker or team defense whose own game
+  has kicked off is locked, and the pass says so rather than naming an upgrade the user
+  cannot make.
+- Four bullets in the same file's "## Common mistakes": re-litigating a conditional the pass
+  has just marked met by re-running the same comparison it was set on; reading an unmoved
+  projection as "the news changed nothing" when the engine had already priced the absence;
+  making a close running back or receiver call without the game's spread, total and implied
+  team totals; and setting every running back, receiver and tight end slot without ever
+  looking at kicker and team defense, where a free pool upgrade both services rate higher
+  sits unclaimed.
+
+### Changed
+
+- `references/lineups.md`'s opening line now names the conditionals the page carries among
+  what it holds, beside the lock mechanics, the arrangement, the game-day pass and the week.
+- The game-day pass's source 1, the engine. The Team Dashboard's matchup column is named
+  among what is read, and it is read and KEPT for every starter and for every name in a close
+  call, so a question about a matchup is answered from what the pass already read. The same
+  source now defines the close band the file uses throughout, two players within about a
+  point on the engine's raw projection or on the host's projection, or the two services
+  ordering them differently. Everything else in the source is unchanged.
+- The pass's fourth rule, "One engine number never outvotes the rest". The things that decide
+  together go from four to five: the betting line's implied totals and props join the
+  engine's raw projection, the host's projection and start rates, the posture rule and the
+  lock order's optionality. Every other clause of that bullet is unchanged, including the
+  composite being one data point and never the tie-breaker and the disagreement being said in
+  one line.
+- Two rows of the same file's "## The week" table. The night before the week's first game now
+  also reads the host's pool at kicker and team defense by the week's projection beside the
+  rostered ones and the engine's numbers for both, and what comes out of it adds the two
+  stream calls, each made before the earlier of the two kickoffs, with every swap written
+  down in advance as a carried conditional. The row about ninety minutes before each kickoff
+  window now marks every conditional set earlier met, not met or still open from that
+  window's inactive list on the host's roster page and the day's injury tags, BEFORE any other
+  read, and the met conditionals' moves are made and said first, ahead of the pre-decided
+  swap and the host team page re-read that row already carried.
+- `.claude-plugin/plugin.json` version.
+
 ## [1.42.0] - 2026-09-10
 
 **A game-day lineup pass read one dated web page, called three players unresolved that the
