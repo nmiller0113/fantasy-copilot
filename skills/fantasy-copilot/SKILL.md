@@ -322,7 +322,8 @@ agree beforehand which league gets full attention.
   sorted by rest-of-season projection for breakouts and stashes, by next week for streamers
   (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against the successor
   map: a full-role replacement earns a claim, a committee member a maybe. Re-run after waivers
-  clear.
+  clear; where the host flips the unclaimed to free agency ahead of its run, that gap is its own
+  pass, every league, free-agent filter and pending block first (the waiver-run window).
 - **Transaction watch**: on waiver eve and on demand, pull every league's transactions page
   since the last pull into the private folder, then copy and run `scripts/transactions.py` over
   that folder, per `references/transaction-watch.md`. Every player the report shows dropped is
@@ -340,7 +341,7 @@ agree beforehand which league gets full attention.
   the day the player arrives. The host's status label on a waived player IS that arrival day,
   and the team page's pending block carries the same date for a filed claim. Where the host's
   weekly-waiver setting puts unclaimed players on waivers at their game's kickoff, a free agent
-  whose game has started is a claim until that weekly run, not an add; which setting the league
+  whose game has started is a claim until that waiver period ends, not an add; which setting the league
   runs is read once from its settings page into the private document.
 - **The replaceability test, on every add-or-drop.** The add's cost is named in the same line
   as the recommendation, in one of two forms: free and instant, or a priority or FAAB cost with

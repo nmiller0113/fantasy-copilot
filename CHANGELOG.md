@@ -5,6 +5,62 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.44.0] - 2026-09-23
+
+**A waiver pass re-read the free-agent pool for only the leagues whose first choice had
+already been taken, and skipped the ones that looked settled from a read an hour old. The
+best defense on the board came free in one of the skipped leagues during that window; the
+user was on that league's page three minutes before a rival claimed it, and was sent to a
+worse row off the stale list. Minutes later the same pass named drops that were already
+committed to the user's own pending claims, so every click was refused by the host. The same
+night, asked to compare two defenses, it answered from the host's projection alone and then,
+corrected, from the engine's alone.** The
+flip moves every unclaimed player off waivers into the free-agent pool at once, so a pool
+read before it is never evidence about the pool after it, and a roster the assistant itself
+changed earlier the same evening is state to re-read rather than state to recall.
+
+### Added
+- `references/transaction-watch.md` gains "The waiver-run window": the gap between the
+  waiver period ending and the run settling claims is its own pass, and both of its reads
+  cover every league rather than a subset. The pool is re-read at the flip however settled
+  a league looked before it, asking the host for free agents only and never the availability filter
+  that also returns players still on waivers. The team's pending block is read before any add or
+  drop is named in that league, and every player it holds as a drop is unavailable until the
+  run resolves unless that claim is named for cancellation in the same line. A league whose room has repeatedly moved faster is worked first in the
+  window, recorded in the private document beside the manager who makes it true. The pass
+  also names every starting slot the host shows empty, since a claimed kicker or defense
+  arrives on the bench and an empty slot scores nothing.
+- `references/lineups.md` gains "Saying the number": any line giving a projection for one
+  of two players being compared for a slot, a claim or an add carries BOTH services in that
+  line, the host's projection and the engine's raw projection, on the same horizon (the week
+  for a slot, the horizon skill section 8 names for that claim or add), never one alone,
+  because having read both and reporting one leaves the user unable to see the input that
+  was dropped; a service holding no projection on that horizon is said as not held, never
+  substituted from another horizon, the comparison then read on the held service alone. A
+  host projection failing skill section 5's settings test is
+  said, not used, marked settings-blind, and neither keeps nor moves a player nor opens the
+  close band, which is then read on the engine's raw projection alone. Where the two
+  disagree on which player is ahead, the disagreement IS the finding, said in the same breath as the call with the margin on each side,
+  before any reasoning about which to follow and after the met move where one is being made.
+  Inside about a point on either service, or ordered differently by the two, neither projection
+  moves a player on its own: a SLOT goes to the game-day pass's split call, its five inputs
+  and the close-band reads it already orders, with a met conditional not reopened and the
+  kicker and team-defense two-number test untouched, and a slot call left even keeps the
+  current starter, said as even; a CLAIM or an ADD goes to skill section 8's replaceability test and,
+  on a claim, its burn-the-claim test, the gap said, the tests said, the cost from the host's row, the user
+  deciding, and nothing kept by default there. A third read (the matchup column, the betting
+  line's implied totals, required at running back and receiver, or a dated usage report) is
+  named beside the two projections, never in place of them, and a call carried by one source
+  against the other two says which. The waiver-run window points at it, so it governs the
+  pool's board as well as the lineup; the engine's number there is the waiver-eve Finder
+  read's, since the flip moves availability and not projections unless its news feed shows a
+  newer item, and the host's is the window's own.
+
+### Changed
+- `references/lineups.md`: a free agent whose game has kicked off is on waivers "until the
+  waiver period ends" rather than "until the weekly run", which on a host that flips the
+  unclaimed ahead of its run is the flip.
+
 ## [1.43.0] - 2026-09-20
 
 **A game-day pass deferred a flex call on a condition and named the move if the condition

@@ -2,8 +2,8 @@
 
 Read this when running the transaction watch of skill section 8, on waiver eve or on
 demand. It holds what a host's transactions page shows, how the rows are pulled, the
-shape of the two files the script reads, and exactly what the report prints. It is not
-needed at the clock.
+shape of the two files the script reads, and exactly what the report prints. Its last
+section, the waiver-run window, is the one part read at a clock: the flip.
 
 ## Where the files live
 
@@ -101,8 +101,9 @@ day or paired with the wrong weekday; quote it that way when saying it.
   that host's label on one waived player to the computed arrival once before the estimate
   is trusted there. The waiver period does not start at the drop: it starts the following
   calendar day in the host's time zone, runs the league's waiver days, and the host's
-  overnight run the MORNING AFTER it ends makes him a free agent or hands him to the
-  winning claim. So with two waiver days the arrival is the drop date
+  overnight run the MORNING AFTER it ends hands him to the winning claim; unclaimed, he is
+  a free agent from that run, or from the flip at the period's end where the host has one
+  (The waiver-run window, below). So with two waiver days the arrival is the drop date
   plus three days whatever the clock time of the drop, and the host's own status label on
   a player still on waivers shows this same arrival date. It is still arithmetic on the
   waiver-days cell, not the host's processing, so the host's row governs the real cost
@@ -163,3 +164,47 @@ that is neither a pipe row nor a `#` comment.
 Two more stop the run without a line number, since neither is a line: a `--league` slug
 that `leagues.md` does not hold, which prints the slugs it does, and a league file that
 is not there.
+
+## The waiver-run window
+
+Where the host flips unclaimed players to free agency at the moment the waiver period
+ends, ahead of the run that settles the claims, that gap is its own pass and not the
+tail of the claim pass. Two readings are taken in it, both of every league and neither
+of a subset.
+
+The arrival date the script prints does not move, since the flip and the run fall on the
+same morning; this section orders the two within it: skill section 8's "a claim until that
+waiver period ends" is this flip where the host has one, and the run where it has none.
+
+**The pool is re-read for every league at the flip, however settled a league looked
+before it.** A pool read even an hour earlier is stale: the flip moves every
+unclaimed player off waivers into the free-agent pool at once, so the best player at a
+position can enter a league's pool at that moment and, with every manager's adds landing
+in the same minutes, be gone minutes later. Skipping the leagues whose first choice was already
+taken, and re-reading only the rest, misses that arrival in the leagues that were
+skipped. The read asks the host for free agents only, never the availability filter that
+also returns players still on waivers, since those cannot be added now and reading them as
+available is how a name gets recommended that the user cannot click.
+
+**The team's own pending block is read before any add or drop is named in that league.**
+A player already committed as the drop on a filed claim cannot be dropped a second time,
+so naming him is an error the user discovers only as a refusal at the host. The block is
+read from the host's team page in the same pass as the pool, and every player it holds
+as a drop is treated as unavailable until the run resolves, unless the claim holding him
+is named for cancellation in the same line, which is the user's click. This applies most sharply to
+the assistant's own claims from earlier the same evening: a roster the assistant changed
+itself is still state to be re-read, not state it can recall.
+
+Where one league's room has repeatedly moved faster than the others, that league is
+worked first in the window rather than in list order, and which league that is belongs
+in the private document beside the manager who makes it true.
+
+The same pass names every starting slot the host shows empty. A claimed or added kicker
+or defense arrives on the bench, and a slot left empty scores nothing, which costs more
+across a portfolio than any single add in the window gains. `references/lineups.md` holds
+what then goes in each slot, and its "Saying the number" governs every comparison this pass
+offers, the pool's board as much as the lineup's. The engine's raw projection for each pool
+name is the one the waiver-eve Finder read already holds, since the flip moves availability
+and not projections, unless the engine's news feed shows an item on him since that read, in which case his
+Finder number is re-read;
+the host's number is this pass's own.

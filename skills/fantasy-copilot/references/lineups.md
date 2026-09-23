@@ -23,7 +23,7 @@ windows pass.
 | Bench player, his game has not kicked off | moved into any slot he is eligible for, or dropped |
 | Bench player, his game has kicked off | never a substitute; still droppable where the host's setting for locking benched players is off |
 | Free agent, his game has not kicked off | a free add, so the pool is a pivot source too |
-| Free agent, his game has kicked off | on waivers until the weekly run, on a host whose weekly-waiver setting places unclaimed players on waivers at kickoff (skill section 8's date rule) |
+| Free agent, his game has kicked off | on waivers until the waiver period ends, on a host whose weekly-waiver setting places unclaimed players on waivers at kickoff (skill section 8's date rule; on a host that flips the unclaimed ahead of its run, that end is the flip) |
 
 Read the host's benched-player lock setting and its weekly-waiver setting once per league
 and record both in the private document (skill section 9).
@@ -332,6 +332,43 @@ cannot do is stand as evidence that the confirmed news changed nothing.
 | Waiver eve and the claim run | skill section 8's waiver cadence, read here for bodies that cover the open windows | the bench the pivots come from |
 | The night before the week's first game | the two projected totals on the matchup; the host's pool at kicker and team defense by the week's projection, beside the rostered ones and the engine's numbers for both | the posture, floor when favored and ceiling when the underdog; every swap written down in advance as a carried conditional; the kicker and team-defense stream calls, each made before the EARLIER of the two kickoffs |
 | About ninety minutes before each kickoff window, every game day | every conditional set earlier, marked met, not met or still open from that window's inactive list on the host's roster page and the day's injury tags, BEFORE any other read | the met conditionals' moves made and said first, the pre-decided swap made, then the host's team page re-read before the lineup is called set |
+
+## Saying the number
+
+Any line that gives a projection for one of two players being compared for a slot, a
+claim or an add carries BOTH services in the line that offers it, the host's projection
+and the engine's raw projection, never one alone, and both on the same horizon: the week
+for a slot, the horizon skill section 8 names for that claim or add. A service that holds
+no projection on that horizon is said as not held in the same line, never substituted
+with its number from another horizon, and the comparison is then read on the held service
+alone, which opens the close band by that service's point band only. The rule that no
+single signal decides (skill section 3) is not satisfied by having read both and
+reporting one: the user cannot see the input that was dropped, so a comparison delivered
+on a single number is delivered as though that service settled it, whatever was read
+beforehand. A host projection that fails skill section 5's settings test is still said,
+not used, marked settings-blind in the same line; it neither keeps nor moves a player,
+nor opens the close band below, which is then read on the engine's raw projection alone.
+
+Where the two disagree on which player is ahead, the disagreement IS the finding and is
+said in the same breath as the call, with the margin on each side, before any reasoning
+about which to follow and after the met move where one is being made. Two players inside
+about a point on either service, or ordered differently by the two, are the game-day
+pass's close band (above): neither projection moves a player on its own there. For a
+SLOT, the call is made the way that pass's last rule makes a split call, its five inputs
+together with the close-band reads the pass already orders, a conditional already met is
+not reopened by it, and the kicker and team-defense stream keeps its own two-number test
+above; a slot call those inputs leave even keeps the current starter, said as even. For a
+CLAIM or an ADD, the band hands the call to skill section 8's replaceability test and, on
+a claim, its burn-the-claim test, the gap said, the tests said, the cost from the host's
+row, and the user decides; nothing is kept by default there. Where a third read bears on
+the call, the matchup column, the betting line's implied totals (required at running back
+and receiver), or a dated usage report, it is named beside the two projections rather
+than replacing them, and a call carried by one source against the other two says which
+source it is carrying.
+
+This governs the waiver board exactly as it governs the lineup: the pool's best available
+at a position is whoever both services rank there, and a name that is top of one board
+and mid-table on the other is offered as the split it is.
 
 ## Common mistakes
 
