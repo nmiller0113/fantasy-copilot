@@ -410,9 +410,9 @@ agree beforehand which league gets full attention.
   tie, the judgment layer (section 3's criteria 5a, 6, 7 and 8, plus byes) decides, one line
   per input. Lead with accept, reject or counter, the reason in two lines, then the counter,
   where one exists, in one line with what it prices in. The user decides.
-- **Bye-week stretch**: League Analyzer (opposition map) plus Trade Partner Finder every 2-3
-  weeks; value trades in rest-of-season projections, never season-to-date points. Managers who
-  overpaid for a name on draft day overpay after one big week: trade into their overreactions.
+- **Proposing trades** (a trade pass, and the bye-week stretch every 2-3 weeks with League Analyzer
+  and Trade Partner Finder): `references/trades.md`. Rest-of-season, never season-to-date; a trade
+  is recommended only when it clears that page's bar, and "no trade" is a complete answer.
 - **Before the trade deadline**: SOS filtered to the fantasy playoff weeks; buy soft playoff
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.

@@ -5,6 +5,40 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.45.0] - 2026-09-24
+
+**A trade pass across several leagues recommended an offer in every one of them, and each
+recommendation fell apart at the user's first question.** The numbers behind them were right.
+The judgment was not: every trade was ranked by one number, the gain in the user's starting
+lineup over the rest of the season, and any positive gain became an offer. Shown per week, most
+gains were two or three points. Several offers gave the other manager a player he would not
+want (questionable, newly behind a teammate, or valued far below what was asked), and several
+left his lineup exactly where it was, so he had no reason to say yes. The pass also relayed
+subagents' calls without re-testing them, and the subagents had been asked for an offer per
+league. The right answer that night was "no trade worth making", and it arrived only after the
+user had pushed back five times.
+
+### Added
+- `references/trades.md`, the procedure for trades the assistant proposes: score both teams'
+  optimal starting lineups before and after on the host's rest-of-season and next-four-weeks
+  projections, counting players parked in IR slots at their projection; say the host number
+  and the engine's league-scored trade value together and name their split; start from the
+  engine's Trade Partner Finder. Then the bar a trade must clear before it is recommended: a
+  per-week gain worth a starter (about three points a week, stated beside the season total,
+  the floor adjustable in the private document, the rest-of-season gain governing and a
+  next-four-weeks gain alone said as a short-term play, never the call), a real reason for the other side (a hole
+  filled and a trade value even or in his favor; a deal that leaves his lineup flat is a free
+  probe, never led with), no player on the user's side the other manager will not want
+  (questionable or worse, newly behind a teammate, or in a committee), and a
+  week-by-week read free of one-bye artifacts and bye stacks. "No trade worth making" is a
+  complete answer, said first. Delegated work asks for "none" as an expected answer and is
+  re-tested against the bar before it reaches the user. Under pushback a call is defended with
+  the numbers or retracted as wrong from the start, never flipped to agree.
+
+### Changed
+- Skill section 8: the bye-week stretch bullet becomes "Proposing trades", pointing to the new
+  page and its bar. Its sentence on trading into draft-day overpayers moved to the page intact.
+
 ## [1.44.0] - 2026-09-23
 
 **A waiver pass re-read the free-agent pool for only the leagues whose first choice had
