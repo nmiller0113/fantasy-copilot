@@ -5,6 +5,72 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.46.0] - 2026-10-07
+
+**A waiver night across several leagues on one host turned up two host mechanics the skill
+did not hold and six rulings from the user on how the night is run.** At the flip the host
+frees only the unclaimed: a player who carries any claim stays on waivers until the run, and
+the host refuses every new claim on him ("You cannot submit a new waiver claim for this player
+until outstanding claims by other managers have been processed"), so priority buys a contested
+player only before the flip, and a plan to add him free at the flip if he is still there
+cannot work. And a player in an IR slot whose tag no longer qualifies blocks every add in his
+league until he is moved out, which needs an open bench spot. The rulings: no priority with
+value spent on a kicker or a defense; waiver moves delivered alone, one league at a time; a
+deliberate hold argued against on its own thesis, never cut on projections alone; one week
+never read as a trend; numbers before narrative; and a reviewer told the user's holds and
+rulings verbatim.
+
+### Added
+- `references/waivers.md`, waiver night, read on waiver eve before the first claim and again at
+  the flip. The order of the night: IR slots clean first, then every contested claim in every
+  league, then the free adds at the flip, housekeeping (the empty starting slots, the lineup
+  only on request) last; the delivery is waiver moves only (any IR-slot fix with its drop, the
+  claims in filing order each with its drop and its fallback, the free adds at the flip), one
+  league per message, the next only on the user's word. The IR slots: an occupant whose tag no
+  longer qualifies blocks every add, so every league's IR tags are read against the host's own
+  eligibility list before filing, and the fix, which needs an open bench spot, costs a drop on
+  a full roster. Claim timing: where the host flips the unclaimed to free agency ahead of its
+  run, priority buys a player only before the flip, so every contested target (a high or rising
+  percent rostered, a name the market is adding, a rival with the need) is a claim filed before
+  it or passed, said as passed, never a free add at the flip if he is still there; the flip is
+  for uncontested players only; no priority that has value is spent on a kicker or a team
+  defense, which are free adds at the flip, while at last priority a claim is free and holds him
+  off the flip, so one may be filed there, a drop named. A hold is not a veto:
+  holds are recorded per league with the decision, date, the user's words and an exit test;
+  projections alone never cut a held player; a cut argues against the hold's own thesis,
+  ceiling against ceiling, or cites a fact newer than the hold; and a hold is never untouchable
+  either. One week is not a trend: a spike is read beside both players' week-by-week lines and
+  both engines' numbers after it, a takeover needs a multi-week trend, a snap or route share
+  shift over more than one game, or a coach's statement, a position-room pair is judged as a
+  pair, and a hedge on a rostered teammate is worth buying only when the threat is real. A
+  reviewer pass on waiver or lineup calls gets the holds and the session's rulings in its
+  prompt verbatim, and every drop is checked against them before the user sees it.
+- `references/lineups.md`: "Numbers before narrative" becomes the game-day pass's first rule
+  (now five): no call on a slot, a claim or a drop is said before every player in it has had his
+  week-by-week lines and both engines' numbers read, and a news line or an article never goes
+  first. "Who clicks" gains the reviewer pass's holds and rulings.
+
+### Changed
+- `references/transaction-watch.md`: "The waiver-run window" moved intact to
+  `references/waivers.md`, with two edits there: the arrival-date paragraph names the script
+  and its page, and says that a player who carries a claim stays on waivers until the run
+  either way; and the empty-slot paragraph runs after the pass's adds. This page's opening and
+  its arrival-date entry point to the new location.
+- Skill section 8, the free-claim bullet: a claim on a player who would arrive unclaimed buys
+  only certainty at the flip (was: gains nothing), since any claim holds him off the flip.
+- Skill section 8, waiver eve: points to `references/waivers.md` and says the claim-timing rule
+  and the kicker-and-defense rule in one clause each; the flip pass keeps every league, the
+  free-agent filter and the pending block first.
+- Skill section 7: the kicker or defense skipped for a drafted stash is still added free at the
+  clear, never on a claim that costs priority; the pointer is now section 8's waiver eve (was:
+  the free-claim bullet and the burn-the-claim test).
+- `references/ir-stash.md`: an IR-slot player's tag is re-checked before every waiver night,
+  and only an uncontested candidate reaches the free window, so a contested one is a claim
+  filed before the flip or passed, never planned as a free add at the clear.
+- `references/lineups.md`: a kicker or team defense on waivers is never a claim that costs
+  priority (was: rarely worth it), a free claim allowed at last priority, and the one-week
+  mistake points to the trend test.
+
 ## [1.45.0] - 2026-09-24
 
 **A trade pass across several leagues recommended an offer in every one of them, and each

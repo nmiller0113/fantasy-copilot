@@ -283,8 +283,7 @@ user moves the stash to IR after the draft (the paragraph above), so the roster 
 body short of full and that slot fills from the free pool when the undrafted players clear.
 Skip ONE position per drafted stash, never more, since each further add would need a drop:
 take the position the pool holds fewer of, and add the skipped position free at the clear,
-never on a claim while the user's priority has value (section 8's free-claim bullet and
-burn-the-claim test): a claim that costs priority buys nothing the clear does not. The
+never on a claim that costs priority (section 8's waiver eve): a priced claim buys nothing the clear does not. The
 number is thirty-two minus the teams, less one for every roster that drafts a second at the
 position: ten teams leaves 22 of each in the pool, positions half the room streams anyway,
 so the move is near free; a bigger room, or one that doubles up at the position, is a
@@ -311,19 +310,20 @@ agree beforehand which league gets full attention.
   successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
   priority pays nothing: a win leaves it last, where it already was, and a loss changes
   nothing. So while the user holds it, the play is a claim on every pool player who would
-  improve the roster, ordered by value since a claim on one who would arrive unclaimed gains
-  nothing, a drop named for each where the roster is full, the roster's true last bodies
-  dropped. Who earns a bench slot stays the replaceability and IR-stash tests' call; this rule
-  settles only the cost. Read the rank from the host's own team page, never the draft slot:
-  other teams' claims move it. It holds after a draft from the first slot (hosts seed priority
-  in inverse draft order) and after every claim the user wins; it ends when a team above the
-  user wins one and the user's priority regains value.
+  improve the roster, ordered by value, a claim on one who would arrive unclaimed buying only
+  certainty at the flip, a drop named for each where the roster is full, the roster's true last
+  bodies dropped. Who earns a bench slot stays the replaceability and IR-stash tests' call;
+  this rule settles only the cost. Read the rank from the host's own team page, never the draft
+  slot: other teams' claims move it. It holds after a draft from the first slot (hosts seed
+  priority in inverse draft order) and after every claim the user wins; it ends when a team
+  above the user wins one and the user's priority regains value.
 - **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent Finder,
   sorted by rest-of-season projection for breakouts and stashes, by next week for streamers
   (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against the successor
   map: a full-role replacement earns a claim, a committee member a maybe. Re-run after waivers
-  clear; where the host flips the unclaimed to free agency ahead of its run, that gap is its own
-  pass, every league, free-agent filter and pending block first (the waiver-run window).
+  clear. Waiver night is `references/waivers.md`: where the host flips the unclaimed free ahead
+  of its run, every contested target is claimed before the flip or passed, K and DEF never at a
+  price; the flip is its own pass, every league, free-agent filter and pending block first.
 - **Transaction watch**: on waiver eve and on demand, pull every league's transactions page
   since the last pull into the private folder, then copy and run `scripts/transactions.py` over
   that folder, per `references/transaction-watch.md`. Every player the report shows dropped is

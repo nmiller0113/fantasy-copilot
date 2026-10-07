@@ -224,10 +224,11 @@ is the next week skill section 8's waiver-eve bullet already names for streamers
 
 - Both numbers higher than the rostered starter's: the swap is the call. The add's cost is
   read from the host's own row (skill section 8's cost rule): a free agent is free and
-  instant, and a pool player on waivers is a claim, its cost and its arrival date named,
-  which is rarely worth it at these positions. The rostered unit is usually replaceable under
-  that section's test, the pool's depth at that tier checked first, so the drop usually costs
-  little.
+  instant, and a pool player on waivers is a claim, never one that costs priority at these
+  two positions: he is a free add once he clears, his arrival date named, or passed, and at
+  last priority a free claim may be filed (`references/waivers.md`, claim timing). The rostered
+  unit is usually replaceable under that section's test, the pool's depth at that tier checked
+  first, so the drop usually costs little.
 - One service higher only: a lean, said as one source, since one source is never a pass.
 - The deadline is the EARLIER of the two kickoffs, the pool player's and the rostered
   unit's, exactly as any other pivot window. Usually that is the rostered unit's own kickoff,
@@ -238,8 +239,12 @@ is the next week skill section 8's waiver-eve bullet already names for streamers
   can be done at that slot this week, and the pass says so rather than naming an upgrade the
   user cannot make.
 
-Four rules hold the pass together.
+Five rules hold the pass together.
 
+- **Numbers before narrative.** No call is said, on a slot, a claim or a drop, until every
+  player in it has had his week-by-week lines for the season and both engines' numbers read.
+  A news line or an article never goes first: it is read after them and tested against them,
+  never the first input and never the call's lead.
 - **One source is never a pass.** No status, no start and no sit is ever called from a single
   source.
 - **A status is never called from an article when the host's roster row or the engine's
@@ -373,7 +378,8 @@ and mid-table on the other is offered as the split it is.
 ## Common mistakes
 
 - Starting a name on reputation instead of on projection and usage.
-- Overreacting to one week, in either direction.
+- Overreacting to one week, in either direction: a role change or takeover is called only
+  on the trend test of `references/waivers.md`.
 - Ignoring the game script: a team likely to trail throws more, which lifts its pass catchers
   and thins its runner's floor.
 - Starting a questionable player with no pre-decided pivot.
@@ -399,4 +405,5 @@ and mid-table on the other is offered as the split it is.
 
 Prime directive 1 holds all week: the user clicks every lineup change. The copilot names the
 slot for each starter and the pivot for each risk, and re-reads the host's own team page
-before saying any lineup is set.
+before saying any lineup is set. A reviewer pass on lineup calls gets the user's holds and the
+session's rulings in its prompt, verbatim (`references/waivers.md`, a reviewer pass).

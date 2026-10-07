@@ -43,6 +43,10 @@ league that has one. So a DRAFTED stash frees its bench slot after the draft eve
 and its cost is the pick, not a season-long bench body. Read the setting once per league
 (the When section below) and record it; read the designation from the host's own row.
 
+The designation keeps mattering after the move. On the host where this was verified, a player
+in the IR slot whose tag no longer qualifies blocks every add until he is moved out, so the
+IR slots are checked before every waiver night (`references/waivers.md`).
+
 ## Value test
 
 The value test applies only when the stash costs a bench player: a POOL add on a host
@@ -112,6 +116,13 @@ the clear date and take him free; never spend rolling priority or FAAB on a stas
 default. State the clear date next to every candidate. The recorded settings give the
 cadence; the player's own host row gives his current status, because a player another
 team just dropped sits on a fresh waiver period no recorded setting predicts.
+
+Only an uncontested candidate reaches the free window. Where the host flips the unclaimed
+to free agency ahead of its run, a rival's claim keeps a contested one on waivers past the
+flip, and no new claim is accepted then (`references/waivers.md`, claim timing). So a
+contested candidate is either a claim filed before the flip (worth it under the flag below,
+or free while the user holds last priority, skill section 8) or passed, said as passed; he
+is never planned as a free add at the clear.
 
 ## Burn-the-claim flag
 
