@@ -8,6 +8,12 @@ and what a reviewer is given.
 
 ## The order of the night
 
+The league-wide news sweep (`references/lineups.md`) is required before the waiver pass: it
+opens each week's work, waiver eve at the latest, and is redone first when the last one is
+more than about two days old. Every player in a claim or a drop, an IR-slot fix's drop
+included, is read against it, and each claim and drop names the item it rests on, or says that
+no item bears on it.
+
 The work runs in this order across every league, once the IR slots are clean (below), since
 an ineligible occupant blocks every add: every contested claim in every league first, since
 each must be filed before the flip (claim timing, below); then the free adds at the flip;
@@ -83,7 +89,9 @@ before the user sees it.
 
 Numbers come before narrative here as on game day (`references/lineups.md`, the game-day
 pass): no claim and no drop is said before the weekly lines and both engines are read, and a
-news line or an article never goes first.
+news line or an article never goes first. The sweep (the order of the night, above) is
+collected first and read beside those numbers, never ahead of them, and no single item decides
+a claim or a drop.
 
 Before a role change or a takeover is called, the spike is put beside BOTH players'
 week-by-week lines for the season and beside both engines' numbers as they stand after the

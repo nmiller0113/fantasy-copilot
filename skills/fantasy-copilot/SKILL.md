@@ -12,14 +12,12 @@ waiver wire, all the way to the fantasy playoffs.
 
 ## Requirements
 
-- A **Draft Sharks** paid subscription. Any tier covers redraft plus live sync; the middle
-  tier adds keeper, dynasty, auction, and best ball; the top tier adds unlimited analyst Q&A.
+- A **Draft Sharks** paid subscription, any tier (below). **Only Draft Sharks is supported today.**
 - The **DraftSharks Sync** Chrome extension for live drafts on supported hosts (Yahoo, ESPN,
   CBS, Sleeper, NFL.com, MFL, Fantrax, FFPC, Fleaflicker, RTSports, Underdog).
 - **Browser access for Claude (Claude in Chrome or equivalent) for the live-draft copilot.**
   Without browser access this skill still does pre-draft strategy and weekly guidance, but
   it must say plainly that live in-draft advising is off the table.
-- **Only Draft Sharks is supported today.** Other draft tools may be added in the future.
 
 ## Subscription tier: ask, verify, scope
 
@@ -199,7 +197,6 @@ DS-lags rule below applies. Absence from a ranked list, the host's suggestions i
 never evidence a player is drafted: such lists rank a tagged player low; only the pick tape,
 the roster panel or the crossed-off board says drafted. One name per call; a second only as a
 can't-find-the-row aid, never a hedge, with two exceptions: the bye check and the tie-break.
-Two-line rec, then the color (section 2).
 
 **Bye check before every starter-slot name.** For each candidate who fills or could
 fill a starting slot, compare his bye to every rostered starter at the same position,
@@ -306,6 +303,9 @@ agree beforehand which league gets full attention.
 
 ## 8. In-season weekly cadence (per league)
 
+- **A league-wide news sweep comes first** (`references/lineups.md`), each week and before any
+  pass over about two days after the last: no start, sit, add, drop, claim or trade call until
+  it, the actuals and both engines are read together, each naming the item it rests on or none.
 - **Last priority makes every claim free.** Where the host runs a rolling priority list (a
   successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
   priority pays nothing: a win leaves it last, where it already was, and a loss changes
@@ -317,7 +317,7 @@ agree beforehand which league gets full attention.
   slot: other teams' claims move it. It holds after a draft from the first slot (hosts seed
   priority in inverse draft order) and after every claim the user wins; it ends when a team
   above the user wins one and the user's priority regains value.
-- **Waiver eve**: refresh the knowledgebase first (section 10), then the Free Agent Finder,
+- **Waiver eve**: after the sweep, refresh the knowledgebase (section 10), then the Free Agent Finder,
   sorted by rest-of-season projection for breakouts and stashes, by next week for streamers
   (DEF, TE, K off the softest SOS). Read every RB, WR and TE candidate against the successor
   map: a full-role replacement earns a claim, a committee member a maybe. Re-run after waivers

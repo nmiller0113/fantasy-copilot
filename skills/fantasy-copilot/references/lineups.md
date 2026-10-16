@@ -1,14 +1,60 @@
 # Weekly lineup setting
 
 Read this when the user asks to set a lineup or about a player's status, on every
-practice-report day of a week, and on lock morning. Skill section 8 holds the rules; this
-page holds the lock mechanics, the arrangement, the game-day pass, the conditionals it
-carries and the week.
+practice-report day of a week, on lock morning, and whenever the league-wide news sweep is
+due (below). Skill section 8 holds the rules; this page holds the sweep, the lock mechanics,
+the arrangement, the game-day pass, the conditionals it carries and the week.
 
-Two things decide a week. The projections decide WHO starts. The ARRANGEMENT of those
-starters across the slots decides whether the roster can still react to news that breaks
-after the first kickoff, and it is free: no projection changes when a starter moves from one
-slot he is eligible for to another.
+Two things decide a week. The projections, read with the season's actual points and the
+league-wide news (the sweep, below), decide WHO starts. The ARRANGEMENT of those starters
+across the slots decides whether the roster can still react to news that breaks after the
+first kickoff, and it is free: no projection changes when a starter moves from one slot he is
+eligible for to another.
+
+## The league-wide news sweep
+
+A role change reaches the news before it reaches a projection or the injury report: a route
+share tilted toward blocking, a coach who has stopped mentioning a player, an offensive line
+that has lost its starters. Every outlet can be reporting it while both engines still project
+the old role. So the week's work opens with a sweep of the whole league, and the sweep is
+required, never a source consulted only for what the tools have not posted.
+
+- **When.** At the start of each fantasy week's work, on waiver eve at the latest, and again
+  before any lineup, waiver or trade pass that comes more than about two days after the last
+  sweep, so a Thursday pass and a Sunday pass each get one when the last sweep is older than
+  that. A pass inside that window reads the last sweep's items plus the dated news since it
+  (the game-day pass, source 4).
+- **What.** Dated news since the last sweep for EVERY NFL team, all thirty-two, not only the
+  teams with a rostered player: play-calling and coaching changes; injuries and practice
+  participation; usage (snap, route and target shares, carries); role and depth changes;
+  offensive-line injuries; and the game environment (weather, a moved line). Sources rank in
+  this order: coach and front-office statements, then usage data, then beat reporting, then
+  national reporting, then blogs and fantasy outlets. Every item carries its date and its
+  source, and an undated item is dropped. Every rostered player in ALL of the user's leagues
+  is flagged by name, with his league, wherever an item touches him, and a pool player an item
+  makes relevant is named too.
+- **How.** Where the tooling supports subagents, the thirty-two teams are split across
+  parallel readers, for example four readers of two divisions each, and each returns dated,
+  sourced items for its own teams. Where it does not, the same teams are read in turn; the
+  sweep is never cut to the teams with a rostered player to save time. Each sweep is saved
+  with its date beside the private document (skill section 9), since the next one starts from
+  that date and a pass inside the window reads its items there.
+- **Beside it, read together.** The host's season actual points and recent-weeks average for
+  every rostered player, and for the free-agent pool sorted by each of the two; both engines'
+  numbers, the engine's projection and the host's; and the market, the adds and drops across
+  the user's leagues since the last sweep (`references/transaction-watch.md`).
+
+**No start or sit, add or drop, claim or trade call is said until the sweep, the actuals and
+both engines have been read together, and every verdict names the news item it rests on, or
+says that no item bears on it.**
+
+The sweep is breadth: it is collected first and read beside the numbers, never ahead of them.
+Numbers before narrative (the game-day pass, below) still holds, so no item is a call's first
+input or its lead, and no single item decides a call by itself. A status the host's roster
+row or the engine's tracker shows is still taken from them, never from an item. Inside a pass
+the carried conditionals still open it (below), and the sweep's items enter as the pass's
+source 4; a met conditional's move is the call decided when it was set, not a call made from
+the item that met it.
 
 ## What locks, and when
 
@@ -165,8 +211,9 @@ fixed slot.
 ## The game-day pass
 
 A game-day pass is due on every practice-report day, on lock morning, and any time the user
-asks about a lineup or about a player's status. It reads ALL four sources below, in this
-order, for every league, and the answer NAMES what it read.
+asks about a lineup or about a player's status. A league-wide sweep that is due (above) is
+collected before the pass starts. The pass reads ALL four sources below, in this order, for
+every league, and the answer NAMES what it read.
 
 1. **The engine.** The Team Dashboard, re-synced first: its suggested lineup, its matchup
    column, its Suggested Moves box, and its Injury Tracker, with each flagged player's
@@ -186,9 +233,9 @@ order, for every league, and the answer NAMES what it read.
    underdog.
 3. **The knowledgebase** (skill section 10): the availability list, the successor rows, and
    the week's schedule table.
-4. **Dated web news, LAST**, and only for what none of the three above has posted yet. Every
-   item carries its date. An undated item is dropped, and so is one older than what the
-   tools already show.
+4. **Dated web news, read last and required**: the league-wide sweep's items (above) for
+   every player in the pass, plus any dated news on him since the sweep. Every item carries
+   its date. An undated item is dropped, and so is one older than what the tools already show.
 
 **The betting line, on every close running back or receiver call.** For a close call where
 EITHER player is a running back or a receiver, the game's point spread and total are read for
@@ -244,7 +291,9 @@ Five rules hold the pass together.
 - **Numbers before narrative.** No call is said, on a slot, a claim or a drop, until every
   player in it has had his week-by-week lines for the season and both engines' numbers read.
   A news line or an article never goes first: it is read after them and tested against them,
-  never the first input and never the call's lead.
+  never the first input and never the call's lead. The league-wide sweep does not change this:
+  it is collected first, as breadth, and each of its items is read after the numbers and tested
+  against them; no single item decides a call.
 - **One source is never a pass.** No status, no start and no sit is ever called from a single
   source.
 - **A status is never called from an article when the host's roster row or the engine's
@@ -331,6 +380,7 @@ cannot do is stand as evidence that the confirmed news changed nothing.
 
 | When | What is read | What comes out of it |
 | --- | --- | --- |
+| The start of the week's work, waiver eve at the latest, and before any pass more than about two days after the last sweep | the league-wide news sweep (above), every team, with the host's actual points and recent-weeks average, both engines' numbers and the market's adds and drops beside it | every rostered player in every league flagged where an item touches him, the pool players it makes relevant named, and no call said before it |
 | First practice-report day | the game-day pass (above), then: each dashboard player's floor, projection, ceiling and 3D, scored to the synced league; the host's own projections and lineup suggestions as data points, and only where the tool's own settings panel shows them scored to this league (skill section 5's settings test), while its start and roster rates read the room, not the player, and survive that test (skill section 4); and the matchup rating per player | the week's draft lineup, its slots arranged by the lock order, and the questionable list opened |
 | The middle practice days | the practice trend for each questionable starter, no participation to limited to full, plus the day's news | the pivot per risk, named with the window it is good until |
 | The last practice-report day | the week's designations, which are the headline: out is out, doubtful is treated as out, questionable plays at variable rates and needs a pivot | starters confirmed or swapped, the arrangement re-checked against the windows |
@@ -400,6 +450,10 @@ and mid-table on the other is offered as the split it is.
   team totals.
 - Setting every running back, receiver and tight end slot and never looking at kicker and
   team defense, where a free pool upgrade both services rate higher sits unclaimed.
+- Defending a start or a hold on the projections and the injury report alone while the
+  league's reporting shows a role change (a route share tilted toward blocking, a coach who has
+  stopped mentioning the player) or a broken offensive line, because the league-wide sweep was
+  skipped or cut to the teams with a rostered player.
 
 ## Who clicks
 

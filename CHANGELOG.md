@@ -5,6 +5,65 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.47.0] - 2026-10-16
+
+**A midseason lineup pass defended a tight end's start and held a quarterback on the
+projections and the injury report alone, while every outlet had already reported a role
+change (a route share tilted toward blocking, a coach who had stopped mentioning the player)
+and an offensive line broken by injuries.** The game-day pass listed dated web news last, and
+only for what the engine, the host and the knowledgebase had not posted yet, which read as
+leave to skip the league's reporting. The user's ruling: know the whole league, every team,
+and read across all of it together, which is the breadth no person can cover by hand. So a
+league-wide news sweep is now required, and it comes first.
+
+### Added
+- `references/lineups.md`, "The league-wide news sweep". When: at the start of each week's
+  work, waiver eve at the latest, and again before any lineup, waiver or trade pass more than
+  about two days after the last sweep. What: dated news since the last sweep for all
+  thirty-two teams, not only those with a rostered player (play-calling and coaching changes,
+  injuries and practice participation, usage, role and depth changes, offensive-line injuries,
+  the game environment), sources ranked coach and front-office statements, usage data, beat
+  reporting, national reporting, then blogs and fantasy outlets; every item dated and an
+  undated one dropped; every rostered player in every league flagged by name where an item
+  touches him, and the pool players an item makes relevant named. How: the teams split across
+  parallel readers where subagents are available (four readers of two divisions each, for
+  example), read in turn where they are not, never cut to the rostered teams, each sweep saved
+  with its date. Beside it, read together: the host's season actual points and recent-weeks
+  average for every rostered player and for the free-agent pool sorted by each, both engines'
+  numbers, and the market (adds and drops across the user's leagues since the last sweep). The
+  rule: no start or sit, add or drop, claim or trade call is said until the sweep, the actuals
+  and both engines have been read together, and every verdict names the news item it rests on
+  or says that no item bears on it. The sweep is collected first and read beside the numbers,
+  never ahead of them: numbers before narrative still holds, no single item decides a call, a
+  status the host's row or the engine's tracker shows is still taken from them, and carried
+  conditionals still open a pass. "The week" gains the sweep as its first row, and "Common
+  mistakes" gains this miss.
+- Skill section 8: a first bullet points to the sweep and states its gate in one sentence.
+
+### Changed
+- `references/lineups.md`, the game-day pass: source 4, dated web news, is still read last and
+  is now required (was: only for what the three sources above had not posted yet): the sweep's
+  items for every player in the pass, plus any dated news on him since the sweep, its dating
+  rules unchanged, so the betting line's odds page and a conditional's dated report are still
+  read under them. A sweep that is due is collected before the pass starts. "Numbers before
+  narrative" says how the sweep sits under it. The page's opening names the sweep, and says
+  the projections that decide who starts are read with the season's actual points and the
+  league-wide news.
+- `references/waivers.md`: the sweep is required before the waiver pass, every player in a
+  claim or a drop (an IR-slot fix's drop included) is read against it, and each claim and drop
+  names the item it rests on; "One week is not a trend" says the sweep is read beside the
+  numbers, never ahead of them.
+- `references/trades.md`: the sweep is required before any trade verdict, an offer the user
+  received included, every player on both sides read against it.
+- Skill section 8, waiver eve: the knowledgebase refresh comes after the sweep (was: first),
+  still ahead of the Free Agent Finder.
+- Skill body, held at the 500-line ceiling by cutting restatements, no rule: the requirements
+  list's tier summary, which "Subscription tier" states in full, with the separate "only Draft
+  Sharks" line merged into the subscription line (its sentence that other draft tools may be
+  added in the future is left to the skill's description, which says it); and section 7's
+  "Two-line rec, then the color (section 2)", which prime directive 2 and section 2 already
+  say.
+
 ## [1.46.0] - 2026-10-07
 
 **A waiver night across several leagues on one host turned up two host mechanics the skill

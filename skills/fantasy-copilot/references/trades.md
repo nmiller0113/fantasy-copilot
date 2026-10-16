@@ -4,6 +4,11 @@ Read this for any trade pass the assistant starts on the user's behalf, and ever
 weeks in the bye-week stretch. An offer the user RECEIVED is read by skill section 8's
 motive-before-math bullet instead; this page is for offers the user might send.
 
+The league-wide news sweep (`references/lineups.md`) is required before any trade verdict, an
+offer the user received included (skill section 8): every player on both sides is read against
+it, beside the numbers below, and the verdict names the item it rests on, or says that no item
+bears on it.
+
 ## Score it through both lineups
 
 - Rebuild the OPTIMAL starting lineup of BOTH teams before and after the trade, and take the
