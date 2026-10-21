@@ -5,6 +5,63 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.48.0] - 2026-10-21
+
+**On a waiver night the assistant priced a tight-end pickup on the week's projection alone,
+delivered several lines on the host's numbers without the engine's, and drafted a trade
+counter the engine's own analyzer grades as an overpay.** The user's rulings: a pickup is
+used twice, the week it fills and afterwards as a held player and a trade chip, so it is priced
+on both; both services go in every line; and when the services disagree, the one that has been
+right more often should carry more weight, which is a measurement, not a belief. Measured that
+night on two weeks of saved projections, the two services were within about a tenth of a point
+of each other overall, with the engine clearly ahead only at quarterback, so the
+weighting is a record kept every week, used only where a lead is earned.
+
+### Added
+- `references/waivers.md`, "Every add is priced as the week AND the asset". Every claim and
+  add of a position player, a one-week fill included, carries both services' week AND
+  rest-of-season numbers, the player's season and recent per-game production from the host's
+  game log with games played, and the host's percent rostered; a week-only comparison is never
+  the comparison. These are inputs to skill section 8's replaceability test, said beside it:
+  on a tie on the week they are named as its likely breaker, and the user decides. Kicker and
+  team-defense streams keep the week-only two-number test of `references/lineups.md`.
+- `references/waivers.md`, "Before filing: the IR slots": an ineligible IR occupant has also
+  been seen to block the user from building a trade proposal, so a trade from that roster
+  waits on the same fix. Where a claim or add is also wanted in that league, the drop that
+  opens the spot is owed anyway and is said to be no bet on the trade; where nothing else is
+  wanted, it pays off only if the trade is accepted, which is said as the user's call, with
+  sending nothing as an option. Either way the body named is the one the roster loses least
+  in both outcomes, both lineups said.
+- `references/waivers.md`, "The order of the night": the pass saves both services' projections
+  for every rostered player at the same moment, for the accuracy record.
+- `references/lineups.md`, "Which service to lean on: measured, not assumed". Both services'
+  weekly projections are saved at the same moment every pass (the engine keeps no history,
+  and the host's final week projection has seen late news an earlier snapshot had not, so only
+  same-pass numbers are compared); after each week both are scored against actual points
+  (mean absolute miss, how often each was closer, bias, overall and by position, with sample
+  sizes, a player counted once per league in that league's scoring, each week scored on the
+  pair saved in the last pass before its first kickoff) into a season table in
+  the private document; a measured lead counts only when it is clear of noise (a starting
+  figure of about a hundred player-weeks at the position over at least three scored weeks,
+  revised as the record grows), is not
+  a new input but weights the projection input the call already reads, never overrides
+  production or news, and never turns one service into the only number said. The page's
+  header names the record.
+
+### Changed
+- `references/lineups.md`, "Saying the number": for a claim or an add of any player but a
+  kicker or a team defense, both services are said on the week AND the rest of the season,
+  not on one horizon.
+- `references/trades.md`, the bar's second test: the engine's value must be even or in the
+  user's favor, never in the other side's (it read "even or in his favor"). The exact package
+  is graded in the engine's Trade Analyzer with the synced league before the offer reaches the
+  user, the grade said in the line and the analyzer's own grade (fair, overpay, underpay) the
+  band; an overpay is brought into the fair band by asking for a piece the other side can
+  spare, re-graded, then offered; a player who must go to make a 2-for-1 legal is counted in
+  the package; a grade in the user's favor is sent as it stands, said as such, carried by the
+  other side's reason. "Score it through both lineups" names the Trade Analyzer as the final
+  gate, the value chart as the sort.
+
 ## [1.47.0] - 2026-10-16
 
 **A midseason lineup pass defended a tight end's start and held a quarterback on the

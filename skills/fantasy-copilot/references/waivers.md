@@ -12,7 +12,9 @@ The league-wide news sweep (`references/lineups.md`) is required before the waiv
 opens each week's work, waiver eve at the latest, and is redone first when the last one is
 more than about two days old. Every player in a claim or a drop, an IR-slot fix's drop
 included, is read against it, and each claim and drop names the item it rests on, or says that
-no item bears on it.
+no item bears on it. The pass also saves both services' projections for every rostered player
+at the same moment, for the accuracy record (`references/lineups.md`, which service to lean
+on).
 
 The work runs in this order across every league, once the IR slots are clean (below), since
 an ineligible occupant blocks every add: every contested claim in every league first, since
@@ -37,6 +39,15 @@ tags that qualify; read it once per host and record it in the private document (
 each occupant's tag against that list, and every ineligible occupant is moved out before the
 first claim is filed in that league. The move needs an open bench spot, so on a full roster
 it costs a drop, argued like any other (the holds, below) and named in the same line.
+
+The same occupant has also been seen to block the user from building a trade proposal on
+that host, so a trade from the user's roster waits on the same fix. Whether the drop that
+opens the spot is a gamble depends on the rest of the week. Where a claim or an add is also
+wanted in that league in the same window, the drop is owed anyway and is no bet on the trade:
+said so. Where nothing else is wanted, the drop pays off only if the trade is accepted, which
+is the user's call to make, said as exactly that, with the option of sending nothing until the
+slot is fixed for another reason. Either way the body named is the one the roster loses least
+in BOTH outcomes, the trade accepted and the trade refused, each lineup said in the same line.
 
 ## Claim timing: priority works only before the flip
 
@@ -84,6 +95,28 @@ before the user sees it.
   trend test below.
 - **A hold is never untouchable either.** The argument is made out loud, both services'
   numbers in the line (`references/lineups.md`, saying the number), and the user decides.
+
+## Every add is priced as the week AND the asset
+
+An add is used twice: in the lineup the week it is made, and afterwards as a held player who
+covers the next injury or bye or becomes a trade chip. So every claim and every add of a
+position player, a one-week fill included (a bye cover, an injury fill), is priced on both. A
+kicker or team-defense stream is the exception: it keeps the week-only two-number test of
+`references/lineups.md`, since neither is held as a trade chip.
+
+- **Both horizons on both services**, in the line that offers him: the host's and the
+  engine's projection for the week AND for the rest of the season (`references/lineups.md`,
+  saying the number). A comparison made on the week alone is never the comparison, however
+  short the need.
+- **His production**: season points per game and the last few weeks' per game from the host's
+  game log, games played named (one big week is not a trend, below).
+- **His market**: the host's percent rostered, the plainest read of what he fetches in a trade
+  later.
+
+These are inputs to skill section 8's replaceability test, said beside it, never a verdict
+ahead of it: between two candidates who tie on the week, the rest of season and the market
+are named as the tie's likely breaker, the test says which of the two can be re-acquired
+later, and the user decides. The drop side is priced the same way.
 
 ## One week is not a trend
 

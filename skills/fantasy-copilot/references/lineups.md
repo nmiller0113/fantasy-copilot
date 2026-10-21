@@ -3,7 +3,8 @@
 Read this when the user asks to set a lineup or about a player's status, on every
 practice-report day of a week, on lock morning, and whenever the league-wide news sweep is
 due (below). Skill section 8 holds the rules; this page holds the sweep, the lock mechanics,
-the arrangement, the game-day pass, the conditionals it carries and the week.
+the arrangement, the game-day pass, the conditionals it carries, the week, and the weekly
+record of which service has been more accurate.
 
 Two things decide a week. The projections, read with the season's actual points and the
 league-wide news (the sweep, below), decide WHO starts. The ARRANGEMENT of those starters
@@ -393,7 +394,10 @@ cannot do is stand as evidence that the confirmed news changed nothing.
 Any line that gives a projection for one of two players being compared for a slot, a
 claim or an add carries BOTH services in the line that offers it, the host's projection
 and the engine's raw projection, never one alone, and both on the same horizon: the week
-for a slot, the horizon skill section 8 names for that claim or add. A service that holds
+for a slot; for a claim or an add of any player but a kicker or a team defense, the week AND
+the rest of the season,
+each service on each (`references/waivers.md`, every add is priced as the week and the
+asset). A service that holds
 no projection on that horizon is said as not held in the same line, never substituted
 with its number from another horizon, and the comparison is then read on the held service
 alone, which opens the close band by that service's point band only. The rule that no
@@ -424,6 +428,36 @@ source it is carrying.
 This governs the waiver board exactly as it governs the lineup: the pool's best available
 at a position is whoever both services rank there, and a name that is top of one board
 and mid-table on the other is offered as the split it is.
+
+## Which service to lean on: measured, not assumed
+
+When the two services split, how much each deserves is a measurement, kept for the season,
+never a belief. The record:
+
+- **Save both services' weekly projections for every rostered player at the same moment,
+  every pass.** The engine keeps no past projections, so a pass that did not save them leaves
+  that week unscored. The host's own week view keeps its final projection next to the actual
+  points, but that final number has seen late news (inactives, a lineup-lock update) that an
+  earlier engine snapshot had not, so it is never scored against the earlier one: only
+  numbers taken in the same pass are compared.
+- **After each week's games, score both against the actual points**, in the league's scoring,
+  using the pair saved in the last pass before that week's first kickoff, so every week is the
+  same measurement, on the player-weeks where both projected above zero: the mean absolute miss, how often each
+  was closer, and the mean signed miss (its bias), overall and by position, each with its
+  sample size. The table lives in the private document (skill section 9) and grows weekly.
+  A player rostered in several leagues counts once per league, each in that league's scoring.
+- **Use it only where it is earned.** When the services split on a call, the line names the
+  measured leader at that position, its margin and its sample. A lead counts only when it is
+  clear of noise on a real sample; as a starting figure, about a hundred player-weeks at that
+  position over at least three scored weeks, revised as the record grows.
+  Short of that the split stays a split and the close band and the other inputs decide, said
+  as unmeasured. A measured lead is not a new input: it weights how much of the split the
+  projection input carries in the inputs the call already reads (the game-day pass's last
+  rule, the claim or add tests above), it never overrides the actual production or the news
+  read, and it never turns one service into the only number said.
+
+Both services can miss by several points on a single player-week, often more than the gaps
+the close band decides, so the measured leader is a tilt, not a verdict.
 
 ## Common mistakes
 

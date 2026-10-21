@@ -20,7 +20,8 @@ bears on it.
   trading for him look free to that owner.
 - Two engines, both said. The host projection through the lineup answers "does the starting
   lineup improve"; the engine's 3D Value scored to the synced league (its Trade Value Chart with
-  that league selected, or the Trade Analyzer) answers "who wins the asset trade".
+  that league selected, or the Trade Analyzer) answers "who wins the asset trade". The chart
+  sorts candidates; the Trade Analyzer on the exact package is the final gate (the bar, test 2).
   They disagree by design, most of all on a backup quarterback in a one-quarterback league. Say
   both numbers and name the split; never let the one that agrees with the call stand alone.
 - Start from the engine's Trade Partner Finder (acquiring and trading-away positions give a
@@ -42,9 +43,17 @@ recommendation, whatever its season total.
    its own is said as a short-term play for the user to weigh, never as the call. The user's
    private document may set a different floor for a league's scoring.
 2. **A reason for the other side.** The deal fills a hole on his roster (his thin position, his
-   quarterback, a bye week he cannot cover), and the engine's trade value is even or in his
-   favor. A deal that leaves his lineup flat gives him no reason to accept: "it costs him
-   nothing" is not a motive. Sent at all, it is labelled a free probe and never led with.
+   quarterback, a bye week he cannot cover), and the engine's trade value is even or in the
+   user's favor, never in his. A deal that leaves his lineup flat gives him no reason to
+   accept: "it costs him nothing" is not a motive. Sent at all, it is labelled a free probe
+   and never led with. The value is read from the engine's Trade Analyzer for the exact
+   package, with the synced league selected, before the offer reaches the user: its grade for
+   the user's side is said in the line, the analyzer's own grade (fair, overpay, underpay)
+   being the band. An overpay grade is not sent as it stands; it is brought into the fair band by asking for a piece the
+   other side can spare (his surplus at a position, a backup he does not start), re-graded,
+   and only then offered. A player the user would have to give anyway to make a 2-for-1 legal
+   is counted in the package, not left out of it. A grade in the user's favor is sent as it
+   stands and said as such: the other side's reason (above) is then what has to carry it.
 3. **Nothing he will not want.** No player on the user's side who carries a questionable or
    worse tag, who has just lost work to a teammate or shares his position's work in a
    committee, or whom the engine values far below the player asked for. The test is how the
