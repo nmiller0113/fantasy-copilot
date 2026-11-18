@@ -77,11 +77,24 @@ Then `/reload-plugins`, or restart. Update later with
   your format and scoring get treated as noise, and that applies everywhere a settings-blind
   number shows up: draft grades, matchup ratings, trade evaluators, generic expert ranks.
 
+## The pre-delivery gate (in-season)
+
+In-season calls go through a gate (`skills/fantasy-copilot/references/gate.md`): page
+collectors that check every page they read and retry, a completeness check that refuses a
+partial pass, a candidate board built on every signal at once, and a renderer that is the only
+way a call is printed. The plugin's Stop hook blocks any reply that carries a call outside a
+rendered block. It does nothing until you create a gate home: a private folder (set
+`FANTASY_GATE_HOME`, or use `.fantasy-gate` in your home folder) holding `leagues.json`,
+`holds.json`, `teams.json`, optionally `aliases.json`, and `config.json`. The collectors are
+written for Yahoo Fantasy with Draft Sharks; nothing about your leagues ships in this plugin.
+
 ## Maintaining
 
-The plugin itself needs no shell, interpreter, or particular operating system: it is a
-skill file, its reference files, and a manifest. Eleven optional scripts ship with it
-(Python 3.8 or later, nothing else; the skill copies each one beside the files it reads,
+The skill itself needs no shell, interpreter, or particular operating system: it is a skill
+file, its reference files, and a manifest. The in-season gate (`scripts/gate.py`, three page
+collectors run in the browser, and a Stop hook that runs `gate.py` through `sh` and Python 3.9
+or later) does nothing until you create a gate home; see "The pre-delivery gate" above. Eleven
+other optional scripts ship with it (Python 3.8 or later, nothing else; the skill copies each one beside the files it reads,
 ten of them into the knowledgebase's `build/` folder, and runs them from there, and
 without Python it reports the joins as not built rather than having an agent write
 them): `scripts/pull-list.py` names the source

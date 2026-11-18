@@ -5,6 +5,59 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.49.0] - 2026-11-18
+
+**Written rules about reading every signal and checking every pull did not fire on their own.**
+In one week the assistant picked a waiver add from one sorted column while the engine, the
+recent production and the player's role in the same rows pointed to another player; a trade
+search ran on nine of ten rivals because a pull skipped a team id and nothing counted teams, and
+the answer "no trade clears the bar" was given and independently confirmed from that broken
+file; and a draft of fill calls put a Thursday-night player in the flex, used one player's
+evidence two ways in two leagues, filtered a free agent out before evaluating him, and dropped
+a held player. Every one of those rules was already written down. This version makes them
+mechanical.
+
+### Added
+- `references/gate.md`, the pre-delivery gate: collect with completeness checks, ingest,
+  check, board, role cards, render, and the Stop hook. Every in-season start, sit, add, drop,
+  claim or trade call reaches the user only as the block the gate renders.
+- `scripts/gate.py` (`open`, `ingest`, `check`, `board`, `render`, `hook`) and three Yahoo plus
+  Draft Sharks page collectors (`scripts/gate-collect.js`, `scripts/gate-gp-collect.js`,
+  `scripts/gate-ds-collect.js`). Every fetch is checked (status, error page, expected table,
+  row count) and retried; team ids come from the league's own team list; every league ends
+  with coverage lines.
+- `check` refuses a pass on any failed coverage line, a team count that differs from the
+  league size, a section under its row floor, a stale engine sync, an engine roster that
+  differs from the host roster, or a rostered player with real points and no games played.
+- `board` lists the bench plus the top free agents on every signal (host week and rest of
+  season, engine week and rest of season, last-four and season per game); a missing value is
+  shown as missing, never zero.
+- `render` refuses an unfilled slot, a starter on bye or out, a questionable starter without a
+  fallback, a flex that breaks lock order, a non-free-agent add, a held drop or trade, a roster
+  over capacity, an add blocked by an untagged IR occupant, a contested starter or add (or a
+  kicker or defense) that loses to an available alternative without a named reason, a missing
+  or unsourced role card, and a trade without both lineups recomputed, the engine's trade
+  value for every player, roster room and the partner's reason.
+- `hooks/hooks.json`: a Stop hook that blocks a reply carrying a call line outside a verified
+  rendered block. It does nothing for a user with no gate home.
+
+### Changed
+- SKILL.md section 8: the news sweep is followed by the gate for every call.
+
+### Known limits
+- A player with zero last-four points and no games-played row prints the per-game value as
+  missing without failing the check; the data cannot tell a true zero from a gap.
+- The kicker and defense comparison sees the free agents that lead on each signal, not the
+  whole pool.
+- A trade's roster-room drops are validated and printed but not removed from the lineup math.
+- The hook cannot catch complete but wrong data, a wrong role card, a call written without a
+  verb and a position, or judgment errors.
+
+Reviewed by an independent Fable context: cycles 1 to 3 failed (fixed each time), the builder
+tiered up for cycle 4, and cycle 4 passed with no critical or high finding. The port into this
+plugin was reviewed separately (pass, with user-specific comments and a fixed time zone
+removed after it, and those edits reviewed again).
+
 ## [1.48.0] - 2026-10-21
 
 **On a waiver night the assistant priced a tight-end pickup on the week's projection alone,

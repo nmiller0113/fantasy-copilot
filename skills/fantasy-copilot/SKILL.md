@@ -92,10 +92,9 @@ of decision dictates which one carries the call.
 - **Never use Adjust Projections.** DS stays an unskewed, independent opinion;
   disagreements are discussed with the user, never written into the engine. If that
   page shows non-default adjustments, flag it.
-- Post-draft grading is League Analyzer's Draft Analysis; rest-of-season projections
-  are the currency of every in-season decision. Read `references/draft-sharks.md` when
-  setting up or rehearsing a league, drafting advice questions, or when a DS tool
-  misbehaves; not at the clock.
+- Post-draft grading is League Analyzer's Draft Analysis; rest-of-season projections are the
+  currency of every in-season decision. Read `references/draft-sharks.md` when setting up or
+  rehearsing a league, drafting advice questions, or when a DS tool misbehaves; not at the clock.
 
 **Host subscriptions are data points, not a second engine.** Ask which host tier the user
 pays for and record it in the private document. Where the host offers it, read three things
@@ -304,8 +303,9 @@ agree beforehand which league gets full attention.
 ## 8. In-season weekly cadence (per league)
 
 - **A league-wide news sweep comes first** (`references/lineups.md`), each week and before any
-  pass over about two days after the last: no start, sit, add, drop, claim or trade call until
-  it, the actuals and both engines are read together, each naming the item it rests on or none.
+  pass over about two days after the last. Then every start, sit, add, drop, claim or trade call
+  goes through the gate (`references/gate.md`): a pull checked complete, a board on every signal,
+  the call delivered only as the block the gate renders, each naming the item it rests on or none.
 - **Last priority makes every claim free.** Where the host runs a rolling priority list (a
   successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
   priority pays nothing: a win leaves it last, where it already was, and a loss changes
