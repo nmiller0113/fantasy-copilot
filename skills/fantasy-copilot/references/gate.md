@@ -20,7 +20,8 @@ in the user's home folder. With no gate home the hook does nothing.
 - `leagues.json`: per league key, the host league id, the user's team id, the Draft Sharks
   league id, the league size, the starting slots in order, the active roster limit (`roster`:
   starters plus bench, injured reserve excluded; an empty starting slot is not an open spot),
-  and the aliases a chat message may use for it.
+  the playoff format (`playoffs`: playoff teams, playoff weeks, consolation places), and the
+  aliases a chat message may use for it.
 - `holds.json`: the user's holds, each with the league, the player, the kind (`drop`, `trade`
   or `both`), the user's own words, and an active flag.
 - `teams.json`: each NFL team code with its nickname and city, because a host may name a
@@ -39,8 +40,8 @@ in the user's home folder. With no gate home the hook does nothing.
    Engine: sync each league in the tab first (the sync runs only in the top-level page), then
    paste `gate-ds-collect.js`. For a trade, read the engine's trade value chart for that league
    into the pass's data folder. Every fetch is checked and retried, team ids come from the
-   league's own team list, and every league ends with coverage lines: nothing incomplete is
-   saved silently.
+   league's own team list, the standings (rank, record, points) come from the league page, and
+   every league ends with coverage lines: nothing incomplete is saved silently.
 3. `gate.py ingest` copies the collector output into the pass; a missing league fails.
 4. `gate.py check` refuses the pass on any failed coverage line, a team count that differs from
    the league size, a section under its row floor, a stale engine sync, an engine roster that
@@ -69,11 +70,17 @@ in the user's home folder. With no gate home the hook does nothing.
    fallback from the delivered calls; and the pending claims. Each waiver row gets an explicit
    claim-or-wait call with its priority cost: a player with real production does not reach free
    agency. Then set reminders at each arrival and at the final injury reports.
-9. `gate.py trades LEAGUE` for every league: trade potentials with every rival, ranked by what
-   helps both sides (rest of season, then this week) and never cut by a fixed number, each with
-   both sides' gains this week, over the next four weeks and rest of season, the other manager's
-   weakest starters ranked against the league and what the deal does to them, and the engine's
-   trade value where the league's chart is in the pass. Leads are not calls:
+9. `gate.py trades LEAGUE` for every league: trade potentials with every rival, never cut by a
+   fixed number, each with both sides' gains this week, over the next four weeks, in the playoff
+   weeks and rest of season (the weeks until the playoffs replace the next four when the format
+   is set), each player's trade value and projection side by side, both sides' place in the
+   playoff race with a contender's cushion, the other manager's weakest
+   starters ranked against the league and what the deal does to them, and the engine's trade
+   value where the league's chart is in the pass. Four ranked lists: best for both rest of
+   season, best for both this week, sell to teams in a playoff spot (your weeks until the playoffs
+   against their playoff weeks: a stashed star who returns for the playoffs is worth most to
+   them), and buy from teams below the playoff line (your playoff weeks against their weeks
+   until the playoffs). Leads are not calls:
    a lead reaches the user only through a calls file and `render`, after the chart, role cards
    and the partner's reason are in.
 10. `gate.py close` marks the pass finished.
@@ -94,7 +101,8 @@ both engines, without an override that names the alternative and says why; too f
 present for a pick; a role card missing, unsourced or stale; and a trade without both lineups
 recomputed, the engine's trade value for every player, roster room, and a written reason the
 other manager would say yes. No gain or value cutoff refuses a trade: the block shows both
-sides' gains on three horizons, who pays more on the engine's value, the other manager's needs
+sides' gains on every horizon (this week, the weeks until the playoffs or the next four, playoff
+weeks, rest of season), each player's values side by side, who pays more on the engine's value, the other manager's needs
 as computed, and a flag for any questionable player the user would send.
 
 ## The Stop hook

@@ -232,6 +232,13 @@ class League:
             g = self.GP.get(k, {})
             r['l4_gp'], r['szn_gp'] = g.get('l4_gp'), g.get('szn_gp')
         self.DS = self._ds()
+        self.stand = {}           # team id -> rank, record, points for (from the league page)
+        for l in self.s.get('STANDINGS', []):
+            q = l.split('|')
+            m = re.match(r'(\d+)-(\d+)-(\d+)', q[4]) if len(q) >= 7 and q[0] == 'STAND' else None
+            rk = re.sub(r'\D', '', q[1]) if m else ''
+            if m and rk:
+                self.stand[q[2]] = {'rank': int(rk), 'name': q[3], 'w': int(m.group(1)), 'l': int(m.group(2)), 't': int(m.group(3)), 'pf': num(q[5])}
 
     def _ds(self):
         out, sec = {}, None
@@ -378,6 +385,10 @@ def cmd_check(date):
                     floor = {'QB': 10, 'RB': 40, 'WR': 60, 'TE': 25, 'K': 10, 'DEF': 10}.get(lab.split()[-1], 10)
                 if floor is not None and n_rows < floor:
                     lr['fail'].append(f'{kind}: section "{lab[:50]}" has {n_rows} rows (< {floor})')
+            if kind == 'yahoo' and 'STANDINGS' in secs:
+                good = [l for l in secs['STANDINGS'] if re.match(r'^STAND\|\D*\d+\|\d+\|[^|]+\|\d+-\d+-\d+\|', l)]
+                if len(good) != c['teams']:
+                    lr['fail'].append(f"yahoo: standings parse {len(good)} of {c['teams']} teams (rank, team id, name, W-L-T)")
             if kind == 'ds' and not re.search(r'^SYNC: Synced:\s*(\d+ seconds?|a minute|[1-5]?\d minutes?(?: \d+ seconds?)?) ago', t, re.M):
                 lr['fail'].append('ds: sync stamp missing or older than 60 minutes')
             if kind == 'yahoo':
@@ -534,11 +545,12 @@ def _rates(p, week):
     return near, max(far, 0.0)
 
 
-def weekly_total(players, slots, week, w_end):
-    """sum of the best lineup for each week from `week` to `w_end`, each player at his rate except in his bye week."""
+def weekly_total(players, slots, week, w_end, w_start=None):
+    """sum of the best lineup for each week from `w_start` (default: this week) to `w_end`, each player at his rate
+    (as of `week`) except in his bye week."""
     rates = {k: _rates(p, week) for k, p in players.items()}
     tot, cache = 0.0, {}
-    for w in range(week, min(w_end, LAST_WEEK) + 1):
+    for w in range(w_start or week, min(w_end, LAST_WEEK) + 1):
         near = w < week + 4
         off = tuple(sorted(k for k, p in players.items() if p.get('bye') == w))
         ck = (near, off)
@@ -549,21 +561,86 @@ def weekly_total(players, slots, week, w_end):
     return tot
 
 
+def horizons(lg):
+    """(field, first week, last week, weeks): this week, next 4, the playoff weeks (when leagues.json names them and
+    they are still ahead), rest of season."""
+    W = lg.week
+    po = (lg.c.get('playoffs') or {}).get('weeks')
+    out = [('wk', W, W, 1)]
+    if po and po[0] - 1 >= W:
+        out.append(('rs', W, po[0] - 1, po[0] - W))          # the rest of the regular season: what the race is decided on
+    else:
+        out.append(('n4', W, W + 3, 4))
+    if po and po[1] >= W:
+        a = max(po[0], W)
+        out.append(('po', a, po[1], po[1] - a + 1))
+    out.append(('ros', W, LAST_WEEK, max(1, LAST_WEEK - W + 1)))
+    return out
+
+
+def _ord(n):
+    return f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+
+
+def race(lg, tid):
+    """-> ('in' | 'chasing' | 'out' | None, plain text): a team's place in the playoff race from the standings and
+    leagues.json "playoffs" (teams, weeks, consolation). Wins only; the host's tiebreaks are not modeled."""
+    s = lg.stand.get(str(tid))
+    if not s:
+        return None, 'standing not in this pull'
+    rec = f"{s['w']}-{s['l']}" + (f"-{s['t']}" if s['t'] else '')
+    txt = f"{rec}, {_ord(s['rank'])} of {len(lg.stand)}"
+    po = lg.c.get('playoffs') or {}
+    if not (po.get('teams') and po.get('weeks')):
+        return None, txt
+    P, reg_end = po['teams'], po['weeks'][0] - 1
+    left = max(0, reg_end - lg.week + 1)
+    ranked = sorted(lg.stand.values(), key=lambda x: x['rank'])
+    line = ranked[P - 1]['w'] if len(ranked) >= P else None
+    if s['rank'] <= P:
+        out_w = ranked[P]['w'] if len(ranked) > P else None
+        cush = (s['w'] - out_w) if out_w is not None else None
+        cls, st = 'in', 'in a playoff spot' + ('' if cush is None else f", {cush} win{'s' if cush != 1 else ''} clear of the first team out" if cush > 0 else ', level on wins with the first team out') + f", {left} games left"
+    elif line is not None and s['w'] + left >= line:
+        gap = line - s['w']
+        cls, st = 'chasing', (f"{gap} win{'s' if gap != 1 else ''} behind the last playoff spot" if gap > 0 else 'level on wins with the last playoff spot') + f", {left} games left" + ('; must win out' if gap > 0 and gap >= left else '')
+    else:
+        cls, st = 'out', 'out of the playoff race'
+    cons = po.get('consolation')
+    if cons and s['rank'] > P:
+        st += f"; consolation bracket is {_ord(cons[0])}-{_ord(cons[1])}"
+    return cls, f"{txt} ({st}; playoffs weeks {po['weeks'][0]}-{po['weeks'][1]})"
+
+
+def gains_text(g, side, lg):
+    """'+1.0 this week, +0.4/wk until the playoffs (weeks 11-15), +2.0/wk playoff weeks 16-17, +1.0/wk rest of season'
+    (next 4 instead of the weeks until the playoffs when the league's playoff format is not set)."""
+    lab = {'wk': ' this week', 'n4': '/wk next 4', 'ros': '/wk rest of season'}
+    parts = []
+    for fld, a, b, n in horizons(lg):
+        v = g.get(f'{side}_{fld}')
+        if v is None:
+            continue
+        v = 0.0 if abs(v) < 0.05 else v
+        parts.append(f"{v:+.1f}" + ({'po': f"/wk playoff weeks {a}-{b}", 'rs': f"/wk until the playoffs (weeks {a}-{b})"}.get(fld) or lab[fld]))
+    return ', '.join(parts)
+
+
 def trade_gains(lg, me, th, give, get, base=None):
-    """per-week lineup gain for both sides, rest of season and next 4 weeks, byes filled from the bench."""
+    """per-week lineup gain for both sides on every horizon (this week, next 4, playoff weeks, rest of season), byes
+    filled from the bench."""
     slots = lg.c['slots']
     me2 = {k: v for k, v in me.items() if k not in give}
     me2.update({k: th[k] for k in get})
     th2 = {k: v for k, v in th.items() if k not in get}
     th2.update({k: me[k] for k in give})
     W = lg.week
-    n_ros = max(1, LAST_WEEK - W + 1)
     g = {}
-    for fld, end, n in (('ros', LAST_WEEK, n_ros), ('n4', W + 3, 4), ('wk', W, 1)):
-        bm = base[('me', fld)] if base else weekly_total(me, slots, W, end)
-        bt = base[('th', fld)] if base else weekly_total(th, slots, W, end)
-        g['me_' + fld] = (weekly_total(me2, slots, W, end) - bm) / n
-        g['th_' + fld] = (weekly_total(th2, slots, W, end) - bt) / n
+    for fld, a, end, n in horizons(lg):
+        bm = base[('me', fld)] if base else weekly_total(me, slots, W, end, a)
+        bt = base[('th', fld)] if base else weekly_total(th, slots, W, end, a)
+        g['me_' + fld] = (weekly_total(me2, slots, W, end, a) - bm) / n
+        g['th_' + fld] = (weekly_total(th2, slots, W, end, a) - bt) / n
     return g
 
 
@@ -762,8 +839,16 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     dv = sum(vg) - sum(vt)
     lines.append(f"  DS trade value (league-scored chart): you give {sum(vg)} ({' + '.join(str(v) for v in vg)}), get {sum(vt)} ({' + '.join(str(v) for v in vt)})"
                  + (f"; you pay {dv} more" if dv > 0 else f"; they pay {-dv} more" if dv < 0 else '; even'))
-    lines.append(f"  you: {g['me_wk']:+.1f} this week, {g['me_n4']:+.1f}/wk next 4, {g['me_ros']:+.1f}/wk rest of season (best lineup each week before vs after, Yahoo; byes filled from the bench)")
-    lines.append(f"  {pid[1]}: {g['th_wk']:+.1f} this week, {g['th_n4']:+.1f}/wk next 4, {g['th_ros']:+.1f}/wk rest of season")
+    def sbs(d, v):
+        return f"{d['name']}{' (' + d['tag'] + ')' if d.get('tag') else ''}: DS {v}, Yahoo rest of season {d.get('ros') or 0:.0f}"
+    lines.append('  side by side, you give: ' + '; '.join(sbs(me[k], v) for k, v in zip(give, vg)))
+    lines.append('  side by side, you get:  ' + '; '.join(sbs(th[k], v) for k, v in zip(get, vt)))
+    yg, yt = sum(me[k].get('ros') or 0 for k in give), sum(th[k].get('ros') or 0 for k in get)
+    lines.append(f"  totals: DS {sum(vg)} given v {sum(vt)} received ({abs(dv)} = {100 * abs(dv) / max(1, sum(vg) + sum(vt)):.0f}% of the deal, "
+                 + ('even' if dv == 0 else 'you pay more' if dv > 0 else 'they pay more') + f"); Yahoo rest of season {yg:.0f} given v {yt:.0f} received")
+    lines.append(f"  you: {gains_text(g, 'me', lg)} (best lineup each week before vs after, Yahoo; byes filled from the bench)")
+    lines.append(f"  {pid[1]}: {gains_text(g, 'th', lg)}")
+    lines.append(f"  standings: you {race(lg, lg.c['team'])[1]}; {pid[1]} {race(lg, pid[0])[1]}")
     lines.append('  ' + needs[0])
     lines.append('  ' + needs[1])
     if tr.get('partner_reason'):
@@ -1143,19 +1228,19 @@ def cmd_trades(L, date, top=8):
     held = {hold_key(lg, h) for h in holds if h['kind'] in ('trade', 'both')}
     me, note = planned_me(lg)
     slots, W = lg.c['slots'], lg.week
-    n_ros = max(1, LAST_WEEK - W + 1)
     dsv, tvc = tvc_values(lg)
     room = roster_cap(lg)[0] - len([d for d in lg.lineup if d['slot'] != 'IR' and d.get('key')])
     print(f'== {L} trade potentials, week {W} ({date}). Yahoo projections, best lineup each week, byes filled from the bench. '
           'DS trade values: ' + ('read' if dsv else f'not read (chart: {os.path.basename(tvc)})') + '.')
     if note:
         print('   ' + note)
+    print('   you: ' + race(lg, lg.c['team'])[1])
     print('   Leads, not calls: a lead reaches the user only through a calls file and render.')
     pc = pending_claim(lg)
     pend = key(pc[0]) if pc else None      # not on the roster until the claim processes
     mine = [k for k, v in me.items() if k not in held and k != pend and (v.get('ros') or 0) > 0]   # an injured player counts at his projection
-    hz = (('ros', LAST_WEEK, n_ros), ('n4', W + 3, 4), ('wk', W, 1))
-    bm = {f: weekly_total(me, slots, W, e) for f, e, n in hz}
+    hz = horizons(lg)
+    bm = {f: weekly_total(me, slots, W, e, a) for f, a, e, n in hz}
     starters = league_starters(lg)
     leads, nriv = [], 0
     for pid in rivals(lg):
@@ -1163,19 +1248,19 @@ def cmd_trades(L, date, top=8):
         if not th:
             continue
         nriv += 1
-        bt = {f: weekly_total(th, slots, W, e) for f, e, n in hz}
+        bt = {f: weekly_total(th, slots, W, e, a) for f, a, e, n in hz}
         theirs = [k for k, v in th.items() if (v.get('ros') or 0) > 0]   # zero projection: nothing to gain
         for ng, nt in ((1, 1), (1, 2), (2, 1), (2, 2)):
             for G in itertools.combinations(mine, ng):
                 for T in itertools.combinations(theirs, nt):
                     me2 = {k: v for k, v in me.items() if k not in G}
                     me2.update({k: th[k] for k in T})
-                    gm = {f: (weekly_total(me2, slots, W, e) - bm[f]) / n for f, e, n in hz}
+                    gm = {f: (weekly_total(me2, slots, W, e, a) - bm[f]) / n for f, a, e, n in hz}
                     if max(gm.values()) <= 0:
                         continue                  # helps the user on no horizon: not a potential for him
                     th2 = {k: v for k, v in th.items() if k not in T}
                     th2.update({k: me[k] for k in G})
-                    gt = {f: (weekly_total(th2, slots, W, e) - bt[f]) / n for f, e, n in hz}
+                    gt = {f: (weekly_total(th2, slots, W, e, a) - bt[f]) / n for f, a, e, n in hz}
                     vg = [ds_value(dsv, me[k]) for k in G]
                     vt = [ds_value(dsv, th[k]) for k in T]
                     leads.append((gm, gt, pid, [me[k] for k in G], [th[k] for k in T], vg, vt, th2))
@@ -1195,11 +1280,13 @@ def cmd_trades(L, date, top=8):
             dv = (sum(vg) - sum(vt)) if None not in vg + vt else None
             ds = 'DS ?' if dv is None else f"DS you give {sum(vg)}, get {sum(vt)}"
             drops = len(T) - len(G) - room
-            gm = {k: (0.0 if abs(v) < 0.05 else v) for k, v in gm.items()}
-            gt = {k: (0.0 if abs(v) < 0.05 else v) for k, v in gt.items()}
-            print(f"  you {gm['wk']:+.1f} this wk, {gm['n4']:+.1f}/wk next 4, {gm['ros']:+.1f}/wk ROS | {pid[1][:22]} {gt['wk']:+.1f}, {gt['n4']:+.1f}, {gt['ros']:+.1f} | {ds}"
-                  + (f' | needs {drops} drop' if drops > 0 else ''))
+            gg = {'me_' + k: v for k, v in gm.items()}
+            gg.update({'th_' + k: v for k, v in gt.items()})
+            print(f"  you {gains_text(gg, 'me', lg)} | {ds}" + (f' | needs {drops} drop' if drops > 0 else ''))
             print(f"     give {', '.join(tag(p) for p in G)}  /  get {', '.join(tag(p) for p in T)}")
+            vv = lambda p, v: f"{p['name']}{' (' + p['tag'] + ')' if p.get('tag') else ''} DS {'?' if v is None else v}, Yahoo ROS {p.get('ros') or 0:.0f}"
+            print(f"     side by side: give {'; '.join(vv(p, v) for p, v in zip(G, vg))}  |  get {'; '.join(vv(p, v) for p, v in zip(T, vt))}")
+            print(f"     {pid[1]}, {race(lg, pid[0])[1]}: {gains_text(gg, 'th', lg)}")
             for line in their_needs(lg, starters, pid, th2):
                 print('     ' + line)
             shown += 1
@@ -1209,6 +1296,16 @@ def cmd_trades(L, date, top=8):
     show(sorted(leads, key=lambda x: -min(x[0]['ros'], x[1]['ros'])), top)
     print('-- best for both sides this week (ranked by the smaller of the two this-week gains), top 3:')
     show(sorted(leads, key=lambda x: -min(x[0]['wk'], x[1]['wk'])), 3)
+    if any(f == 'po' for f, a, e, n in hz) and not lg.stand:
+        print('-- sell to contenders / buy from teams below the line: no standings in this pull (re-collect with this version)')
+    elif any(f == 'po' for f, a, e, n in hz):
+        sell = [x for x in leads if race(lg, x[2][0])[0] == 'in']
+        near = 'rs' if any(f == 'rs' for f, a, e, n in hz) else 'n4'
+        print('-- sell to teams in a playoff spot: your weeks until the playoffs against their playoff weeks (ranked by the smaller), top 3:')
+        show(sorted(sell, key=lambda x: -min(x[0][near], x[1]['po'])), 3)
+        buy = [x for x in leads if race(lg, x[2][0])[0] in ('chasing', 'out')]
+        print('-- buy from teams below the playoff line: your playoff weeks against their weeks until the playoffs (ranked by the smaller), top 3:')
+        show(sorted(buy, key=lambda x: -min(x[0]['po'], x[1][near])), 3)
 
 def _arrival(status, year):
     m = re.match(r'W \((\w{3}) (\d+)\)', status or '')

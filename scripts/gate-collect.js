@@ -47,6 +47,15 @@ window.GP = (async () => {
       if (g.ok) { const re = new RegExp('/f1/' + lid + '/(\\d+)$'); [...g.d.querySelectorAll('a')].forEach(a => { const m = (a.getAttribute('href') || '').match(re); const t = clean(a.textContent); if (m && t && t !== 'My Team') teams.set(m[1], t); }); }
       COV('team list', size, teams.size, g.ok && teams.size === size, g.note);
       out.push('TEAMS: ' + [...teams.entries()].map(([i, t]) => i + '=' + t).join(' || '));
+      // standings from the same league page: rank, team id, record, points for and against
+      const st = g.ok ? [...g.d.querySelectorAll('table')].find(t => t.tHead && /W-L-T/.test(t.tHead.textContent)) : null;
+      const srows = [];
+      if (st) { const h = hdrs(st); const iR = h.indexOf('Rank'), iW = h.indexOf('W-L-T'), iF = h.indexOf('PF'), iA = h.indexOf('PA');
+        const re2 = new RegExp('/f1/' + lid + '/(\\d+)$');
+        [...st.tBodies[0].rows].forEach(r => { const c = [...r.cells]; const a2 = [...r.querySelectorAll('a')].find(x => re2.test(x.getAttribute('href') || '') && clean(x.textContent));
+          if (a2) srows.push(['STAND', clean((c[iR] || {}).textContent), (a2.getAttribute('href').match(re2) || [])[1], clean(a2.textContent), clean((c[iW] || {}).textContent), clean((c[iF] || {}).textContent), clean((c[iA] || {}).textContent)].join('|')); }); }
+      out.push('## STANDINGS'); out.push(...srows);
+      COV('standings', size, srows.length, srows.length === size, st ? '' : 'standings table missing');
       // 2. own team, six views
       const views = [['ROSTER week-' + W + ' projection view', `stat1=P&stat2=PW&week=${W}`, ['Bye', 'Fan Pts', 'Proj Max', 'Proj Min', 'Pos Rank', '% Start', '% Ros']],
         ['ROSTER ROS projection', 'stat1=P&stat2=PSR_2026', ['GP*', 'GP', 'Fan Pts', 'Pos Rank', 'Bye']], ['ROSTER NEXT 4 WEEKS projection', 'stat1=P&stat2=PN4W', ['GP*', 'GP', 'Fan Pts', 'Pos Rank', 'Bye']],

@@ -5,6 +5,43 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.52.0] - 2026-11-19
+
+**Trades are read on every dimension: standings, the playoff weeks, and injured stars both ways.**
+The user: "I've got [a star receiver] on 4 different leagues sitting in my IR. I'm absolutely sure there are
+people who are in for the playoffs who would absolutely love to get their hands on him in time
+for them... I also should be looking at the folks in my league who are most likely not making the
+playoffs with someone like [him] sitting in their IR... All dimensions."
+
+### Added
+- **Standings.** The collector reads every league's standings (rank, team, record, points for
+  and against) from the league page, with a coverage line.
+- **The playoff race.** With the playoff format in `leagues.json` (`playoffs`: teams, weeks,
+  consolation), every team is placed: in a playoff spot, wins behind the last spot with games
+  left (and "must win out"), or out of the race, plus where the consolation bracket sits. Trade
+  blocks and `trades` leads show both sides'.
+- **Playoff weeks as a horizon.** Both sides' gains in the playoff weeks, beside this week, the
+  weeks until the playoffs (the next four weeks when the format is not set) and rest of season:
+  what a contender pays now for a player who helps him later is said in points a week.
+- **Side by side values.** Every trade block and lead lists each player on both sides with his
+  engine trade value, rest-of-season projection and injury tag, and the totals with the gap as a
+  share of the deal, so a lopsided offer (either way) is visible before it is sent.
+- **The race cushion.** A team in a playoff spot shows how many wins clear of the first team out
+  it is, with the games left: the risk a contender takes by paying now.
+- **Two new `trades` lists:** sell to teams in a playoff spot (your weeks until the playoffs
+  against their playoff weeks) and buy from teams below the playoff line (your playoff weeks
+  against their weeks until the playoffs).
+- The trade procedure (`references/trades.md`) reads standings and motive first and treats
+  injured stars as sell and buy assets; an eliminated team's goals (consolation, the fun of it)
+  count.
+
+### Known limits
+- Rest-of-season totals in the side-by-side lines add raw projections, so a two-for-one reads
+  bigger than its lineup effect; the lineup gains and the engine's values are the fair read.
+- The race uses wins only; the host's tiebreaks (points for) are not modeled.
+- A pass collected before this version has no standings: the race reads "standing not in this
+  pull".
+
 ## [1.51.0] - 2026-11-19
 
 **No fixed number rules a trade out, and every trade says why the other manager would want it.**
