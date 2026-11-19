@@ -85,7 +85,8 @@ partial pass, a candidate board built on every signal at once, and a renderer th
 way a call is printed. The plugin's Stop hook blocks any reply that carries a call outside a
 rendered block. Every pass ends with a watch list (waiver players worth a claim, with arrival
 dates; the conditions and fallbacks in play; pending claims) and a two-sided trade search in
-every league, whose trade math runs week by week with byes filled from the bench. It does nothing until you create a gate home: a private folder (set
+every league, whose trade math runs week by week with byes filled from the bench and which shows
+why the other manager would want each deal. No fixed number rules a trade out. It does nothing until you create a gate home: a private folder (set
 `FANTASY_GATE_HOME`, or use `.fantasy-gate` in your home folder) holding `leagues.json`,
 `holds.json`, `teams.json`, optionally `aliases.json`, and `config.json`. The collectors are
 written for Yahoo Fantasy with Draft Sharks; nothing about your leagues ships in this plugin.

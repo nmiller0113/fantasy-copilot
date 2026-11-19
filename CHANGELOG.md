@@ -5,6 +5,30 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.51.0] - 2026-11-19
+
+**No fixed number rules a trade out, and every trade says why the other manager would want it.**
+The user, on the 3-points-a-week trade bar the assistant had set on its own: "Let's always just
+talk about trade potentials. Never rule anything out based on a static rule or number. Things
+could vary situationally," and: "You need to tell me why you think they would find it
+advantageous/beneficial to them... their needs."
+
+### Changed
+- **The trade bar is gone.** `render` no longer refuses a trade for a gain under a set number, or
+  for an engine-value overpay beyond a set band; the block shows both sides' gains this week,
+  over the next four weeks and rest of season, and who pays more on the engine's value.
+- **The other manager's side is computed.** Every trade block and every `trades` lead shows his
+  weakest starting slots ranked against the league (rest-of-season points a game) and what the
+  deal does to each slot it changes for him. A written reason he would say yes is required on
+  every trade, not only when his lineup loses points.
+- **A questionable player you would send is flagged, not refused.**
+- **`trades` ranks, it does not filter.** Every potential that helps the user on at least one
+  horizon is kept, ranked by what helps both sides rest of season and, separately, this week.
+  Injured players count at their projection on both sides (only held players stay out), and the
+  partner view shows a starter's injury tag.
+- The trade procedure (`references/trades.md`) talks every potential through (both sides' gains,
+  the other manager's needs, the engine's value, the risks) instead of applying a four-test bar.
+
 ## [1.50.0] - 2026-11-18
 
 **The trade math hid bye weeks, and a pass could end without a watch list or a trade search.**

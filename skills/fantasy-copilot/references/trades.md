@@ -21,7 +21,7 @@ bears on it.
 - Two engines, both said. The host projection through the lineup answers "does the starting
   lineup improve"; the engine's 3D Value scored to the synced league (its Trade Value Chart with
   that league selected, or the Trade Analyzer) answers "who wins the asset trade". The chart
-  sorts candidates; the Trade Analyzer on the exact package is the final gate (the bar, test 2).
+  sorts candidates; the Trade Analyzer on the exact package is the value read (point 3 below).
   They disagree by design, most of all on a backup quarterback in a one-quarterback league. Say
   both numbers and name the split; never let the one that agrees with the call stand alone.
 - Start from the engine's Trade Partner Finder (acquiring and trading-away positions give a
@@ -31,48 +31,39 @@ bears on it.
 - Managers who overpaid for a name on draft day overpay after one big week: trade into their
   overreactions.
 
-## The bar
+## Talking a trade through
 
-A trade is recommended only when all four of these hold. Anything else is not a
-recommendation, whatever its season total.
+No fixed number rules a trade in or out: situations differ, so every potential is talked
+through with the user, and the user decides. Each one is said with all of this:
 
-1. **A per-week gain worth a starter.** State the gain per week beside the season total, on
-   both horizons, since a season total spread over the remaining games is smaller than it
-   looks. The rest-of-season gain governs: under about three points a week there, the trade
-   is not a recommendation whatever the next four weeks show, and a next-four-weeks gain on
-   its own is said as a short-term play for the user to weigh, never as the call. The user's
-   private document may set a different floor for a league's scoring.
-2. **A reason for the other side.** The deal fills a hole on his roster (his thin position, his
-   quarterback, a bye week he cannot cover), and the engine's trade value is even or in the
-   user's favor, never in his. A deal that leaves his lineup flat gives him no reason to
-   accept: "it costs him nothing" is not a motive. Sent at all, it is labelled a free probe
-   and never led with. The value is read from the engine's Trade Analyzer for the exact
-   package, with the synced league selected, before the offer reaches the user: its grade for
-   the user's side is said in the line, the analyzer's own grade (fair, overpay, underpay)
-   being the band. An overpay grade is not sent as it stands; it is brought into the fair band by asking for a piece the
-   other side can spare (his surplus at a position, a backup he does not start), re-graded,
-   and only then offered. A player the user would have to give anyway to make a 2-for-1 legal
-   is counted in the package, not left out of it. A grade in the user's favor is sent as it
-   stands and said as such: the other side's reason (above) is then what has to carry it.
-3. **Nothing he will not want.** No player on the user's side who carries a questionable or
-   worse tag, who has just lost work to a teammate or shares his position's work in a
-   committee, or whom the engine values far below the player asked for. The test is how the
-   other manager sees that player on the host's page, not the projection.
-4. **A clean week-by-week read.** The gain does not come from one bye week or a one-week
-   artifact (a backup quarterback who only covers a bye a free agent could cover), and the
-   incoming player's bye does not stack the user's starters.
+1. **What it does for the user, on three horizons.** This week, the next four weeks and the
+   rest of the season, per week, from both lineups rebuilt week by week with byes filled from
+   the bench. A season total is never said alone: spread over the remaining games it is smaller
+   than it looks. A gain that only shows up this week, or only later, is said as exactly that.
+2. **Why the other manager would say yes.** His needs: his weakest starting slots ranked
+   against the league, the bye or injury hole he cannot cover, the position where he has a
+   surplus. Then what the deal does to each slot it touches for him, and his own gain on the
+   same three horizons. "It costs him nothing" is not a reason; when the deal does nothing for
+   his lineup, say so and say what would make it worth his while.
+3. **The engine's value for the exact package.** The engine's Trade Analyzer with the synced
+   league selected, its grade for each side, and who pays more. A package the analyzer grades
+   as an overpay is said as such, with the piece the other side could spare that would even it.
+4. **The risks, as risks.** A questionable or injured player, one who just lost work to a
+   teammate or shares a committee, a bye that stacks the user's starters, a gain that comes from
+   one week's artifact. Each is named with what it does to the odds of a yes or to the gain; none
+   is a filter.
 
-"No trade worth making this week" is a complete answer. When it is true it is said first,
-with the best candidate per league and the one line that kills it.
+"Nothing looks good this week" is still an honest read, said with the best potentials and what
+holds each one back.
 
 ## When the work is delegated
 
 A brief to a subagent names "none" as an expected answer and never asks for one offer per
-league. Before any delegated recommendation reaches the user, the assistant re-applies this
-bar to it itself; an agent's call is never relayed unfiltered.
+league. Before any delegated recommendation reaches the user, the assistant re-checks its numbers
+and the other side's reason itself; an agent's call is never relayed unfiltered.
 
 ## When the user pushes back
 
-Re-check the call against the bar. Either defend it with the numbers, or say plainly that it
-was wrong from the start and why. Never flip to agree: a recommendation the assistant would
+Re-check the call against the numbers above. Either defend it with them, or say plainly that
+it was wrong from the start and why. Never flip to agree: a recommendation the assistant would
 drop at the first question was not a recommendation.

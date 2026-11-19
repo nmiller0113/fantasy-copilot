@@ -411,8 +411,8 @@ agree beforehand which league gets full attention.
   per input. Lead with accept, reject or counter, the reason in two lines, then the counter,
   where one exists, in one line with what it prices in. The user decides.
 - **Proposing trades** (a trade pass, and the bye-week stretch every 2-3 weeks with League Analyzer
-  and Trade Partner Finder): `references/trades.md`. Rest-of-season, never season-to-date; a trade
-  is recommended only when it clears that page's bar, and "no trade" is a complete answer.
+  and Trade Partner Finder): `references/trades.md`. Every potential is talked through with both
+  sides' gains, the other manager's needs and the engine's value; no fixed number rules one out.
 - **Before the trade deadline**: SOS filtered to the fantasy playoff weeks; buy soft playoff
   schedules, sell brutal ones and high Projected-Games-Missed stars.
 - **Two weeks before playoffs**: stash playoff streamers and handcuffs early.

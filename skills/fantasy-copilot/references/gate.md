@@ -69,10 +69,11 @@ in the user's home folder. With no gate home the hook does nothing.
    fallback from the delivered calls; and the pending claims. Each waiver row gets an explicit
    claim-or-wait call with its priority cost: a player with real production does not reach free
    agency. Then set reminders at each arrival and at the final injury reports.
-9. `gate.py trades LEAGUE` for every league: two-sided trade leads with every rival (the user
-   gains at least the bar rest of season or over the next four weeks, the partner loses no more
-   than half a point a week rest of season),
-   with the engine's trade value where the league's chart is in the pass. Leads are not calls:
+9. `gate.py trades LEAGUE` for every league: trade potentials with every rival, ranked by what
+   helps both sides (rest of season, then this week) and never cut by a fixed number, each with
+   both sides' gains this week, over the next four weeks and rest of season, the other manager's
+   weakest starters ranked against the league and what the deal does to them, and the engine's
+   trade value where the league's chart is in the pass. Leads are not calls:
    a lead reaches the user only through a calls file and `render`, after the chart, role cards
    and the partner's reason are in.
 10. `gate.py close` marks the pass finished.
@@ -91,7 +92,10 @@ any add while an IR slot holds an untagged player; a contested starter or an add
 of the shared signals to an available alternative, or a kicker or defense a free agent beats on
 both engines, without an override that names the alternative and says why; too few signals
 present for a pick; a role card missing, unsourced or stale; and a trade without both lineups
-recomputed, the engine's trade value for every player, roster room, and the partner's reason.
+recomputed, the engine's trade value for every player, roster room, and a written reason the
+other manager would say yes. No gain or value cutoff refuses a trade: the block shows both
+sides' gains on three horizons, who pays more on the engine's value, the other manager's needs
+as computed, and a flag for any questionable player the user would send.
 
 ## The Stop hook
 
