@@ -52,10 +52,15 @@ in the user's home folder. With no gate home the hook does nothing.
    prints `?`, never zero. No single sort decides a candidate list.
 6. Write one role card per player for the pass (as-of date, role line, the sources actually
    read) and a calls file per league: moves, lineup, fallbacks for questionable starters,
-   overrides with reasons, holds lifted in the user's words, a trade with the partner's reason.
+   overrides with reasons, holds lifted in the user's words, a trade with the partner's reason,
+   and optionally a one-line reason per pick (`why`) and conditions to watch (`if`).
    One card per player means the same evidence in every league.
 7. `gate.py render LEAGUE [NAME]` fails with a list of problems or prints the block ending
-   `gate ✓ NAME <hash>`. The block is pasted to the user verbatim, one league per message.
+   `gate ✓ NAME <hash>`. The block is short: what the user clicks and by when, the lineup with
+   changes marked, the conditions, and one line of reason per pick (the `why` text, or the week
+   signals when none is given). Every signal, role card and override reason goes to
+   `renders/NAME.txt`, which the block names. The block is pasted to the user verbatim, one
+   league per message.
 8. `gate.py close` marks the pass finished.
 
 ## What render refuses

@@ -5,6 +5,21 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.49.1] - 2026-11-18
+
+### Fixed
+- **A rendered call is readable.** The 1.49.0 block printed every signal, role card and override
+  reason beside the moves, in long lines that wrapped into a wall of text, so the clicks were
+  hard to find. The block now leads with what to click and by when, then the lineup on a few
+  lines with changes marked and who goes to the bench, then the conditions to watch and one
+  line of reason per pick. The full evidence is written to `renders/NAME.txt` and named at the
+  bottom of the block. Nothing the gate checks or refuses changed.
+
+### Added
+- Two optional keys in a calls file: `why` (a one-line reason per pick, shown in the block) and
+  `if` (conditions to watch). Without `why`, the block shows the pick's week signals.
+- The Stop hook recognizes the new lineup and move lines when they are pasted without a stamp.
+
 ## [1.49.0] - 2026-11-18
 
 **Written rules about reading every signal and checking every pull did not fire on their own.**

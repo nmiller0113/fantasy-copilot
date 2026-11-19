@@ -16,7 +16,7 @@ valid stamped block.
   gate.py hook                     Stop hook (hook JSON on stdin)
 DATE defaults to today (local time, or the gate home's config.json "tz"). Week comes from the manifest.
 """
-import hashlib, json, os, re, subprocess, sys, time, datetime
+import hashlib, json, os, re, subprocess, sys, textwrap, time, datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GHOME = os.environ.get('FANTASY_GATE_HOME') or os.path.join(os.path.expanduser('~'), '.fantasy-gate')  # the user's private gate home
@@ -45,6 +45,7 @@ FLEX = {'W/R/T', 'Q/W/R/T'}
 WEEK_SIG = ['y_wk', 'ds_wk', 'l4g', 'szn_g']
 ROS_SIG = ['y_ros', 'ds_ros']
 SIGNAME = {'y_wk': 'Yahoo wk', 'ds_wk': 'DS wk', 'l4g': 'last-4/g', 'szn_g': 'season/g', 'y_ros': 'Yahoo ROS', 'ds_ros': 'DS ROS'}
+SHORT = {'y_wk': 'Yahoo', 'ds_wk': 'DS', 'l4g': 'last-4', 'szn_g': 'season', 'y_ros': 'Yahoo ROS', 'ds_ros': 'DS ROS'}
 MAX_AGE_H = 12
 # a DEF is named by nickname or city depending on the view: both resolve to def-<code>
 NFL = {}  # team code -> 'Nickname City', from the gate home's teams.json
@@ -821,26 +822,26 @@ def cmd_render(L, date, name=None):
         for e in errs:
             print('  - ' + e, file=sys.stderr)
         sys.exit(1)
-    # the block
+    # the evidence: every signal, role card and override, saved beside the block
     ytime = re.search(r'pulled (.*?)(?: PT)?$', lg.ytext, re.M)
-    B = [f'▶ {L} (Yahoo {ytime.group(1) if ytime else "?"}; rivals {lc.get("rivals")}/{cfg()[L]["teams"] - 1}; coverage PASS)']
+    E = [f'▶ {L} (Yahoo {ytime.group(1) if ytime else "?"}; rivals {lc.get("rivals")}/{cfg()[L]["teams"] - 1}; coverage PASS)']
     if calls.get('moves'):
-        B.append('MOVES')
+        E.append('MOVES')
         for mv in calls['moves']:
             a, dn = mv.get('add'), mv.get('drop')
             ra = lg.find(a)[1] if a else None
             rd = lg.find(dn)[1] if dn else None
             t = '  ' + ('CLAIM ' if mv.get('claim') else 'ADD ') + (f"{a} ({ra['team']} {ra['pos']}, {ra.get('status')})" if a else '') + (f" / DROP {dn} ({rd['team']} {rd['pos']})" if dn else '') + (f"  [{mv['when']}]" if mv.get('when') else '')
-            B.append(t)
+            E.append(t)
             if mv.get('_vote'):
-                B.append('     ' + mv['_vote'])
+                E.append('     ' + mv['_vote'])
             if mv.get('drop_reason'):
-                B.append('     drop: ' + mv['drop_reason'])
+                E.append('     drop: ' + mv['drop_reason'])
             if a and ra and add_over.get(ra['name']):
-                B.append(f"     free agents who win more of the 6 signals: {', '.join(add_over[ra['name']])}. Why {a}: {over.get(a) or over.get(ra['name'])}")
-    B.extend(trade_lines)
+                E.append(f"     free agents who win more of the 6 signals: {', '.join(add_over[ra['name']])}. Why {a}: {over.get(a) or over.get(ra['name'])}")
+    E.extend(trade_lines)
     if do_lineup:
-        B.append('LINEUP')
+        E.append('LINEUP')
     order = []
     for s in lg.c['slots']:
         if s not in order:
@@ -848,23 +849,105 @@ def cmd_render(L, date, name=None):
     for s in order:
         for nm in lu.get(s, []):
             r = roster.get(key(nm)) or lg.find(nm)[1]
-            B.append(f"  {s:<8}{nm} ({r.get('team')} {r.get('pos')}{', ' + r['tag'] if r.get('tag') else ''}; {(r.get('kick') or '').strip()})")
+            E.append(f"  {s:<8}{nm} ({r.get('team')} {r.get('pos')}{', ' + r['tag'] if r.get('tag') else ''}; {(r.get('kick') or '').strip()})")
     if dec:
-        B.append('WHY (signals: ' + ', '.join(SIGNAME[x] for x in WEEK_SIG) + ')')
+        E.append('WHY (signals: ' + ', '.join(SIGNAME[x] for x in WEEK_SIG) + ')')
         for s, nm, sr, beaten, txt, card in dec:
-            B.append(f"  {s} {nm}: " + ', '.join(f"{SIGNAME[x]} {fmt(sr.get(x))}" for x in WEEK_SIG) + f"; DS ceiling {fmt(sr.get('ds_ceil'))}")
-            B.append(f"     role ({card.get('asof')}): {card.get('role')}  [read: {'; '.join(card.get('sources', []))}]")
+            E.append(f"  {s} {nm}: " + ', '.join(f"{SIGNAME[x]} {fmt(sr.get(x))}" for x in WEEK_SIG) + f"; DS ceiling {fmt(sr.get('ds_ceil'))}")
+            E.append(f"     role ({card.get('asof')}): {card.get('role')}  [read: {'; '.join(card.get('sources', []))}]")
             if beaten:
-                B.append(f"     over {', '.join(b[0] for b in beaten)} (they win more signals): {txt}")
+                E.append(f"     over {', '.join(b[0] for b in beaten)} (they win more signals): {txt}")
             if nm in calls.get('fallback', {}):
-                B.append(f"     fallback: {calls['fallback'][nm]}")
+                E.append(f"     fallback: {calls['fallback'][nm]}")
     for s, nm, sr, better, txt in kd:
-        B.append(f"  {s} {nm} (Yahoo wk {fmt(sr.get('y_wk'))} / DS wk {fmt(sr.get('ds_wk'))}) over free agents better on both engines, " + ', '.join(f"{an} ({fmt(asg.get('y_wk'))} / {fmt(asg.get('ds_wk'))})" for an, asg in better) + f": {txt}")
+        E.append(f"  {s} {nm} (Yahoo wk {fmt(sr.get('y_wk'))} / DS wk {fmt(sr.get('ds_wk'))}) over free agents better on both engines, " + ', '.join(f"{an} ({fmt(asg.get('y_wk'))} / {fmt(asg.get('ds_wk'))})" for an, asg in better) + f": {txt}")
     for n in calls.get('notes', []):
-        B.append('  note: ' + n)
+        E.append('  note: ' + n)
+    ev_text = '\n'.join(E)
+    # the block the user reads: clicks first, the lineup, conditions, one line of why each; lines kept short
+    wrap = lambda t, ind='  ', sub='     ': textwrap.wrap(t, 88, initial_indent=ind, subsequent_indent=sub) or [ind]
+    week = jload(os.path.join(p, 'manifest.json'), {}).get('week', '?')
+    when = ytime.group(1).strip() if ytime else '?'
+    try:
+        dt = datetime.datetime.strptime(when, '%m/%d/%Y, %I:%M:%S %p')
+        when = dt.strftime('%a ') + str(int(dt.strftime('%I'))) + dt.strftime(':%M %p')
+    except ValueError:
+        pass
+    why = calls.get('why', {})
+    tg = lambda r: f"{r.get('team')} {r.get('pos')}" if r else '?'
+    B = [f'{L} · week {week} · data {when} · {lc.get("rivals")}/{cfg()[L]["teams"] - 1} rivals read ✓']
+    if calls.get('moves'):
+        B += ['', 'DO (you click)']
+        for i, mv in enumerate(calls['moves'], 1):
+            a, dn = mv.get('add'), mv.get('drop')
+            ra = lg.find(a)[1] if a else None
+            rd = lg.find(dn)[1] if dn else None
+            t = (('Claim ' if mv.get('claim') else 'Add ') + f"{a} ({tg(ra)})" if a else '') + ((' · drop ' if a else 'Drop ') + f"{dn} ({tg(rd)})" if dn else '')
+            B += wrap(t + (f"  by {mv['when'].replace('before ', '')}" if mv.get('when') else ''), f'  {i}. ', '     ')
+    if trade_lines:
+        B += ['', 'TRADE (you send it)']
+        for t in trade_lines:
+            if '[read:' not in t:
+                B += wrap(re.sub(r'^TRADE with ', 'with ', t.strip()), '  ', '     ')
+    if do_lineup:
+        lab = {'W/R/T': 'FLEX', 'Q/W/R/T': 'SFLEX'}
+        segs = []
+        for s in order:
+            nms = []
+            for nm in lu.get(s, []):
+                r = roster.get(key(nm)) or lg.find(nm)[1] or {}
+                star = '*' if lg.R.get(r.get('key'), {}).get('slot') != s else ''
+                nms.append(star + nm + (f" ({r['tag']})" if r.get('tag') else ''))
+            segs.append(f"{lab.get(s, s):<5} " + ' · '.join(nms))
+        B += ['', 'START  (* = change)']
+        line = ''
+        for sg in segs:
+            if line and len(line) + 3 + len(sg) > 86:
+                B.append('  ' + line); line = sg
+            else:
+                line = (line + '   ' + sg) if line else sg
+        if line:
+            B.append('  ' + line)
+        dropped = {lg.find(mv['drop'])[1]['key'] for mv in calls.get('moves', []) if mv.get('drop') and lg.find(mv['drop'])[1]}
+        benched = [d['name'] for k, d in lg.R.items() if d.get('slot') not in ('BN', 'IR') and k not in started and k not in dropped]
+        if benched:
+            B += wrap('to the bench: ' + ', '.join(benched))
+    conds = [f"{nm}: {t}" for nm, t in calls.get('fallback', {}).items()] + list(calls.get('if', []))
+    if conds:
+        B += ['', 'IF']
+        for c in conds:
+            B += wrap(c, '  · ', '    ')
+    W, seen_w = [], set()
+    for s, nm, sr, beaten, txt, card in dec:
+        sig = ' · '.join(f"{SHORT[x]} {fmt(sr.get(x))}" for x in (WEEK_SIG[:2] if s in ('K', 'DEF') else WEEK_SIG))
+        W.append((nm, why.get(nm) or sig, [b[0] for b in beaten]))
+    for a in adds:
+        if a['name'] not in {w[0] for w in W}:
+            sa = lg.signals(a)
+            W.append((a['name'], why.get(a['name']) or ' · '.join(f"{SHORT[x]} {fmt(sa.get(x))}" for x in WEEK_SIG + ROS_SIG), add_over.get(a['name'], [])))
+    for s, nm, sr, better, txt in kd:
+        W.append((nm + ' kept', why.get(nm) or 'free agents ahead this week on both engines', [b[0] for b in better]))
+    if W:
+        B += ['', 'WHY']
+        for nm, t, alts in W:
+            if nm in seen_w:
+                continue
+            seen_w.add(nm)
+            alts = [re.sub(r' \d+-\d+$', '', x) for x in alts]          # add_over carries 'Name 4-2'
+            B += wrap(f"{nm}: {t}" + (f" (over {', '.join(alts)}: see evidence)" if alts and nm.replace(' kept', '') not in why else ''), '  · ', '    ')
+    notes = calls.get('notes', [])
+    if notes:
+        B += ['', 'NOTE']
+        for n in notes:
+            B += wrap(n, '  · ', '    ')
+    os.makedirs(os.path.join(p, 'renders'), exist_ok=True)
+    evp = os.path.join(p, 'renders', name + '.txt')
+    with open(evp, 'w') as f:
+        f.write(ev_text + '\n')
+    B += ['', 'evidence: ' + evp.replace(os.path.expanduser('~'), '~', 1)]
     body = '\n'.join(B)
     h = hashlib.sha256(body.encode()).hexdigest()[:8]
-    json.dump({'league': L, 'name': name, 'date': date, 'hash': h, 'ts': int(time.time()), 'text': body}, open(os.path.join(p, 'renders', name + '.json'), 'w'), indent=1)
+    json.dump({'league': L, 'name': name, 'date': date, 'hash': h, 'ts': int(time.time()), 'text': body, 'evidence': ev_text}, open(os.path.join(p, 'renders', name + '.json'), 'w'), indent=1)
     print(body)
     print(f'gate ✓ {name} {h}')
 
@@ -886,8 +969,8 @@ POS_MARK = re.compile(r'\((?:[A-Z]{2,3}\s+)?(QB|RB|WR|TE|K|DEF)\b[^)]*\)'
                       r'|\b[A-Z][a-z]+\s+(DEF|D/ST)\b', re.I)
 # a bare lineup line: "QB: First Last", "**WRs: Last and Last**", "- Flex: Last"
 SLOT_LINE = re.compile(r'^\s*(?:[-*]\s*)?\**\s*(QB|RBs?|RB2|WRs?|WR2|TE|Flex|K|DEF|Superflex|W/R/T)\b[^:\n]{0,14}:\s*\**\s*[A-Z][a-z]', re.I)
-# a render-format line pasted without its stamp: '  WR      Name (...' or '  ADD Name (...'
-BLOCK_LINE = re.compile(r'^\s{2}(QB|RB|WR|TE|W/R/T|Q/W/R/T|K|DEF)\s{2,}[A-Z]|^\s{2}(ADD|CLAIM|GIVE) [A-Z]')
+# a render-format line pasted without its stamp: '  WR    *Name · Name', '  1. Add Name (...' (and the older '  ADD Name (...')
+BLOCK_LINE = re.compile(r'^\s{2}(QB|RB|WR|TE|W/R/T|Q/W/R/T|FLEX|SFLEX|K|DEF)\s{1,}\*?[A-Z]|^\s{2}(ADD|CLAIM|GIVE) [A-Z]|^\s{2}\d+\. (Add|Claim|Drop) [A-Z]')
 
 
 def last_turn_blocks(inp):
