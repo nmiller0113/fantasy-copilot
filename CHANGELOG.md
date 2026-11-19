@@ -5,6 +5,54 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.50.0] - 2026-11-18
+
+**The trade math hid bye weeks, and a pass could end without a watch list or a trade search.**
+A trade that sent away a player on bye this week was scored as if his empty week were a loss,
+when the bench fills that week: the deal looked worth +1.8 a week and was worth about +0.1. The
+same evening, waiver players that needed a claim decision and injury designations that needed a
+slot change lived only in the assistant's notes, and no league had been searched for trades
+after the lineups changed.
+
+### Changed
+- **Trade math runs week by week.** Each player scores his projected rate in each remaining week
+  (the next-four projection for the next four weeks, the rest after), except in his bye week,
+  where the bench fills the slot. `render`'s trade check uses it, so its gains are per week of a
+  real lineup.
+- **A certain pending claim counts as landed.** When the user holds waiver priority 1, their first
+  pending claim is applied before any trade math, and the block says so.
+- **WHY names what the signals favored.** When a pick (an add included) loses most signals to
+  another player, the block's reason line names him every time, not only when no reason was
+  written.
+- The procedure (`references/gate.md`): a pass ends with `watch` and with `trades` in every league.
+
+### Fixed
+- **Roster room counts the real roster limit.** An empty starting slot shows as a row on a full
+  roster, so counting rows made a full roster look open: a trade needing a drop never said so,
+  and an add with no drop could pass `render`. The limit now comes from `leagues.json`
+  (`roster`), or else from the size most rival rosters sit at.
+- **Rates span the host's projection window.** The host's rest-of-season projection runs through
+  the last NFL week, one week past the fantasy season, so per-game rates divide by games through
+  it and the sums stop at the fantasy season's last week.
+
+### Added
+- `gate.py watch`: the pass's watch list, written to `watch.md` and printed as a stamped block.
+  Waiver players who beat the weakest droppable bench player on both engines rest of season (a
+  kicker or defense: the starter on both engines this week), with arrival date, the user's
+  priority and the share rostering him, each marked for a claim-or-wait decision; the conditions
+  and fallbacks from the delivered calls; and the pending claims.
+- `gate.py trades LEAGUE [N]`: two-sided trade leads with every rival (the user gains the bar rest
+  of season or over the next four weeks, the partner loses at most half a point a week), one-for-one up to
+  two-for-two, holds respected, a pending claim's player not offered, the engine's trade value
+  where the chart is in the pass, the drops a deal needs. Leads are not calls; the Stop hook blocks a lead line pasted without a
+  stamp.
+
+### Known limits
+- Rates are flat inside each window: a hard matchup inside the next four weeks is averaged in.
+- Injury risk is not in the Yahoo-based trade math; read the engine's injury model for any
+  player in a deal.
+- Only a pending claim at priority 1 counts as landed; an accepted trade still processing does not.
+
 ## [1.49.1] - 2026-11-18
 
 ### Fixed

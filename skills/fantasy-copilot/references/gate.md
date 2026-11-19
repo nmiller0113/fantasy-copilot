@@ -18,8 +18,9 @@ in the user's home folder. With no gate home the hook does nothing.
 ## The gate home
 
 - `leagues.json`: per league key, the host league id, the user's team id, the Draft Sharks
-  league id, the league size, the starting slots in order, and the aliases a chat message may
-  use for it.
+  league id, the league size, the starting slots in order, the active roster limit (`roster`:
+  starters plus bench, injured reserve excluded; an empty starting slot is not an open spot),
+  and the aliases a chat message may use for it.
 - `holds.json`: the user's holds, each with the league, the player, the kind (`drop`, `trade`
   or `both`), the user's own words, and an active flag.
 - `teams.json`: each NFL team code with its nickname and city, because a host may name a
@@ -58,10 +59,28 @@ in the user's home folder. With no gate home the hook does nothing.
 7. `gate.py render LEAGUE [NAME]` fails with a list of problems or prints the block ending
    `gate ✓ NAME <hash>`. The block is short: what the user clicks and by when, the lineup with
    changes marked, the conditions, and one line of reason per pick (the `why` text, or the week
-   signals when none is given). Every signal, role card and override reason goes to
+   signals when none is given), naming any player the signals favored over the pick. Every signal, role card and override reason goes to
    `renders/NAME.txt`, which the block names. The block is pasted to the user verbatim, one
    league per message.
-8. `gate.py close` marks the pass finished.
+8. `gate.py watch` writes the pass's watch list (`watch.md`) and prints it as a stamped block:
+   every waiver player who beats the user's weakest droppable bench player on both engines rest
+   of season (a kicker or defense: the starter, both engines this week), with his arrival date,
+   the user's waiver priority and the share of leagues that roster him; every condition and
+   fallback from the delivered calls; and the pending claims. Each waiver row gets an explicit
+   claim-or-wait call with its priority cost: a player with real production does not reach free
+   agency. Then set reminders at each arrival and at the final injury reports.
+9. `gate.py trades LEAGUE` for every league: two-sided trade leads with every rival (the user
+   gains at least the bar rest of season or over the next four weeks, the partner loses no more
+   than half a point a week rest of season),
+   with the engine's trade value where the league's chart is in the pass. Leads are not calls:
+   a lead reaches the user only through a calls file and `render`, after the chart, role cards
+   and the partner's reason are in.
+10. `gate.py close` marks the pass finished.
+
+Two planning rules hold in `trades` and in every trade render. A pending claim the user is
+certain to win (they hold waiver priority 1) counts as landed, so nothing waits on the day it
+processes. And trade math runs week by week: each player scores his projected rate except in his
+bye week, where the bench fills the slot, so a bye is never compared as a zero.
 
 ## What render refuses
 
@@ -77,7 +96,8 @@ recomputed, the engine's trade value for every player, roster room, and the part
 ## The Stop hook
 
 The hook reads every text block of the turn, verifies each stamped block against the renders
-on file (an edited block fails), and looks for call lines elsewhere once a league is named. A
+on file (an edited block fails; the watch list is stamped too), and looks for call lines
+elsewhere once a league is named, trade-lead lines included. A
 hit blocks the reply; the next reply is judged on its new text and must say the earlier text
 was not a checked call, or carry a stamped block or an INCOMPLETE note. After three blocks in
 a row it lets the reply through with a warning to the user. It cannot catch complete but wrong

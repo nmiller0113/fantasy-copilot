@@ -83,7 +83,9 @@ In-season calls go through a gate (`skills/fantasy-copilot/references/gate.md`):
 collectors that check every page they read and retry, a completeness check that refuses a
 partial pass, a candidate board built on every signal at once, and a renderer that is the only
 way a call is printed. The plugin's Stop hook blocks any reply that carries a call outside a
-rendered block. It does nothing until you create a gate home: a private folder (set
+rendered block. Every pass ends with a watch list (waiver players worth a claim, with arrival
+dates; the conditions and fallbacks in play; pending claims) and a two-sided trade search in
+every league, whose trade math runs week by week with byes filled from the bench. It does nothing until you create a gate home: a private folder (set
 `FANTASY_GATE_HOME`, or use `.fantasy-gate` in your home folder) holding `leagues.json`,
 `holds.json`, `teams.json`, optionally `aliases.json`, and `config.json`. The collectors are
 written for Yahoo Fantasy with Draft Sharks; nothing about your leagues ships in this plugin.

@@ -305,7 +305,7 @@ agree beforehand which league gets full attention.
 - **A league-wide news sweep comes first** (`references/lineups.md`), each week and before any
   pass over about two days after the last. Then every start, sit, add, drop, claim or trade call
   goes through the gate (`references/gate.md`): a pull checked complete, a board on every signal,
-  the call delivered only as the block the gate renders, each naming the item it rests on or none.
+  the call only as the rendered block naming what it rests on, then the watch list and trade leads.
 - **Last priority makes every claim free.** Where the host runs a rolling priority list (a
   successful claim sends the claimant to the back of it; no FAAB), the team holding LAST
   priority pays nothing: a win leaves it last, where it already was, and a loss changes

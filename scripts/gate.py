@@ -12,6 +12,8 @@ valid stamped block.
   gate.py check  [DATE]            completeness -> coverage.json; exit 1 on any FAIL
   gate.py board  LEAGUE [DATE]     lineup holes + multi-signal candidate board per position
   gate.py render LEAGUE [NAME] [DATE]  validate passes/DATE/calls/NAME.json (default LEAGUE); print the stamped block
+  gate.py watch  [DATE]            watch list: waiver arrivals worth a claim-or-wait call, conditions, pending claims -> watch.md
+  gate.py trades LEAGUE [N] [DATE] two-sided trade leads with every rival (top N, default 8); leads, not calls
   gate.py close  [DATE]
   gate.py hook                     Stop hook (hook JSON on stdin)
 DATE defaults to today (local time, or the gate home's config.json "tz"). Week comes from the manifest.
@@ -490,9 +492,108 @@ def team_players(lg, which):
             if not d and ' | ' in l:  # rival rows have no 'slot:' prefix handling difference
                 continue
             if d and d.get('pos') in ('QB', 'RB', 'WR', 'TE'):
-                r = out.setdefault(d['key'], {'name': d['name'], 'pos': d['pos'], 'pos_all': d['pos_all'], 'tag': d.get('tag', ''), 'slot': d['slot'], 'team': d.get('team', '')})
+                r = out.setdefault(d['key'], {'name': d['name'], 'pos': d['pos'], 'pos_all': d['pos_all'], 'tag': d.get('tag', ''), 'slot': d['slot'], 'team': d.get('team', ''), 'bye': num(d.get('Bye'))})
                 r[fld] = num(d.get('Fan Pts')) or 0.0
     return out
+
+
+LAST_WEEK = 17      # the last fantasy week: trade math sums through it
+NFL_LAST = 18       # the host's rest-of-season projection runs through the last NFL week, so rates divide by games through it
+TRADE_BAR = 3.0     # per-week gain a trade must clear without an override
+
+
+def roster_cap(lg):
+    """(active roster limit, source): leagues.json "roster" when set, else the size most rival rosters sit at.
+    Displayed rows are not the limit: an empty starting slot shows as a row on a full roster."""
+    if lg.c.get('roster'):
+        return int(lg.c['roster']), 'leagues.json'
+    counts = []
+    for pid in rivals(lg):
+        n = 0
+        for l in lg.s.get(f'RIVAL {pid[0]} :: {pid[1]} :: ROS', []):
+            d = yrow(l) if ' | ' in l else None
+            if d and d.get('slot') != 'IR':
+                n += 1
+        counts.append(n)
+    if counts:
+        return max(set(counts), key=counts.count), 'most rival rosters'
+    return len([d for d in lg.lineup if d['slot'] != 'IR']), 'roster rows'
+
+
+def _rates(p, week):
+    """(near, far) points a game: the next-4 projection over the next-4 games and the rest over the
+    games after, so a bye week scores 0 and the bench fills it instead of hiding inside a season total."""
+    bye = p.get('bye')
+    near_w = [w for w in range(week, min(week + 3, LAST_WEEK) + 1) if w != bye]
+    far_w = [w for w in range(week + 4, NFL_LAST + 1) if w != bye]
+    ros, n4 = p.get('ros') or 0.0, p.get('n4')
+    if n4 is None or not near_w:
+        r = ros / max(1, len(near_w) + len(far_w))
+        return r, r
+    near = n4 / len(near_w)
+    far = (ros - n4) / len(far_w) if far_w else near
+    return near, max(far, 0.0)
+
+
+def weekly_total(players, slots, week, w_end):
+    """sum of the best lineup for each week from `week` to `w_end`, each player at his rate except in his bye week."""
+    rates = {k: _rates(p, week) for k, p in players.items()}
+    tot, cache = 0.0, {}
+    for w in range(week, min(w_end, LAST_WEEK) + 1):
+        near = w < week + 4
+        off = tuple(sorted(k for k, p in players.items() if p.get('bye') == w))
+        ck = (near, off)
+        if ck not in cache:
+            wk = {k: dict(p, wk=(0.0 if k in off else rates[k][0 if near else 1])) for k, p in players.items()}
+            cache[ck] = best_lineup(wk, slots, 'wk')
+        tot += cache[ck]
+    return tot
+
+
+def trade_gains(lg, me, th, give, get, base=None):
+    """per-week lineup gain for both sides, rest of season and next 4 weeks, byes filled from the bench."""
+    slots = lg.c['slots']
+    me2 = {k: v for k, v in me.items() if k not in give}
+    me2.update({k: th[k] for k in get})
+    th2 = {k: v for k, v in th.items() if k not in get}
+    th2.update({k: me[k] for k in give})
+    W = lg.week
+    n_ros = max(1, LAST_WEEK - W + 1)
+    g = {}
+    for fld, end, n in (('ros', LAST_WEEK, n_ros), ('n4', W + 3, 4)):
+        bm = base[('me', fld)] if base else weekly_total(me, slots, W, end)
+        bt = base[('th', fld)] if base else weekly_total(th, slots, W, end)
+        g['me_' + fld] = (weekly_total(me2, slots, W, end) - bm) / n
+        g['th_' + fld] = (weekly_total(th2, slots, W, end) - bt) / n
+    return g
+
+
+def pending_claim(lg):
+    """the user's first pending waiver claim when it is certain: the user holds waiver priority 1, so even a
+    contested claim goes to them. -> (add_name, drop_name, date label) or None."""
+    head = next((l for l in lg.ytext.split('\n') if l.startswith('HEADER:')), '')
+    pend = next((l for l in lg.ytext.split('\n') if l.startswith('PENDING:')), '')
+    if not re.search(r'Waiver Priority: 1st\b', head):
+        return None
+    m = re.search(r'Waiver 1 \(([^)]*)\): Add (.+?)(?:, Drop (.+?))?(?= View| Waiver \d| Week \d|$)', pend)
+    return (m.group(2).strip(), (m.group(3) or '').strip(), m.group(1)) if m else None
+
+
+def planned_me(lg):
+    """the user's players for planning: the roster with a certain pending claim already applied."""
+    me = team_players(lg, 'me')
+    pc = pending_claim(lg)
+    note = ''
+    if pc:
+        add, drop, when = pc
+        src, r = lg.find(add)
+        if r and src != 'R':
+            if drop:
+                me.pop(key(drop), None)
+            me[r['key']] = {'name': r['name'], 'pos': r.get('pos'), 'pos_all': r.get('pos_all') or [r.get('pos')], 'tag': r.get('tag', ''),
+                            'slot': 'BN', 'team': r.get('team', ''), 'bye': num(r.get('Bye')), 'ros': r.get('y_ros') or 0.0}
+            note = f"counts the pending claim as landed (Add {add}" + (f", Drop {drop}" if drop else '') + f", {when}): you hold waiver priority 1"
+    return me, note
 
 
 def best_lineup(players, slots, fld):
@@ -529,7 +630,8 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
         errs.append(f"trade partner '{tr.get('partner')}' matches {len(partner)} teams in the pull ({', '.join(r[1] for r in rivals(lg))})")
         return lines
     pid = partner[0]
-    me, th = team_players(lg, 'me'), team_players(lg, pid)
+    me, plan_note = planned_me(lg)
+    th = team_players(lg, pid)
     give = [key(n) for n in tr.get('give', [])]
     get = [key(n) for n in tr.get('get', [])]
     if not give or not get:
@@ -567,16 +669,8 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     if any(k not in me for k in give) or any(k not in th for k in get) or len(errs) > nerr:
         return lines
     # DS trade values (league-scored chart, read this pass) for every player in the deal
-    tvc = os.path.join(pdir(lg.date), 'data', f'gate_{lg.date}_tvc_{lg.L}.txt')
-    dsv = {}
-    if os.path.exists(tvc):
-        for l in open(tvc).read().split('\n'):
-            m = re.match(r'^(\d+) \| col\d \| (?:Mine )?(.*?) ([A-Z]{2,3}) (QB|RB|WR|TE)\d+$', l.strip())
-            if m:
-                dsv[key(m.group(2))] = int(m.group(1))
-                dsv.setdefault(surname(m.group(2)) + '|' + TEAMFIX.get(m.group(3), m.group(3)), int(m.group(1)))
-    def dval(d):
-        return dsv.get(d['name'] and key(d['name'])) if key(d['name']) in dsv else dsv.get(surname(d['name']) + '|' + d.get('team', ''))
+    dsv, tvc = tvc_values(lg)
+    dval = lambda d: ds_value(dsv, d)
     vg = [dval(me[k]) for k in give]; vt = [dval(th[k]) for k in get]
     if None in vg or None in vt:
         errs.append(f'trade: DS trade value missing for ' + ', '.join([me[k]['name'] for k, v in zip(give, vg) if v is None] + [th[k]['name'] for k, v in zip(get, vt) if v is None]) + f' (read the DS Trade Value Chart for {lg.L} into {os.path.basename(tvc)})')
@@ -584,29 +678,24 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     if sum(vg) > sum(vt) + 5 and 'trade_value' not in over:
         errs.append(f'trade: you overpay on DS value ({sum(vg)} for {sum(vt)}): bring it into the fair band or override["trade_value"]')
     # roster room: more players in than out needs drops in the same calls file
-    room = len([d for d in lg.lineup if d['slot'] != 'IR']) - len([d for d in lg.lineup if d['slot'] != 'IR' and d.get('key')])
+    room = roster_cap(lg)[0] - len([d for d in lg.lineup if d['slot'] != 'IR' and d.get('key')])
     extra = len(get) - len(give) - room - len(drops)
     if extra > 0:
         errs.append(f'trade: you receive {len(get)} for {len(give)} with {room} open roster spots: name {extra} drop(s) in trade["drops"]')
-    slots = lg.c['slots']
-    me2 = {k: v for k, v in me.items() if k not in give}; me2.update({k: th[k] for k in get})
-    th2 = {k: v for k, v in th.items() if k not in get}; th2.update({k: me[k] for k in give})
-    wk_ros = max(1, 17 - lg.week + 1)
-    g = {}
-    for fld, w in (('ros', wk_ros), ('n4', 4)):
-        g['me_' + fld] = (best_lineup(me2, slots, fld) - best_lineup(me, slots, fld)) / w
-        g['th_' + fld] = (best_lineup(th2, slots, fld) - best_lineup(th, slots, fld)) / w
-    if g['me_ros'] < 3 and 'trade' not in over:
-        errs.append(f"trade: your gain {g['me_ros']:+.1f}/wk rest of season is under the 3/wk bar - override['trade'] with the reason")
+    g = trade_gains(lg, me, th, give, get)
+    if g['me_ros'] < TRADE_BAR and 'trade' not in over:
+        errs.append(f"trade: your gain {g['me_ros']:+.1f}/wk rest of season is under the {TRADE_BAR:g}/wk bar - override['trade'] with the reason")
     if g['th_ros'] < 0 and not tr.get('partner_reason'):
         errs.append(f"trade: {pid[1]} loses {g['th_ros']:+.1f}/wk in lineup points - say their reason in partner_reason")
     lines.append(f"TRADE with {pid[1]} (rival roster read: {len(th)} players)")
+    if plan_note:
+        lines.append('  ' + plan_note)
     tag = lambda d: '%s (%s %s)' % (d['name'], d['team'], d['pos'])
     lines.append('  GIVE ' + ', '.join(tag(me[k]) for k in give) + '  /  GET ' + ', '.join(tag(th[k]) for k in get))
     if drops:
         lines.append('  DROP to make room: ' + ', '.join(tag(d) for d in drops))
     lines.append(f"  DS trade value (league-scored chart): you give {sum(vg)} ({' + '.join(str(v) for v in vg)}), get {sum(vt)} ({' + '.join(str(v) for v in vt)})")
-    lines.append(f"  you: {g['me_ros']:+.1f}/wk rest of season, {g['me_n4']:+.1f}/wk next 4 (best lineup before vs after, Yahoo)")
+    lines.append(f"  you: {g['me_ros']:+.1f}/wk rest of season, {g['me_n4']:+.1f}/wk next 4 (best lineup each week before vs after, Yahoo; byes filled from the bench)")
     lines.append(f"  {pid[1]}: {g['th_ros']:+.1f}/wk rest of season, {g['th_n4']:+.1f}/wk next 4")
     if tr.get('partner_reason'):
         lines.append(f"  their reason: {tr['partner_reason']}")
@@ -692,10 +781,10 @@ def cmd_render(L, date, name=None):
                         errs.append(f'add {a} over {dname}: loses {wb}-{wa} on {n} signals - needs override reason')
                 elif not mv.get('drop_reason'):
                     errs.append(f'drop {dname} ({sd_.get("pos")}) for {a} ({sa_.get("pos")}): cross-position, needs drop_reason')
-    cap = len([d for d in lg.lineup if d['slot'] != 'IR'])
+    cap, cap_src = roster_cap(lg)
     act = len([k for k, r in roster.items() if r.get('slot') != 'IR'])
     if act > cap:
-        errs.append(f'roster {act} active > capacity {cap}: an add needs a drop')
+        errs.append(f'roster {act} active > the {cap}-player limit ({cap_src}): an add needs a drop')
     if adds:
         for d in lg.lineup:
             if d['slot'] == 'IR' and d.get('key') in roster and not d.get('tag'):
@@ -920,7 +1009,8 @@ def cmd_render(L, date, name=None):
     W, seen_w = [], set()
     for s, nm, sr, beaten, txt, card in dec:
         sig = ' · '.join(f"{SHORT[x]} {fmt(sr.get(x))}" for x in (WEEK_SIG[:2] if s in ('K', 'DEF') else WEEK_SIG))
-        W.append((nm, why.get(nm) or sig, [b[0] for b in beaten]))
+        alts = [b[0] for b in beaten] + [x for x in add_over.get(nm, []) if x.rsplit(' ', 1)[0] not in [b[0] for b in beaten]]
+        W.append((nm, why.get(nm) or sig, alts))
     for a in adds:
         if a['name'] not in {w[0] for w in W}:
             sa = lg.signals(a)
@@ -934,7 +1024,7 @@ def cmd_render(L, date, name=None):
                 continue
             seen_w.add(nm)
             alts = [re.sub(r' \d+-\d+$', '', x) for x in alts]          # add_over carries 'Name 4-2'
-            B += wrap(f"{nm}: {t}" + (f" (over {', '.join(alts)}: see evidence)" if alts and nm.replace(' kept', '') not in why else ''), '  · ', '    ')
+            B += wrap(f"{nm}: {t}" + (f" (signals favor {', '.join(alts)}; the reason is in the evidence)" if alts else ''), '  · ', '    ')
     notes = calls.get('notes', [])
     if notes:
         B += ['', 'NOTE']
@@ -950,6 +1040,176 @@ def cmd_render(L, date, name=None):
     json.dump({'league': L, 'name': name, 'date': date, 'hash': h, 'ts': int(time.time()), 'text': body, 'evidence': ev_text}, open(os.path.join(p, 'renders', name + '.json'), 'w'), indent=1)
     print(body)
     print(f'gate ✓ {name} {h}')
+
+
+def tvc_values(lg):
+    """the league's Draft Sharks trade value chart for this pass -> ({key: value}, path); empty when not read."""
+    tvc = os.path.join(pdir(lg.date), 'data', f'gate_{lg.date}_tvc_{lg.L}.txt')
+    dsv = {}
+    if os.path.exists(tvc):
+        for l in open(tvc).read().split('\n'):
+            m = re.match(r'^(\d+) \| col\d \| (?:Mine )?(.*?) ([A-Z]{2,3}) (QB|RB|WR|TE)\d+$', l.strip())
+            if m:
+                dsv[key(m.group(2))] = int(m.group(1))
+                dsv.setdefault(surname(m.group(2)) + '|' + TEAMFIX.get(m.group(3), m.group(3)), int(m.group(1)))
+    return dsv, tvc
+
+
+def ds_value(dsv, d):
+    return dsv.get(key(d['name'])) if key(d['name']) in dsv else dsv.get(surname(d['name']) + '|' + d.get('team', ''))
+
+
+def cmd_trades(L, date, top=8):
+    """two-sided trade leads with every rival: deals where your lineup gains and theirs does not lose,
+    week by week with byes filled from the bench. Leads only: a lead reaches the user through a calls file and render."""
+    import itertools
+    lg = League(L, date)
+    holds = [h for h in jload(os.path.join(GHOME, 'holds.json'))['holds'] if h['active'] and h['league'] == L]
+    held = {hold_key(lg, h) for h in holds if h['kind'] in ('trade', 'both')}
+    me, note = planned_me(lg)
+    slots, W = lg.c['slots'], lg.week
+    n_ros = max(1, LAST_WEEK - W + 1)
+    dsv, tvc = tvc_values(lg)
+    room = roster_cap(lg)[0] - len([d for d in lg.lineup if d['slot'] != 'IR' and d.get('key')])
+    print(f'== {L} trade leads, week {W} ({date}). Yahoo projections, best lineup each week, byes filled from the bench; '
+          f'bar {TRADE_BAR:g}/wk. DS trade values: ' + ('read' if dsv else f'not read (chart: {os.path.basename(tvc)})') + '.')
+    if note:
+        print('   ' + note)
+    print('   Leads, not calls: a lead reaches the user only through a calls file and render.')
+    pc = pending_claim(lg)
+    pend = key(pc[0]) if pc else None      # not on the roster until the claim processes
+    mine = [k for k, v in me.items() if k not in held and k != pend and not out_tag(v.get('tag')) and (v.get('ros') or 0) > 0]
+    bm = {f: weekly_total(me, slots, W, e) for f, e in (('ros', LAST_WEEK), ('n4', W + 3))}
+    leads, nriv = [], 0
+    for pid in rivals(lg):
+        th = team_players(lg, pid)
+        if not th:
+            continue
+        nriv += 1
+        bt = {f: weekly_total(th, slots, W, e) for f, e in (('ros', LAST_WEEK), ('n4', W + 3))}
+        theirs = [k for k, v in th.items() if not out_tag(v.get('tag')) and (v.get('ros') or 0) > 0]
+        for ng, nt in ((1, 1), (1, 2), (2, 1), (2, 2)):
+            for G in itertools.combinations(mine, ng):
+                for T in itertools.combinations(theirs, nt):
+                    me2 = {k: v for k, v in me.items() if k not in G}
+                    me2.update({k: th[k] for k in T})
+                    gm = (weekly_total(me2, slots, W, LAST_WEEK) - bm['ros']) / n_ros
+                    if gm < 0:
+                        continue
+                    gm4 = (weekly_total(me2, slots, W, W + 3) - bm['n4']) / 4
+                    if gm < TRADE_BAR and gm4 < TRADE_BAR:
+                        continue
+                    th2 = {k: v for k, v in th.items() if k not in T}
+                    th2.update({k: me[k] for k in G})
+                    gt = (weekly_total(th2, slots, W, LAST_WEEK) - bt['ros']) / n_ros
+                    if gt < -0.5:
+                        continue
+                    gt4 = (weekly_total(th2, slots, W, W + 3) - bt['n4']) / 4
+                    vg = [ds_value(dsv, me[k]) for k in G]
+                    vt = [ds_value(dsv, th[k]) for k in T]
+                    leads.append((gm, gm4, gt, gt4, pid[1], [me[k] for k in G], [th[k] for k in T], vg, vt))
+    print(f'   rivals read: {nriv}/{cfg()[L]["teams"] - 1}; leads: {len(leads)}')
+    if nriv != cfg()[L]['teams'] - 1:
+        print(f'!! INCOMPLETE: {nriv} rival rosters in the pull for {cfg()[L]["teams"] - 1} rivals: re-pull before trusting this list')
+    seen, shown = set(), 0
+    for gm, gm4, gt, gt4, partner, G, T, vg, vt in sorted(leads, key=lambda x: -(min(x[0], x[1]) + max(0.0, x[2]))):
+        sig = (partner, tuple(sorted(p['name'] for p in T)))
+        sig2 = (partner, tuple(sorted(p['name'] for p in G)))
+        if sig in seen or sig2 in seen:
+            continue
+        seen.update((sig, sig2))
+        tag = lambda p: f"{p['name']} ({p.get('team')} {p.get('pos')})"
+        ds = ('DS ' + (f"{sum(vg)} for {sum(vt)}" + (' (you overpay)' if sum(vg) > sum(vt) + 5 else ''))) if None not in vg + vt else 'DS ?'
+        drops = len(T) - len(G) - room
+        print(f"  you {gm:+.1f}/wk ROS {gm4:+.1f}/wk next 4 | {partner[:22]} {gt:+.1f} ROS {gt4:+.1f} next 4 | {ds}"
+              + (f' | needs {drops} drop' if drops > 0 else ''))
+        print(f"     give {', '.join(tag(p) for p in G)}  /  get {', '.join(tag(p) for p in T)}")
+        shown += 1
+        if shown >= top:
+            break
+
+
+def _arrival(status, year):
+    m = re.match(r'W \((\w{3}) (\d+)\)', status or '')
+    if not m:
+        return status or ''
+    d = datetime.datetime.strptime(f'{m.group(1)} {m.group(2)} {year}', '%b %d %Y')
+    return d.strftime('%A %Y-%m-%d')
+
+
+def cmd_watch(date):
+    """the pass's watch list: waiver players worth a claim-or-wait call, the injury and condition table from the
+    delivered calls, and pending claims. Prints it and writes passes/DATE/watch.md."""
+    p = pdir(date)
+    year = int(date[:4])
+    holds_all = [h for h in jload(os.path.join(GHOME, 'holds.json'))['holds'] if h['active']]
+    renders = {}
+    for fn in sorted(os.listdir(os.path.join(p, 'renders'))) if os.path.isdir(os.path.join(p, 'renders')) else []:
+        if fn.endswith('.json'):
+            r = jload(os.path.join(p, 'renders', fn))
+            if r.get('league') and r.get('ts', 0) >= renders.get(r['league'], {}).get('ts', 0) and 'trade' not in r.get('name', '').lower():
+                renders[r['league']] = r
+    out = [f'# Watch list, week {jload(os.path.join(p, "manifest.json"), {}).get("week", "?")} (pass {date})', '',
+           'Every waiver row gets an explicit claim-or-wait call with its priority cost: a player with real',
+           'production does not reach free agency. Waiver arrivals are the host\'s W (date) labels: the overnight',
+           'run that morning hands the player to the best claim, or makes him a free agent.', '',
+           '## Waiver players', '',
+           '| League | Player | Arrives | Beats | Your priority | % rostered | Last 4 /g | Claim or wait? |', '|---|---|---|---|---|---|---|---|']
+    pend_lines, cond = [], []
+    for L in cfg():
+        lg = League(L, date)
+        held = {hold_key(lg, h) for h in holds_all if h['league'] == L and h['kind'] in ('drop', 'both')}
+        head = next((l for l in lg.ytext.split('\n') if l.startswith('HEADER:')), '')
+        pri = (re.search(r'Waiver Priority: (\d+\w*)', head) or [None, '?'])[1]
+        pend = next((l for l in lg.ytext.split('\n') if l.startswith('PENDING:')), '')
+        pdrops = set()
+        for m in re.finditer(r'Waiver \d+ \(([^)]*)\): Add (.+?)(?:, Drop (.+?))?(?= View| Waiver \d| Week \d|$)', pend):
+            if m.group(3):
+                pdrops.add(key(m.group(3)))
+            pend_lines.append(f'- {L}: claim Add {m.group(2)}' + (f', Drop {m.group(3)}' if m.group(3) else '') + f', processes {_arrival("W (" + m.group(1) + ")", year)}'
+                              + (' (certain: priority 1)' if pri == '1st' and m.group(0).startswith('Waiver 1 ') else ''))
+        one_qb = lg.c['slots'].count('QB') == 1 and 'Q/W/R/T' not in lg.c['slots']
+        nqb = len([r for r in lg.R.values() if r.get('pos') == 'QB'])
+        bench = [r for k, r in lg.R.items() if r.get('slot') == 'BN' and k not in held and k not in pdrops and not out_tag(r.get('tag'))
+                 and r.get('pos') not in ('K', 'DEF') and lg.signals(r).get('y_ros') is not None and lg.signals(r).get('ds_ros') is not None]
+        weak = min(bench, key=lambda r: lg.signals(r)['y_ros']) if bench else None
+        for k, r in lg.P.items():
+            st = r.get('status') or ''
+            if not st.startswith('W') or out_tag(r.get('tag')):
+                continue
+            s = lg.signals(r)
+            beats = ''
+            if r.get('pos') in ('K', 'DEF'):
+                cur = next((x for x in lg.R.values() if x.get('slot') == r.get('pos')), None)
+                if cur:
+                    cs = lg.signals(cur)
+                    if all((s.get(x) is not None and cs.get(x) is not None and s[x] > cs[x]) for x in ('y_wk', 'ds_wk')):
+                        beats = f"{cur['name']} this week (Yahoo {fmt(s['y_wk'])} v {fmt(cs['y_wk'])}, DS {fmt(s['ds_wk'])} v {fmt(cs['ds_wk'])})"
+            elif weak and not (r.get('pos') == 'QB' and one_qb and nqb >= 2):
+                ws = lg.signals(weak)
+                if s.get('y_ros') is not None and s.get('ds_ros') is not None and s['y_ros'] > ws['y_ros'] and s['ds_ros'] > ws['ds_ros']:
+                    beats = f"{weak['name']} rest of season (Yahoo {fmt(s['y_ros'])} v {fmt(ws['y_ros'])}, DS {fmt(s['ds_ros'])} v {fmt(ws['ds_ros'])})"
+            if beats:
+                out.append(f"| {L} | {r['name']} ({r.get('team')} {r.get('pos')}) | {_arrival(st, year)} | {beats} | {pri} | {r.get('% Ros', '?')} | {fmt(s.get('l4g'))} | DECIDE |")
+        rec = renders.get(L)
+        if rec:
+            c = jload(os.path.join(p, 'calls', rec['name'] + '.json'), {})
+            for nm, t in c.get('fallback', {}).items():
+                src, r = lg.find(nm)
+                cond.append(f"| {L} | {nm} | {t} | {(r or {}).get('kick', '?') if r else '?'} |")
+            for t in c.get('if', []) if isinstance(c.get('if', []), list) else [c.get('if')]:
+                cond.append(f'| {L} | - | {t} | - |')
+    out += ['', '## Injuries and conditions (from the delivered calls)', '', '| League | Player | If | His kickoff |', '|---|---|---|---|'] + (cond or ['| - | - | none | - |'])
+    out += ['', '## Pending claims', ''] + (pend_lines or ['- none'])
+    out += ['', 'Then set a reminder at each arrival and at the final injury reports, and run `trades` for every league.']
+    body = '\n'.join(out)
+    open(os.path.join(p, 'watch.md'), 'w').write(body + '\n')
+    h = hashlib.sha256(body.encode()).hexdigest()[:8]
+    os.makedirs(os.path.join(p, 'renders'), exist_ok=True)
+    json.dump({'league': 'watch', 'name': 'watch', 'date': date, 'hash': h, 'ts': int(time.time()), 'text': body},
+              open(os.path.join(p, 'renders', 'watch.json'), 'w'), indent=1)
+    print(body)
+    print(f'gate ✓ watch {h}')
 
 
 def cmd_close(date):
@@ -970,7 +1230,7 @@ POS_MARK = re.compile(r'\((?:[A-Z]{2,3}\s+)?(QB|RB|WR|TE|K|DEF)\b[^)]*\)'
 # a bare lineup line: "QB: First Last", "**WRs: Last and Last**", "- Flex: Last"
 SLOT_LINE = re.compile(r'^\s*(?:[-*]\s*)?\**\s*(QB|RBs?|RB2|WRs?|WR2|TE|Flex|K|DEF|Superflex|W/R/T)\b[^:\n]{0,14}:\s*\**\s*[A-Z][a-z]', re.I)
 # a render-format line pasted without its stamp: '  WR    *Name · Name', '  1. Add Name (...' (and the older '  ADD Name (...')
-BLOCK_LINE = re.compile(r'^\s{2}(QB|RB|WR|TE|W/R/T|Q/W/R/T|FLEX|SFLEX|K|DEF)\s{1,}\*?[A-Z]|^\s{2}(ADD|CLAIM|GIVE) [A-Z]|^\s{2}\d+\. (Add|Claim|Drop) [A-Z]')
+BLOCK_LINE = re.compile(r'^\s{2}(QB|RB|WR|TE|W/R/T|Q/W/R/T|FLEX|SFLEX|K|DEF)\s{1,}\*?[A-Z]|^\s{2}(ADD|CLAIM|GIVE) [A-Z]|^\s{2}\d+\. (Add|Claim|Drop) [A-Z]|^\s*give [A-Z].*\s/\s+get [A-Z]')
 
 
 def last_turn_blocks(inp):
@@ -1136,6 +1396,10 @@ def main():
         return cmd_board(rest[0], date)
     if c == 'render':
         return cmd_render(rest[0], date, rest[1] if len(rest) > 1 else None)
+    if c == 'trades':
+        return cmd_trades(rest[0], date, int(rest[1]) if len(rest) > 1 else 8)
+    if c == 'watch':
+        return cmd_watch(date)
     if c == 'close':
         return cmd_close(date)
     print(__doc__); sys.exit(2)
