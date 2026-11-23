@@ -58,7 +58,13 @@ in the user's home folder. With no gate home the hook does nothing.
    and optionally a one-line reason per pick (`why`) and conditions to watch (`if`). An offer the
    user received carries `"incoming": true` and `"starts_week"`, the week the host's offer page
    says it takes effect: its block is headed as the other manager's offer, and the reason line
-   says why they made it. `starts_week` may be set on a trade the user sends too.
+   says why they made it. `starts_week` may be set on a trade the user sends too. Name every
+   trade's `call`: `accept`, `decline` or `counter` for an offer received, `send` or
+   `don't send` for a trade the user would propose (without one, the header says only whose
+   move it is). The block's header carries it
+   (`TRADE OFFER from <manager> (they sent it) · call: decline`, `TRADE PROPOSAL to <manager>
+   (not sent) · call: don't send`), so the header never reads as an instruction the call
+   does not give.
    One card per player means the same evidence in every league.
 7. `gate.py render LEAGUE [NAME]` fails with a list of problems or prints the block ending
    `gate ✓ NAME <hash>`. The block is short: what the user clicks and by when, the lineup with
@@ -98,7 +104,8 @@ so no horizon counts a week before it.
 ## What render refuses
 
 An incoming offer without `starts_week`, a `starts_week` outside this week through the last
-week of the season, and an `incoming` that is not true or false.
+week of the season, an `incoming` that is not true or false, and a `call` that is not one of
+the calls for its direction.
 
 An unfilled starting slot; a starter on bye or out; a questionable starter with no fallback; a
 flex starter who kicks off before a starter he could swap with; an add that is not a free agent

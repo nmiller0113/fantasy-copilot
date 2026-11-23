@@ -5,6 +5,21 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.54.0] - 2026-11-22
+
+**A trade block's header states the call, and never tells the user to send a trade.**
+1.53.0 fixed the header for offers received, but a proposal still read "TRADE (you send it)" even when the call was not
+to send it. The user: "then why the [...] did you say YOU SEND IT again?!?!"
+
+### Changed
+- A trade the user would propose is headed `TRADE PROPOSAL to <manager> (not sent)`; "TRADE (you send it)" is gone.
+- A trade names its `call` (`accept`, `decline` or `counter` for an offer received; `send` or `don't send` for a
+  proposal), and the header carries it: `TRADE OFFER from <manager> (they sent it) · call: decline`,
+  `TRADE PROPOSAL to <manager> (not sent) · call: don't send`. Without a call the header says only whose move it is.
+
+### Added
+- `render` refuses a `call` that is not one of the calls for the trade's direction. `references/gate.md` documents it.
+
 ## [1.53.0] - 2026-11-22
 
 **An offer the user received is shown as the other manager's offer, and trade gains start the week the trade takes effect.**

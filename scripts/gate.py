@@ -509,6 +509,7 @@ def team_players(lg, which):
 
 
 LAST_WEEK = 17      # the last fantasy week: trade math sums through it
+TRADE_CALLS = {True: ('accept', 'decline', 'counter'), False: ('send', "don't send")}   # a trade's call: offer received / trade to send
 NFL_LAST = 18       # the host's rest-of-season projection runs through the last NFL week, so rates divide by games through it
 
 
@@ -838,6 +839,11 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
         sw = None
     elif sw is None and incoming:
         errs.append('trade: an incoming offer needs starts_week, the week the host says it takes effect (read it on the offer page)')
+    # the call, printed in the block's header so the header can never read as a different instruction
+    allowed = TRADE_CALLS[incoming]
+    if 'call' in tr and tr.get('call') not in allowed:
+        errs.append(f"trade: call must be one of {', '.join(repr(c) for c in allowed)} for "
+                    + ('an offer you received' if incoming else 'a trade you would send') + f" (got {tr.get('call')!r})")
     g = trade_gains(lg, me, th, give, get, start=sw)
     if not (tr.get('partner_reason') or '').strip():
         errs.append(f"trade: say why {pid[1]} " + ('made this offer (what it fills for them)' if incoming else 'would say yes (their needs, what the deal fills for them)') + ' in partner_reason')
@@ -1147,11 +1153,14 @@ def cmd_render(L, date, name=None):
             t = (('Claim ' if mv.get('claim') else 'Add ') + f"{a} ({tg(ra)})" if a else '') + ((' · drop ' if a else 'Drop ') + f"{dn} ({tg(rd)})" if dn else '')
             B += wrap(t + (f"  by {mv['when'].replace('before ', '')}" if mv.get('when') else ''), f'  {i}. ', '     ')
     if trade_lines:
+        m = re.match(r'TRADE with (.+?) \(rival roster read', trade_lines[0].strip())
+        who = m.group(1) if m else calls['trade'].get('partner')
+        call = calls['trade'].get('call')
         if calls['trade'].get('incoming') is True:
-            m = re.match(r'TRADE with (.+?) \(rival roster read', trade_lines[0].strip())
-            B += ['', f"TRADE OFFER from {m.group(1) if m else calls['trade'].get('partner')} (they sent it: you accept or decline)"]
+            head = f"TRADE OFFER from {who} (they sent it" + (f") · call: {call}" if call else ": you accept or decline)")
         else:
-            B += ['', 'TRADE (you send it)']
+            head = f"TRADE PROPOSAL to {who} (not sent" + (f") · call: {call}" if call else ": yours to send or not)")
+        B += ['', head]
         for t in trade_lines:
             if '[read:' not in t:
                 B += wrap(re.sub(r'^TRADE with ', 'with ', t.strip()), '  ', '     ')
