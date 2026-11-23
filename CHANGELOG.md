@@ -5,6 +5,26 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.53.0] - 2026-11-22
+
+**An offer the user received is shown as the other manager's offer, and trade gains start the week the trade takes effect.**
+The user, after an incoming offer was headed "TRADE (you send it)" twice in one day: "fix [the] plugin as well as the
+always stating I made the trade offer".
+
+### Fixed
+- **Incoming offers.** A calls file's trade takes `"incoming": true`. Its block is headed
+  `TRADE OFFER from <manager> (they sent it: you accept or decline)` instead of `TRADE (you send it)`, and the partner
+  line reads "why they offered it". Trades the user sends are unchanged.
+- **Gains from the week the trade takes effect.** A trade takes `"starts_week"`, the week the host says it processes
+  for. The first horizon becomes "week N (first week it counts)" and the weeks until the playoffs, the playoff weeks and
+  rest of season are all counted from that week, with a "takes effect week N" line. Before, an offer that processed next
+  week was credited with this week's swing: one offer read +2.1 a week until the playoffs that was +0.2 from the week it
+  would actually start.
+
+### Added
+- `render` refuses an incoming offer without `starts_week`, a `starts_week` outside this week through the season's
+  last week, and an `incoming` that is not true or false. `references/gate.md` documents both fields.
+
 ## [1.52.0] - 2026-11-19
 
 **Trades are read on every dimension: standings, the playoff weeks, and injured stars both ways.**

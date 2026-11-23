@@ -55,7 +55,10 @@ in the user's home folder. With no gate home the hook does nothing.
 6. Write one role card per player for the pass (as-of date, role line, the sources actually
    read) and a calls file per league: moves, lineup, fallbacks for questionable starters,
    overrides with reasons, holds lifted in the user's words, a trade with the partner's reason,
-   and optionally a one-line reason per pick (`why`) and conditions to watch (`if`).
+   and optionally a one-line reason per pick (`why`) and conditions to watch (`if`). An offer the
+   user received carries `"incoming": true` and `"starts_week"`, the week the host's offer page
+   says it takes effect: its block is headed as the other manager's offer, and the reason line
+   says why they made it. `starts_week` may be set on a trade the user sends too.
    One card per player means the same evidence in every league.
 7. `gate.py render LEAGUE [NAME]` fails with a list of problems or prints the block ending
    `gate ✓ NAME <hash>`. The block is short: what the user clicks and by when, the lineup with
@@ -88,9 +91,14 @@ in the user's home folder. With no gate home the hook does nothing.
 Two planning rules hold in `trades` and in every trade render. A pending claim the user is
 certain to win (they hold waiver priority 1) counts as landed, so nothing waits on the day it
 processes. And trade math runs week by week: each player scores his projected rate except in his
-bye week, where the bench fills the slot, so a bye is never compared as a zero.
+bye week, where the bench fills the slot, so a bye is never compared as a zero. In a trade render
+it starts at the trade's `starts_week`: a deal that processes next week earns nothing this week,
+so no horizon counts a week before it.
 
 ## What render refuses
+
+An incoming offer without `starts_week`, a `starts_week` outside this week through the last
+week of the season, and an `incoming` that is not true or false.
 
 An unfilled starting slot; a starter on bye or out; a questionable starter with no fallback; a
 flex starter who kicks off before a starter he could swap with; an add that is not a free agent

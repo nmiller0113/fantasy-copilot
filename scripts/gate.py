@@ -561,15 +561,16 @@ def weekly_total(players, slots, week, w_end, w_start=None):
     return tot
 
 
-def horizons(lg):
-    """(field, first week, last week, weeks): this week, next 4, the playoff weeks (when leagues.json names them and
-    they are still ahead), rest of season."""
-    W = lg.week
+def horizons(lg, start=None):
+    """(field, first week, last week, weeks): the first week, next 4, the playoff weeks (when leagues.json names them
+    and they are still ahead), rest of season. `start` is the week a trade takes effect (default: this week); no
+    horizon counts a week before it, since a trade that processes next week earns nothing this week."""
+    W = max(lg.week, int(start)) if start else lg.week
     po = (lg.c.get('playoffs') or {}).get('weeks')
     out = [('wk', W, W, 1)]
     if po and po[0] - 1 >= W:
         out.append(('rs', W, po[0] - 1, po[0] - W))          # the rest of the regular season: what the race is decided on
-    else:
+    elif not (po and W > lg.week):                            # a trade that starts in the playoff weeks has no regular season left
         out.append(('n4', W, W + 3, 4))
     if po and po[1] >= W:
         a = max(po[0], W)
@@ -612,12 +613,15 @@ def race(lg, tid):
     return cls, f"{txt} ({st}; playoffs weeks {po['weeks'][0]}-{po['weeks'][1]})"
 
 
-def gains_text(g, side, lg):
+def gains_text(g, side, lg, start=None):
     """'+1.0 this week, +0.4/wk until the playoffs (weeks 11-15), +2.0/wk playoff weeks 16-17, +1.0/wk rest of season'
-    (next 4 instead of the weeks until the playoffs when the league's playoff format is not set)."""
-    lab = {'wk': ' this week', 'n4': '/wk next 4', 'ros': '/wk rest of season'}
+    (next 4 instead of the weeks until the playoffs when the league's playoff format is not set). With a later
+    `start` (the week a trade takes effect) the first part reads 'week 12 (first week it counts)'."""
+    hz = horizons(lg, start)
+    lab = {'wk': ' this week' if hz[0][1] == lg.week else f" week {hz[0][1]} (first week it counts)",
+           'n4': '/wk next 4', 'ros': '/wk rest of season'}
     parts = []
-    for fld, a, b, n in horizons(lg):
+    for fld, a, b, n in hz:
         v = g.get(f'{side}_{fld}')
         if v is None:
             continue
@@ -626,9 +630,9 @@ def gains_text(g, side, lg):
     return ', '.join(parts)
 
 
-def trade_gains(lg, me, th, give, get, base=None):
-    """per-week lineup gain for both sides on every horizon (this week, next 4, playoff weeks, rest of season), byes
-    filled from the bench."""
+def trade_gains(lg, me, th, give, get, base=None, start=None):
+    """per-week lineup gain for both sides on every horizon (the first week, next 4, playoff weeks, rest of season),
+    byes filled from the bench, counted from `start` (the week the trade takes effect; default this week)."""
     slots = lg.c['slots']
     me2 = {k: v for k, v in me.items() if k not in give}
     me2.update({k: th[k] for k in get})
@@ -636,7 +640,7 @@ def trade_gains(lg, me, th, give, get, base=None):
     th2.update({k: me[k] for k in give})
     W = lg.week
     g = {}
-    for fld, a, end, n in horizons(lg):
+    for fld, a, end, n in horizons(lg, start):
         bm = base[('me', fld)] if base else weekly_total(me, slots, W, end, a)
         bt = base[('th', fld)] if base else weekly_total(th, slots, W, end, a)
         g['me_' + fld] = (weekly_total(me2, slots, W, end, a) - bm) / n
@@ -823,9 +827,20 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     extra = len(get) - len(give) - room - len(drops)
     if extra > 0:
         errs.append(f'trade: you receive {len(get)} for {len(give)} with {room} open roster spots: name {extra} drop(s) in trade["drops"]')
-    g = trade_gains(lg, me, th, give, get)
+    # the week the trade takes effect: an offer the user received names it (the host's offer page says when it
+    # processes); no gain is counted for a week before it
+    incoming = tr.get('incoming') is True
+    if 'incoming' in tr and not isinstance(tr.get('incoming'), bool):
+        errs.append('trade: incoming must be true (an offer the user received) or false')
+    sw = tr.get('starts_week')
+    if sw is not None and (isinstance(sw, bool) or not isinstance(sw, int) or not lg.week <= sw <= LAST_WEEK):
+        errs.append(f'trade: starts_week must be a week from {lg.week} to {LAST_WEEK} (got {sw!r})')
+        sw = None
+    elif sw is None and incoming:
+        errs.append('trade: an incoming offer needs starts_week, the week the host says it takes effect (read it on the offer page)')
+    g = trade_gains(lg, me, th, give, get, start=sw)
     if not (tr.get('partner_reason') or '').strip():
-        errs.append(f"trade: say why {pid[1]} would say yes (their needs, what the deal fills for them) in partner_reason")
+        errs.append(f"trade: say why {pid[1]} " + ('made this offer (what it fills for them)' if incoming else 'would say yes (their needs, what the deal fills for them)') + ' in partner_reason')
     th2 = {k: v for k, v in th.items() if k not in get}
     th2.update({k: me[k] for k in give})
     needs = their_needs(lg, league_starters(lg), pid, th2)
@@ -846,13 +861,15 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     yg, yt = sum(me[k].get('ros') or 0 for k in give), sum(th[k].get('ros') or 0 for k in get)
     lines.append(f"  totals: DS {sum(vg)} given v {sum(vt)} received ({abs(dv)} = {100 * abs(dv) / max(1, sum(vg) + sum(vt)):.0f}% of the deal, "
                  + ('even' if dv == 0 else 'you pay more' if dv > 0 else 'they pay more') + f"); Yahoo rest of season {yg:.0f} given v {yt:.0f} received")
-    lines.append(f"  you: {gains_text(g, 'me', lg)} (best lineup each week before vs after, Yahoo; byes filled from the bench)")
-    lines.append(f"  {pid[1]}: {gains_text(g, 'th', lg)}")
+    if sw and sw > lg.week:
+        lines.append(f"  takes effect week {sw}: weeks before it are not counted")
+    lines.append(f"  you: {gains_text(g, 'me', lg, sw)} (best lineup each week before vs after, Yahoo; byes filled from the bench)")
+    lines.append(f"  {pid[1]}: {gains_text(g, 'th', lg, sw)}")
     lines.append(f"  standings: you {race(lg, lg.c['team'])[1]}; {pid[1]} {race(lg, pid[0])[1]}")
     lines.append('  ' + needs[0])
     lines.append('  ' + needs[1])
     if tr.get('partner_reason'):
-        lines.append(f"  why they would say yes: {tr['partner_reason']}")
+        lines.append(f"  {'why they offered it' if incoming else 'why they would say yes'}: {tr['partner_reason']}")
     for f in flags:
         lines.append('  flag: ' + f)
     if over.get('trade'):
@@ -1130,7 +1147,11 @@ def cmd_render(L, date, name=None):
             t = (('Claim ' if mv.get('claim') else 'Add ') + f"{a} ({tg(ra)})" if a else '') + ((' · drop ' if a else 'Drop ') + f"{dn} ({tg(rd)})" if dn else '')
             B += wrap(t + (f"  by {mv['when'].replace('before ', '')}" if mv.get('when') else ''), f'  {i}. ', '     ')
     if trade_lines:
-        B += ['', 'TRADE (you send it)']
+        if calls['trade'].get('incoming') is True:
+            m = re.match(r'TRADE with (.+?) \(rival roster read', trade_lines[0].strip())
+            B += ['', f"TRADE OFFER from {m.group(1) if m else calls['trade'].get('partner')} (they sent it: you accept or decline)"]
+        else:
+            B += ['', 'TRADE (you send it)']
         for t in trade_lines:
             if '[read:' not in t:
                 B += wrap(re.sub(r'^TRADE with ', 'with ', t.strip()), '  ', '     ')
