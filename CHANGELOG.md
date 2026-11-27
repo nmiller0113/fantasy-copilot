@@ -5,6 +5,17 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.55.1] - 2026-11-27
+
+**Two checks that refused correct work on a Friday pickup pass.**
+
+### Fixed
+- `render` refused a lineup whose starter was tagged out or questionable after his game was already final (a player
+  carted off on Thursday), though that slot is scored and locked. A starter whose game is final is no longer checked
+  for an out tag or a missing fallback, and his slot is no longer treated as a hole to fill (`render` and `board`).
+- `check` failed a league for a rostered player with a fraction of a point over the last four weeks (a backup
+  quarterback's kneel-down) and no games-played row. Under a point is no longer counted as production that needs one.
+
 ## [1.55.0] - 2026-11-27
 
 **A trade that leaves a starter without a trustworthy player behind him no longer reaches the user, and the trade

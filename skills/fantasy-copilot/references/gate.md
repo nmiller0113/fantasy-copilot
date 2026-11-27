@@ -45,7 +45,8 @@ in the user's home folder. With no gate home the hook does nothing.
 3. `gate.py ingest` copies the collector output into the pass; a missing league fails.
 4. `gate.py check` refuses the pass on any failed coverage line, a team count that differs from
    the league size, a section under its row floor, a stale engine sync, an engine roster that
-   differs from the host roster, or a rostered player with real points and no games played. A
+   differs from the host roster, or a rostered player with real points (more than 15 this season, or a point or more over the last four
+   weeks) and no games played. A
    failure is re-pulled, or the call that depends on it goes to the user as INCOMPLETE, naming
    the gap. It is never answered from partial data.
 5. `gate.py board LEAGUE` shows the lineup holes and, for each, the bench plus the top free
@@ -120,7 +121,8 @@ An incoming offer without `starts_week`, a `starts_week` outside this week throu
 week of the season, an `incoming` that is not true or false, and a `call` that is not one of
 the calls for its direction.
 
-An unfilled starting slot; a starter on bye or out; a questionable starter with no fallback; a
+An unfilled starting slot; a starter on bye or out, or questionable with no fallback (a starter
+whose game is final is scored and locked, so a tag he picked up in it is not refused); a
 flex starter who kicks off before a starter he could swap with; an add that is not a free agent
 (or a waiver claim flagged as one); a held player dropped or traded; a roster over capacity;
 any add while an IR slot holds an untagged player; a contested starter or an add who loses most

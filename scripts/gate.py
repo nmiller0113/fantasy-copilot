@@ -410,7 +410,7 @@ def cmd_check(date):
                 if nogp:
                     lr['fail'].append('games played missing for rostered ' + ', '.join(nogp[:6]))
                 # same for the last 4 weeks: points scored there with no games played would print last-4/g as ?
-                nogp4 = [r['name'] for r in lg.R.values() if r.get('pos') in ('QB', 'RB', 'WR', 'TE') and (r.get('l4') or 0) > 0 and not r.get('l4_gp')]
+                nogp4 = [r['name'] for r in lg.R.values() if r.get('pos') in ('QB', 'RB', 'WR', 'TE') and (r.get('l4') or 0) >= 1 and not r.get('l4_gp')]   # under a point (a kneel-down) is not a game's production
                 if nogp4:
                     lr['fail'].append('last-4 games played missing for rostered ' + ', '.join(nogp4[:6]))
                 ydash = set(k for k, r in lg.R.items() if r.get('slot') != 'IR')
@@ -476,7 +476,7 @@ def cmd_board(L, date):
     for d in lg.lineup:
         if d['slot'] in ('BN', 'IR'):
             continue
-        bad = d['name'] == '(Empty)' or 'Bye' in (d.get('kick') or '') or out_tag(d.get('tag')) or d.get('tag') == 'Q'
+        bad = not (d.get('kick') or '').startswith('Final') and (d['name'] == '(Empty)' or 'Bye' in (d.get('kick') or '') or out_tag(d.get('tag')) or d.get('tag') == 'Q')
         r = lg.R.get(d.get('key'), {})
         s = lg.signals(r) if r else {}
         print(f"{d['slot']:<8}{d['name'][:24]:<25}{d.get('tag') or '-':<5}{(d.get('kick') or '')[:22]:<23}" + ('' if not r else ' '.join(f"{SIGNAME[x]} {fmt(s.get(x))}" for x in WEEK_SIG)) + ('   <== ' + ('EMPTY' if d['name'] == '(Empty)' else 'BYE' if 'Bye' in d.get('kick', '') else d.get('tag')) if bad else ''))
@@ -1081,9 +1081,10 @@ def cmd_render(L, date, name=None):
                 errs.append(f'{s} {nm}: not eligible ({"/".join(r2.get("pos_all", []))})')
             if 'Bye' in (r2.get('kick') or ''):
                 errs.append(f'{s} {nm}: on bye')
-            if out_tag(r2.get('tag')):
+            played = (r2.get('kick') or '').startswith('Final')   # his game is over: the slot is locked and scored
+            if out_tag(r2.get('tag')) and not played:
                 errs.append(f'{s} {nm}: tagged {r2["tag"]}')
-            if r2.get('tag') == 'Q' and nm not in calls.get('fallback', {}):
+            if r2.get('tag') == 'Q' and not played and nm not in calls.get('fallback', {}):
                 errs.append(f'{s} {nm}: questionable with no fallback named')
             starters.append((s, nm, r2))
     # lock order: the flex holds the latest kickoff among flex-eligible starters
@@ -1098,7 +1099,8 @@ def cmd_render(L, date, name=None):
             if ko is not None and ko2 is not None and ko2 > ko and nm not in calls.get('lock_override', {}):
                 errs.append(f'lock order: flex {nm} ({r.get("kick")}) kicks before {s2} {nm2} ({r2.get("kick")}): swap them, or lock_override')
     # signal votes: every starter in a hole slot and every add vs the alternatives on every signal
-    holes = {d['slot'] for d in lg.lineup if d['slot'] not in ('BN', 'IR') and (d['name'] == '(Empty)' or 'Bye' in (d.get('kick') or '') or out_tag(d.get('tag')) or d.get('tag') == 'Q')}
+    holes = {d['slot'] for d in lg.lineup if d['slot'] not in ('BN', 'IR') and not (d.get('kick') or '').startswith('Final')   # a final game's slot is scored and locked
+             and (d['name'] == '(Empty)' or 'Bye' in (d.get('kick') or '') or out_tag(d.get('tag')) or d.get('tag') == 'Q')}
     started = {r['key'] for _, _, r in starters}
     dec = []
     for s, nm, r in starters:
