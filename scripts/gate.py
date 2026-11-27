@@ -1105,6 +1105,8 @@ def cmd_render(L, date, name=None):
     dec = []
     for s, nm, r in starters:
         moved = lg.R.get(r['key'], {}).get('slot') not in (s,)          # benched or new into this slot
+        if (r.get('kick') or '').startswith('Final') and not moved:
+            continue                                                     # his game is over: the slot is scored and locked, nothing can replace him
         contested = s in holes or r['key'] in {x['key'] for x in adds} or s in FLEX or moved
         if not contested:
             continue
@@ -1125,8 +1127,8 @@ def cmd_render(L, date, name=None):
                 continue
             if src != 'bench' and (alt.get('status') or '') != 'FA':
                 continue  # not addable today
-            if out_tag(alt.get('tag')) or 'Bye' in (alt.get('kick') or ''):
-                continue
+            if out_tag(alt.get('tag')) or 'Bye' in (alt.get('kick') or '') or (alt.get('kick') or '').startswith('Final'):
+                continue  # out, on bye, or his game is already over: he cannot fill the slot this week
             asg = lg.signals(alt)
             wa, wb, n, det = vote(asg, sr, WEEK_SIG)
             gap = [x for x in WEEK_SIG if sr.get(x) is None and asg.get(x) is not None]   # signals only the alternative has
@@ -1141,12 +1143,12 @@ def cmd_render(L, date, name=None):
     # K and DEF are checked every pass: an incumbent starter (not held) vs the free agents on both engines
     kd = []
     for s, nm, r in starters:
-        if s not in ('K', 'DEF') or any(d[1] == nm for d in dec) or any(hold_key(lg, h) == r['key'] for h in holds):
-            continue
+        if s not in ('K', 'DEF') or (r.get('kick') or '').startswith('Final') or any(d[1] == nm for d in dec) or any(hold_key(lg, h) == r['key'] for h in holds):
+            continue                                                     # a kicker or defense whose game is over is scored and locked
         sr = lg.signals(r)
         better = []
         for kk, (src, alt) in candidates(lg, ELIG[s]).items():
-            if src == 'bench' or kk in roster or (alt.get('status') or '') != 'FA' or out_tag(alt.get('tag')) or 'Bye' in (alt.get('kick') or ''):
+            if src == 'bench' or kk in roster or (alt.get('status') or '') != 'FA' or out_tag(alt.get('tag')) or 'Bye' in (alt.get('kick') or '') or (alt.get('kick') or '').startswith('Final'):
                 continue
             asg = lg.signals(alt)
             wa, wb, n, det = vote(asg, sr, ['y_wk', 'ds_wk'])

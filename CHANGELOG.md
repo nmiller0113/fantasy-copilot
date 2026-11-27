@@ -5,6 +5,19 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.55.2] - 2026-11-27
+
+**A starter whose game is over is never compared against anyone.**
+
+### Fixed
+- `render` still compared a flex starter whose game was final against the bench and free agents, and demanded an
+  override and a role card, though the slot is scored and locked. A starter whose game is final, in any slot, is no
+  longer contested (unless the calls file moves him, which the host would refuse).
+- The kicker and defense free-agent comparison ran for a kicker or defense whose game was final and demanded an
+  override naming a free agent who could not replace him. It now skips them.
+- A bench player or free agent whose own game was final counted as beating a starter still to play, and demanded an
+  override, though he could not take the slot this week. A player whose game is final is no longer an alternative.
+
 ## [1.55.1] - 2026-11-27
 
 **Two checks that refused correct work on a Friday pickup pass.**

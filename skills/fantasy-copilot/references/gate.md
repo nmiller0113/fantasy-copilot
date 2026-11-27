@@ -127,7 +127,8 @@ flex starter who kicks off before a starter he could swap with; an add that is n
 (or a waiver claim flagged as one); a held player dropped or traded; a roster over capacity;
 any add while an IR slot holds an untagged player; a contested starter or an add who loses most
 of the shared signals to an available alternative, or a kicker or defense a free agent beats on
-both engines, without an override that names the alternative and says why; too few signals
+both engines, without an override that names the alternative and says why (a starter whose game
+is final is never contested, and a player whose game is final is never the alternative); too few signals
 present for a pick; a role card missing, unsourced or stale; and a trade without both lineups
 recomputed, the engine's trade value for every player, roster room, and a written reason the
 other manager would say yes. No gain or value cutoff refuses a trade: the block shows both
