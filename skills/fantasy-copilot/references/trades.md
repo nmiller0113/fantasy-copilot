@@ -65,6 +65,28 @@ through with the user, and the user decides. Each one is said with all of this:
    one week's artifact. Each is named with what it does to the odds of a yes or to the gain; none
    is a filter.
 
+## Before a potential reaches the user
+
+The engine's lineup math answers none of these, so the assistant answers each one itself before
+a potential is rendered, and one that fails any of them does not reach the user:
+
+1. **His real reason.** Read the other manager's roster and the lineup he has actually set, not
+   the engine's projected best lineup. Does the deal pay him in the weeks he cares about (the
+   playoff weeks for a contender, the next few for a team chasing a spot)? Is he giving up the
+   player who covers his own injured starter? Would a manager who trades by name read it as
+   lopsided (a star for two pieces, a wide gap on the engine's value)? Is he active, and does he
+   set his lineup by points at all? State only history that is on the page.
+2. **The user's depth at every position the deal draws from**, counting a starter tagged out as
+   an open slot: who would actually start there after the deal, this week and the next.
+3. **Actuals beside the projection**: last four weeks and season, per game, in the league's
+   scoring, for every player on both sides. A gain that exists only in the projection is said as
+   that.
+4. **A partner in the user's race**: compare his gain in the weeks before the playoffs with the
+   user's, and read the schedule for a head-to-head meeting in those weeks.
+5. **A scarce starter**: the user's QB1 in a superflex league, or the lead back in a league that
+   rewards backs, with no trustworthy player behind him, is not a trade piece unless the user
+   names him as one.
+
 "Nothing looks good this week" is still an honest read, said with the best potentials and what
 holds each one back.
 

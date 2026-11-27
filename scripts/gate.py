@@ -38,6 +38,7 @@ try:
 except (OSError, ValueError):
     pass
 PLAYABLE_TAGS = {'', 'Q', 'P', 'DTD'}   # every other Yahoo status (O, D, IR, IR-R, PUP-P, NFI-R, SUSP, NA, ...) means not playing
+IR_TAGS = {'IR', 'IR-R', 'O', 'PUP-P', 'PUP-R', 'NFI-R', 'NA'}   # statuses the host lets into an IR slot (O counts; leagues that refuse O in IR are not modeled)
 
 
 def out_tag(t):
@@ -771,6 +772,61 @@ def their_needs(lg, starters, pid, th2):
             'the deal for them: ' + ('; '.join(moves) if moves else 'no starter changes (it adds depth only)'))
 
 
+
+def depth_pool(lg):
+    """every rostered skill player's rest-of-season projection by position, best first (yours and every rival's),
+    plus the league's team count under '__teams'."""
+    out = {}
+    for t in [team_players(lg, 'me')] + [team_players(lg, pid) for pid in rivals(lg)]:
+        for v in t.values():
+            for P in set(v.get('pos_all') or [v['pos']]):
+                out.setdefault(P, []).append(v.get('ros') or 0)
+    out = {P: sorted(vs, reverse=True) for P, vs in out.items()}
+    out['__teams'] = cfg()[lg.L]['teams']
+    return out
+
+
+def depth_check(lg, me, th, give, get, pool, drops=()):
+    """A lead shows who is behind each starter the user would send, at his position, and is dropped when that
+    next man is a backup or hurt. Per position: the starters you send are paired, best first, with the incoming
+    players at that position; one matched by an incoming player at least as good is covered. Each uncovered
+    starter needs his own next man: your best players at that position outside its dedicated starting slots, IR,
+    the deal and its drops, one per uncovered starter. A backup ranks outside the league's starting jobs at the
+    position among rostered players; hurt = any tag. -> (lines, bad); every failing line contains ' - '."""
+    slots, teams = lg.c['slots'], pool['__teams']
+    lines, bad = [], False
+    out = set(give) | set(drops)
+    byP = {}
+    for k in give:
+        d = me[k]
+        if d.get('slot') not in ('BN', 'IR', None, ''):          # a starter: someone has to cover his slot
+            byP.setdefault(d['pos'], []).append(d)
+    for P, sent in byP.items():
+        sent = sorted(sent, key=lambda v: -(v.get('ros') or 0))
+        back = sorted([(th[x].get('ros') or 0) for x in get if P in (th[x].get('pos_all') or [th[x]['pos']])], reverse=True)
+        uncovered = [d for i, d in enumerate(sent) if not (i < len(back) and back[i] >= (d.get('ros') or 0))]
+        if not uncovered:
+            continue
+        own = {P} | ({'Q/W/R/T'} if P == 'QB' else set())
+        cand = sorted([v for kk, v in me.items() if kk not in out and v.get('slot') not in own and v.get('slot') != 'IR'
+                       and P in (v.get('pos_all') or [v['pos']])], key=lambda v: -(v.get('ros') or 0))
+        jobs = teams * sum(1 for s in slots if s in own)
+        for i, d in enumerate(uncovered):
+            if i >= len(cand):
+                lines.append(f"depth: behind {d['name']} ({P}) - you have no other {P} left to start"); bad = True
+                continue
+            b = cand[i]
+            rank = 1 + sum(1 for v in pool.get(P, []) if v > (b.get('ros') or 0))
+            why = []
+            if (b.get('tag') or '').strip():
+                why.append(f"tagged {b['tag']}")
+            if rank > jobs:
+                why.append(f"a backup: {_ord(rank)} of rostered {P}s, outside the {jobs} {P} starting jobs in this league")
+            lines.append(f"depth: behind {d['name']} ({P}) your next {P} is {b['name']} (rest of season {b.get('ros') or 0:.0f}, "
+                         f"{_ord(rank)} of rostered {P}s)" + (f" - {'; '.join(why)}" if why else ''))
+            bad = bad or bool(why)
+    return lines, bad
+
 def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     lines, flags = [], []
     partner = [r for r in rivals(lg) if tr.get('partner', '').lower() in r[1].lower()]
@@ -845,6 +901,9 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
         errs.append(f"trade: call must be one of {', '.join(repr(c) for c in allowed)} for "
                     + ('an offer you received' if incoming else 'a trade you would send') + f" (got {tr.get('call')!r})")
     g = trade_gains(lg, me, th, give, get, start=sw)
+    dlines, dbad = depth_check(lg, me, th, give, get, depth_pool(lg), drops=[d['key'] for d in drops])
+    if dbad and tr.get('call') not in ("don't send", 'decline') and not str(over.get('depth') or '').strip():
+        errs.append('trade: ' + ' / '.join(l for l in dlines if ' - ' in l) + " - the deal leaves you without a trustworthy next man there ; call it \"don't send\"/decline, or put the user's words in override['depth']")
     if not (tr.get('partner_reason') or '').strip():
         errs.append(f"trade: say why {pid[1]} " + ('made this offer (what it fills for them)' if incoming else 'would say yes (their needs, what the deal fills for them)') + ' in partner_reason')
     th2 = {k: v for k, v in th.items() if k not in get}
@@ -876,6 +935,8 @@ def trade_check(lg, tr, cards, holds, over, hold_ov, errs):
     lines.append('  ' + needs[1])
     if tr.get('partner_reason'):
         lines.append(f"  {'why they offered it' if incoming else 'why they would say yes'}: {tr['partner_reason']}")
+    for l in dlines:
+        lines.append('  ' + l)
     for f in flags:
         lines.append('  flag: ' + f)
     if over.get('trade'):
@@ -894,8 +955,9 @@ def card_for(cards, nm, date, errs):
     lo = (datetime.date.fromisoformat(date) - datetime.timedelta(days=3)).isoformat()
     if not c or not c.get('sources') or not c.get('role'):
         errs.append(f'{nm}: no role card with read sources in cards.json'); return None
-    if not (lo <= c.get('asof', '') <= date):
-        errs.append(f'{nm}: role card dated {c.get("asof")} (must be {lo} to {date})'); return None
+    hi = max(date, today())   # a card read after the pass's data date is fresher, not stale
+    if not (lo <= c.get('asof', '') <= hi):
+        errs.append(f'{nm}: role card dated {c.get("asof")} (must be {lo} to {hi})'); return None
     return c
 
 
@@ -928,6 +990,22 @@ def cmd_render(L, date, name=None):
     roster = dict(lg.R)
     adds = []
     for mv in calls.get('moves', []):
+        if mv.get('from_ir'):   # a rostered player moved out of an IR slot onto the bench (counts as active again)
+            src, r = lg.find(mv['from_ir'])
+            if src != 'R' or r['key'] not in roster or roster[r['key']].get('slot') != 'IR':
+                errs.append(f"from_ir {mv['from_ir']}: not in an IR slot on the roster")
+            else:
+                roster[r['key']] = dict(roster[r['key']], slot='BN')
+            continue
+        if mv.get('to_ir'):   # a rostered player moved from BN into an IR slot, in its place in the order
+            src, r = lg.find(mv['to_ir'])
+            if src != 'R' or r['key'] not in roster:
+                errs.append(f"to_ir {mv['to_ir']}: not on the roster after the moves before it")
+            elif (r.get('tag') or '') not in IR_TAGS:
+                errs.append(f"to_ir {mv['to_ir']}: tag {r.get('tag') or 'none'} is not IR-eligible")
+            else:
+                roster[r['key']] = dict(roster[r['key']], slot='IR')
+            continue
         a, dname = mv.get('add'), mv.get('drop')
         if a:
             src, r = lg.find(a)
@@ -939,7 +1017,9 @@ def cmd_render(L, date, name=None):
                 st = r.get('status') or ''
                 if st != 'FA' and not (mv.get('claim') and st.startswith('W')):
                     errs.append(f'add {a}: status {st or "?"} (FA required, or "claim": true for W)')
-                rr = dict(r); rr['slot'] = 'BN'
+                rr = dict(r); rr['slot'] = 'IR' if mv.get('ir') else 'BN'
+                if mv.get('ir') and (r.get('tag') or '') not in IR_TAGS:
+                    errs.append(f'add {a} to IR: tag {r.get("tag") or "none"} is not IR-eligible')
                 roster[r['key']] = rr; adds.append(rr)
         if dname:
             src, r = lg.find(dname)
@@ -964,9 +1044,16 @@ def cmd_render(L, date, name=None):
     act = len([k for k, r in roster.items() if r.get('slot') != 'IR'])
     if act > cap:
         errs.append(f'roster {act} active > the {cap}-player limit ({cap_src}): an add needs a drop')
+    if any(mv.get('ir') or mv.get('to_ir') for mv in calls.get('moves', [])):
+        m_ir = re.search(r'You have used \d+ of (\d+) IR positions', next((l for l in lg.ytext.split('\n') if l.startswith('HEADER:')), ''))
+        n_ir = len([k for k, r in roster.items() if r.get('slot') == 'IR'])
+        if not m_ir:
+            errs.append('an add to IR needs the IR slot count from the host header, and the pull has none')
+        elif n_ir > int(m_ir.group(1)):
+            errs.append(f'IR {n_ir} after the moves > the {m_ir.group(1)} IR slots: drop an IR player first')
     if adds:
         for d in lg.lineup:
-            if d['slot'] == 'IR' and d.get('key') in roster and not d.get('tag'):
+            if d['slot'] == 'IR' and d.get('key') in roster and roster[d['key']].get('slot') == 'IR' and not d.get('tag'):   # moved out by from_ir: no longer blocks
                 errs.append(f"IR slot holds {d['name']} with no IR tag: Yahoo blocks adds until he is moved out")
     trade_lines = trade_check(lg, calls['trade'], cards, holds, over, hold_ov, errs) if calls.get('trade') else []
     do_lineup = 'lineup' in calls or not calls.get('trade')   # a trade-only render skips the lineup
@@ -1096,10 +1183,16 @@ def cmd_render(L, date, name=None):
     if calls.get('moves'):
         E.append('MOVES')
         for mv in calls['moves']:
+            if mv.get('from_ir'):
+                E.append(f"  MOVE {mv['from_ir']} IR -> BN")
+                continue
+            if mv.get('to_ir'):
+                E.append(f"  MOVE {mv['to_ir']} BN -> IR")
+                continue
             a, dn = mv.get('add'), mv.get('drop')
             ra = lg.find(a)[1] if a else None
             rd = lg.find(dn)[1] if dn else None
-            t = '  ' + ('CLAIM ' if mv.get('claim') else 'ADD ') + (f"{a} ({ra['team']} {ra['pos']}, {ra.get('status')})" if a else '') + (f" / DROP {dn} ({rd['team']} {rd['pos']})" if dn else '') + (f"  [{mv['when']}]" if mv.get('when') else '')
+            t = '  ' + ('CLAIM ' if mv.get('claim') else 'ADD ') + (f"{a} ({ra['team']} {ra['pos']}, {ra.get('status')})" + (' to IR' if mv.get('ir') else '') if a else '') + (f" / DROP {dn} ({rd['team']} {rd['pos']})" if dn else '') + (f"  [{mv['when']}]" if mv.get('when') else '')
             E.append(t)
             if mv.get('_vote'):
                 E.append('     ' + mv['_vote'])
@@ -1147,10 +1240,16 @@ def cmd_render(L, date, name=None):
     if calls.get('moves'):
         B += ['', 'DO (you click)']
         for i, mv in enumerate(calls['moves'], 1):
+            if mv.get('from_ir'):
+                B += wrap(f"Move {mv['from_ir']} ({tg(lg.find(mv['from_ir'])[1])}) from IR to BN", f'  {i}. ', '     ')
+                continue
+            if mv.get('to_ir'):
+                B += wrap(f"Move {mv['to_ir']} ({tg(lg.find(mv['to_ir'])[1])}) from BN to IR", f'  {i}. ', '     ')
+                continue
             a, dn = mv.get('add'), mv.get('drop')
             ra = lg.find(a)[1] if a else None
             rd = lg.find(dn)[1] if dn else None
-            t = (('Claim ' if mv.get('claim') else 'Add ') + f"{a} ({tg(ra)})" if a else '') + ((' · drop ' if a else 'Drop ') + f"{dn} ({tg(rd)})" if dn else '')
+            t = (('Claim ' if mv.get('claim') else 'Add ') + f"{a} ({tg(ra)})" + (' straight to IR' if mv.get('ir') else '') if a else '') + ((' · drop ' if a else 'Drop ') + f"{dn} ({tg(rd)})" if dn else '')
             B += wrap(t + (f"  by {mv['when'].replace('before ', '')}" if mv.get('when') else ''), f'  {i}. ', '     ')
     if trade_lines:
         m = re.match(r'TRADE with (.+?) \(rival roster read', trade_lines[0].strip())
@@ -1272,7 +1371,8 @@ def cmd_trades(L, date, top=8):
     hz = horizons(lg)
     bm = {f: weekly_total(me, slots, W, e, a) for f, a, e, n in hz}
     starters = league_starters(lg)
-    leads, nriv = [], 0
+    pool = depth_pool(lg)
+    leads, nriv, ndepth = [], 0, 0
     for pid in rivals(lg):
         th = team_players(lg, pid)
         if not th:
@@ -1288,20 +1388,23 @@ def cmd_trades(L, date, top=8):
                     gm = {f: (weekly_total(me2, slots, W, e, a) - bm[f]) / n for f, a, e, n in hz}
                     if max(gm.values()) <= 0:
                         continue                  # helps the user on no horizon: not a potential for him
+                    if depth_check(lg, me, th, G, T, pool)[1]:
+                        ndepth += 1
+                        continue                  # leaves a starter's position without a trustworthy next man
                     th2 = {k: v for k, v in th.items() if k not in T}
                     th2.update({k: me[k] for k in G})
                     gt = {f: (weekly_total(th2, slots, W, e, a) - bt[f]) / n for f, a, e, n in hz}
                     vg = [ds_value(dsv, me[k]) for k in G]
                     vt = [ds_value(dsv, th[k]) for k in T]
-                    leads.append((gm, gt, pid, [me[k] for k in G], [th[k] for k in T], vg, vt, th2))
-    print(f'   rivals read: {nriv}/{cfg()[L]["teams"] - 1}; potentials: {len(leads)}')
+                    leads.append((gm, gt, pid, [me[k] for k in G], [th[k] for k in T], vg, vt, th2, (G, T, th)))
+    print(f'   rivals read: {nriv}/{cfg()[L]["teams"] - 1}; potentials: {len(leads)}; dropped for depth (a starter you send with a backup or hurt player behind him): {ndepth}')
     if nriv != cfg()[L]['teams'] - 1:
         print(f'!! INCOMPLETE: {nriv} rival rosters in the pull for {cfg()[L]["teams"] - 1} rivals: re-pull before trusting this list')
     tag = lambda p: f"{p['name']} ({p.get('team')} {p.get('pos')})"
 
     def show(rows, n_show):
         seen, shown = set(), 0
-        for gm, gt, pid, G, T, vg, vt, th2 in rows:
+        for gm, gt, pid, G, T, vg, vt, th2, (GK, TK, THD) in rows:
             sig = (pid[1], tuple(sorted(p['name'] for p in T)))
             sig2 = (pid[1], tuple(sorted(p['name'] for p in G)))
             if sig in seen or sig2 in seen:
@@ -1318,6 +1421,8 @@ def cmd_trades(L, date, top=8):
             print(f"     side by side: give {'; '.join(vv(p, v) for p, v in zip(G, vg))}  |  get {'; '.join(vv(p, v) for p, v in zip(T, vt))}")
             print(f"     {pid[1]}, {race(lg, pid[0])[1]}: {gains_text(gg, 'th', lg)}")
             for line in their_needs(lg, starters, pid, th2):
+                print('     ' + line)
+            for line in depth_check(lg, me, THD, GK, TK, pool)[0]:
                 print('     ' + line)
             shown += 1
             if shown >= n_show:

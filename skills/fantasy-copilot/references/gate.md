@@ -66,6 +66,13 @@ in the user's home folder. With no gate home the hook does nothing.
    (not sent) · call: don't send`), so the header never reads as an instruction the call
    does not give.
    One card per player means the same evidence in every league.
+   A card read after the pass's data date (a later news read) counts as fresh: its as-of date
+   may run from three days before the pass to today.
+   IR slots are moves in the calls file, in click order: `{"to_ir": NAME}` moves a rostered
+   player into an IR slot (his tag must be one the host lets into IR), `{"from_ir": NAME}`
+   moves one back to the bench, and an add with `"ir": true` lands straight in an IR slot. A
+   `to_ir` or an IR add checks the IR capacity the host's header states (on the end state, not
+   click by click).
 7. `gate.py render LEAGUE [NAME]` fails with a list of problems or prints the block ending
    `gate ✓ NAME <hash>`. The block is short: what the user clicks and by when, the lineup with
    changes marked, the conditions, and one line of reason per pick (the `why` text, or the week
@@ -92,6 +99,12 @@ in the user's home folder. With no gate home the hook does nothing.
    until the playoffs). Leads are not calls:
    a lead reaches the user only through a calls file and `render`, after the chart, role cards
    and the partner's reason are in.
+   Depth: a lead that sends a starter is dropped when the deal leaves his position weaker (no
+   player at least as good at it comes back) and the user's next man there is a backup (ranked
+   outside the league's starting jobs at the position among rostered players) or carries any
+   injury tag. Two starters sent at one position each need their own next man, and a player
+   the deal drops is never counted as one. The count of leads dropped for depth is printed, and
+   each lead shown prints its depth lines.
 10. `gate.py close` marks the pass finished.
 
 Two planning rules hold in `trades` and in every trade render. A pending claim the user is
@@ -119,6 +132,10 @@ other manager would say yes. No gain or value cutoff refuses a trade: the block 
 sides' gains on every horizon (this week, the weeks until the playoffs or the next four, playoff
 weeks, rest of season), each player's values side by side, who pays more on the engine's value, the other manager's needs
 as computed, and a flag for any questionable player the user would send.
+
+A trade that leaves a starter's position without a trustworthy next man (the depth rule in
+`trades` above) is refused when its call is anything but `don't send` or `decline`, unless
+`override["depth"]` carries the user's words; its depth lines print in the block either way.
 
 ## The Stop hook
 

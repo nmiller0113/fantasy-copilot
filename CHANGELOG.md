@@ -5,6 +5,36 @@ commit that declared it, and a GitHub release carrying this same text. The versi
 lives only in `.claude-plugin/plugin.json`. Minor bump: the skill's rules changed. Patch:
 everything else.
 
+## [1.55.0] - 2026-11-27
+
+**A trade that leaves a starter without a trustworthy player behind him no longer reaches the user, and the trade
+procedure now asks the questions the engine's math cannot.**
+In one trade pass the user found a hole in nearly every proposal with a single question each: why would the other
+manager want it, who starts behind the player I send, what do the actuals say, does it help a team chasing my playoff
+spot, and why would I send my only reliable superflex quarterback. The user: "I've literally had to barely work to
+poke a hole in all of your trade logic so far".
+
+### Added
+- **Depth check** in `trades` and in every trade `render`. For each starter the user would send, when the deal leaves
+  his position weaker (no player at least as good at it comes back), the user's next man there is named. A next man who
+  ranks outside the league's starting jobs at the position among rostered players, or carries any injury tag, drops
+  the lead from `trades` (the count is printed) and makes `render` refuse the trade unless its call is `don't send` or
+  `decline`, or `override["depth"]` carries the user's words. Two starters sent at one position each need their own
+  next man, and a player the deal drops is never counted as one. Shown leads and rendered blocks print the depth lines.
+- **`references/trades.md`, "Before a potential reaches the user"**: five checks the assistant answers itself before
+  any trade is rendered: the other manager's real reason (his set lineup, the injury cover he would give up, how a
+  name-trader reads it, whether he is active), the user's depth counting starters tagged out, actuals beside the
+  projection, a partner in the user's race (pre-playoff gains compared, head-to-head schedule read), and scarce
+  starters (a superflex QB1, the lead back in a league that rewards backs).
+- **IR slot moves** in a calls file, listed in click order: `{"to_ir": NAME}` (the tag must be one the host lets into
+  IR), `{"from_ir": NAME}`, and an add with `"ir": true` that lands straight in an IR slot. A `to_ir` or an IR add
+  checks the IR capacity the host's header states, and the block prints the moves as clicks. A `from_ir` lifts the
+  untagged-IR block on adds for the player it moves.
+
+### Fixed
+- A role card read after the pass's data date (a later news read) was refused as stale. Its as-of date may now run
+  from three days before the pass to today.
+
 ## [1.54.0] - 2026-11-22
 
 **A trade block's header states the call, and never tells the user to send a trade.**
